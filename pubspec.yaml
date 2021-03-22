@@ -1,0 +1,47 @@
+name: gas_express
+description: A new Flutter project.
+
+publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+
+version: 1.0.0+1
+
+environment:
+  sdk: ">=2.7.0 <3.0.0"
+
+dependencies:
+
+  flutter:
+    sdk: flutter
+
+  cupertino_icons: ^1.0.2
+  rxdart:
+  http: ^0.12.1
+  url_launcher:
+  localize_and_translate:
+  toast: ^0.1.5
+  flutter_svg: ^0.19.0
+  dotted_border: ^1.0.7
+  xs_progress_hud: ^1.0.2
+  image_picker: ^0.6.0+10
+  geocoder:
+  google_maps_flutter:
+  location:
+  shared_preferences:
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+flutter:
+
+  uses-material-design: true
+  assets:
+    - assets/images/
+    - assets/langs/en.json
+    - assets/langs/ar.json
+  fonts:
+    - family: SourceSansPro
+      fonts:
+        - asset: assets/fonts/SourceSansPro-SemiBold.ttf
+    - family: Almarai
+      fonts:
+        - asset: assets/fonts/Almarai-Regular.ttf
