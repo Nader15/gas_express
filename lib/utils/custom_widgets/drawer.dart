@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gas_express/ui/HomeScreens/home_page.dart';
+import 'package:gas_express/ui/Orders/OrdersScreen.dart';
 import 'package:gas_express/ui/UserAddresses/my_addresses.dart';
 import 'package:gas_express/ui/my_wallet.dart';
 import 'package:gas_express/ui/notifications.dart';
@@ -51,6 +52,17 @@ class drawerList extends StatelessWidget {
               ),
               onTap: () {
                 navigateAndClearStack(context, MyAddresses());
+              },
+            ),
+
+            ListTile(
+              leading: Icon(Icons.reorder_sharp,color: blackColor.withOpacity(0.6),),
+              title: Text(
+                getTranslated(context, 'orders'),
+                style: _textStyle,
+              ),
+              onTap: () {
+                // navigateAndClearStack(context, OrdersScreen());
               },
             ),
             ListTile(

@@ -1,5 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:gas_express/APiFunctions/Api.dart';
+import 'package:gas_express/APiFunctions/sharedPref/SharedPrefClass.dart';
 import 'package:gas_express/ui/TestLocalCart/CartModel.dart';
 import 'package:gas_express/ui/UserAddresses/my_addresses.dart';
 import 'package:gas_express/utils/colors_file.dart';
@@ -8,6 +10,7 @@ import 'package:gas_express/utils/custom_widgets/drawer.dart';
 import 'package:gas_express/utils/global_vars.dart';
 import 'package:gas_express/utils/navigator.dart';
 import 'package:gas_express/utils/static_ui.dart';
+import 'package:gas_express/utils/toast.dart';
 
 class Cart extends StatefulWidget {
   @override
@@ -19,9 +22,15 @@ class _CartState extends State<Cart> {
   var total=0;
   int productNo=0;
 
-
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+  String delivaryTime;
+  String Timeofreceipt;
   @override
   void initState() {
+    setState(() {
+      delivaryTime=getTranslated(context, "DelivaryTime");
+      Timeofreceipt=getTranslated(context, "Timeofreceipt");
+    });
     gettotoalCost();
     super.initState();
   }
@@ -42,6 +51,61 @@ class _CartState extends State<Cart> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      floatingActionButton:  cartList.length==0?Container(): ElevatedButton(
+        style: ButtonStyle(
+          backgroundColor: MaterialStateProperty.all<Color>(
+              greenAppColor),
+        ),
+        onPressed: () {
+if(selectedAddressString.isEmpty){
+  FN_showToast(
+      getTranslated(context, "pleaseAddAddress"), context, Colors.red, _scaffoldKey);
+}else if(delivaryTime==getTranslated(context, "DelivaryTime")|| Timeofreceipt==getTranslated(context, "Timeofreceipt")){
+
+
+  FN_showToast(
+      getTranslated(context, "pleaseSelectTime"), context, Colors.red, _scaffoldKey);
+}
+
+else {  List itemsList=List();
+cartList.forEach((element) {
+  itemsList.add({"quantity":element.quantity,
+    "id":element.id
+  });
+
+});
+
+Map data={
+  "items": itemsList,
+  "date": "${DateTime.now().toIso8601String().split("T")[0]}",
+  "timeStarts": "${Timeofreceipt}",
+  "timeEnds": "${delivaryTime}",
+  // "timeEnds": "${delivaryTime}",
+  "mobile": BasePhone??"12312233333",
+  "addressid": selectedAddressId,
+  "location": selectedAddressString,
+  "expecteddeliverdatename": "string"
+};
+
+print("data:::data ${data}");
+Api(context, _scaffoldKey).addOrderApi(data).then((value) {
+
+
+});
+}
+        },
+        child: Container(
+          alignment: Alignment.center,
+          width: MediaQuery.of(context).size.width,
+          height: 75,
+          child: Text(
+            getTranslated(context, "confirm"),
+            style: TextStyle(fontWeight: FontWeight.w400,fontSize: 20),
+          ),
+        ),
+      ),
       drawer: drawerList(),
       appBar: AppBar(
         backgroundColor: primaryAppColor,
@@ -271,7 +335,7 @@ setState(() {
                   style: TextStyle(fontSize: 20),
                 ),
                 Text(
-                  "67.86 " + getTranslated(context, "SR"),
+                  " ${total} " + getTranslated(context, "SR"),
                   style: TextStyle(fontSize: 20),
                 ),
               ],
@@ -374,31 +438,49 @@ setState(() {
                 ),
                 Row(
                   children: [
-                    SizedBox(
-                      width: MediaQuery.of(context).size.width / 5,
-                      height: 30,
-                      child: TextFormField(
-                        decoration: InputDecoration(
-                            alignLabelWithHint: false,
-                            contentPadding: EdgeInsets.zero,
-                            hintStyle: TextStyle(color: grey),
-                            hintText: getTranslated(context, "Day"),
-                            border: OutlineInputBorder()),
+                    InkWell(onTap: ()async{
+                  showTimePicker(
+                        initialTime: TimeOfDay.now(),
+                        context: context,
+                      ).then((value) {
+                        print("Timeofreceiptvalue::: ${value.format(context)}");
+setState(() {
+  Timeofreceipt=value.format(context).split(" ")[0];
+});
+                  });
+                    },
+                      child: SizedBox(
+                        width: MediaQuery.of(context).size.width / 4,
+                        height: 30,
+                        child: Container(
+                            decoration: BoxDecoration(
+                                border: Border.all(color: Colors.grey)
+                            ),
+                            child: Text(Timeofreceipt)),
                       ),
                     ),
                     SizedBox(
                       width: 10,
                     ),
-                    SizedBox(
-                      width: MediaQuery.of(context).size.width / 5,
-                      height: 30,
-                      child: TextFormField(
-                        decoration: InputDecoration(
-                            alignLabelWithHint: false,
-                            contentPadding: EdgeInsets.zero,
-                            hintStyle: TextStyle(color: grey),
-                            hintText: getTranslated(context, "Hour"),
-                            border: OutlineInputBorder()),
+                    InkWell(onTap: (){
+                      showTimePicker(
+                        initialTime: TimeOfDay.now(),
+                        context: context,
+                      ).then((value) {
+                        print("Timeofreceiptvalue::: ${value.format(context)}");
+                        setState(() {
+                          delivaryTime=value.format(context).split(" ")[0];
+                        });
+                      });
+                    },
+                      child: SizedBox(
+                        width: MediaQuery.of(context).size.width / 4,
+                        height: 30,
+                        child: Container(
+                            decoration: BoxDecoration(
+                                border: Border.all(color: Colors.grey)
+                            ),
+                            child: Text(delivaryTime)),
                       ),
                     ),
                   ],
@@ -420,27 +502,53 @@ setState(() {
                   getTranslated(context, "Location"),
                   style: TextStyle(color: greenAppColor, fontSize: 15),
                 ),
-                SizedBox(
-                  width: MediaQuery.of(context).size.width / 1.7,
-                  height: 30,
-                  child: TextFormField(
-                    onTap: (){
-                      if(selectedAddressString==null){
-                        navigateAndKeepStack(context, MyAddresses());
-                      }
-                    },
-                    enabled: false,
-                    decoration: InputDecoration(
-                        prefixIcon: selectedAddressString==null?Container():Icon(
-                          Icons.location_on,
-                          color: greenAppColor,
+
+                InkWell(onTap: (){
+                  navigateAndKeepStack(context, MyAddresses());
+
+                },
+                  child: Container(
+                     decoration: BoxDecoration(
+                        border: Border.all(color: Colors.grey)
+                    ),
+                    child: Row(
+                      children: [
+                    Icon(
+                              Icons.location_on,
+                              color: greenAppColor,
+                            ),
+
+                        Text(
+                          selectedAddressString.isEmpty?getTranslated(context, "pleaseAddAddress"):selectedAddressString,
+                          style: TextStyle(color: greenAppColor, fontSize: 15),
                         ),
-                        alignLabelWithHint: false,
-                        contentPadding: EdgeInsets.zero,
-                        hintText: selectedAddressString??getTranslated(context, "pleaseAddAddress"),
-                        border: OutlineInputBorder()),
+                      ],
+                    ),
                   ),
                 ),
+                // SizedBox(
+                //   width: MediaQuery.of(context).size.width / 1.7,
+                //   height: 30,
+                //   child: TextFormField(
+                //     onTap: (){
+                //       if(selectedAddressString.isEmpty){
+                //         navigateAndKeepStack(context, MyAddresses());
+                //       }
+                //     },
+                //     // enabled: false,
+                //     decoration: InputDecoration(
+                //         prefixIcon: selectedAddressString.isEmpty?Container():
+                //         Icon(
+                //           Icons.location_on,
+                //           color: greenAppColor,
+                //         ),
+                //         alignLabelWithHint: false,
+                //         contentPadding: EdgeInsets.zero,
+                //         hintStyle: TextStyle(color: Colors.black),
+                //         hintText: selectedAddressString.isEmpty?getTranslated(context, "pleaseAddAddress"):selectedAddressString,
+                //         border: OutlineInputBorder()),
+                //   ),
+                // ),
               ],
             ),
           ],

@@ -94,7 +94,7 @@ class _SplashState extends State<Verify> {
                               Api(context, _scaffoldKey).verifyCodeApi(_onCompleted,widget.phone).then((value) {
                                 if(value is UserModel){
                                   print("value:: ${value.results.token}");
-                                   setDataToShared(value.results.token,value.results.id).then((value) {
+                                   setDataToShared(value.results.token,value.results.id,value.results.telephoneno).then((value) {
                                     navigateAndKeepStack(context, HomePage());
 
                                   });

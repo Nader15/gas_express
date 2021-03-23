@@ -13,6 +13,7 @@
   "buildingNo": "Building No",
   "flatNo": "Flat No",
   "floorNo": "Floor No",
+  "confirm": "Confirm",
 
   "TheProducts": "Products",
   "Recharge": "Recharge",
@@ -52,11 +53,13 @@
   "Total": "Total",
   "AvailableBalance": "Available Balance",
   "Appointment": "Appointment",
-  "Day": "Day",
-  "Hour": "Hour",
+  "Timeofreceipt": "Time of receipt",
+  "pleaseSelectTime": "Please select time",
+  "DelivaryTime": "Delivary Time",
   "Fawrey": "",
   "cart": "Cart",
   "Location": "Location",
+  "orders": "Orders",
 
   "Payment": "Payment",
   "RequiredAmount": "Required Amount",

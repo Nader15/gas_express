@@ -27,7 +27,7 @@ class Api {
   String forgetPassword = "ForgetPassword/";
   String verifyCode = "VerifyCode/";
   String customersAddresses = "CustomersAddresses/";
-  String basket = "basket";
+  String basket = "basket/";
   String orders = "Orders";
   String orderStatusDetails = "OrderStatusDetails";
   String checkCoupon = "check_coupon";
@@ -355,11 +355,10 @@ class Api {
 
      return response.data['id'];
   }
-  Future addOrderApi(GlobalKey<ScaffoldState> _scaffoldKey) async {
+  Future addOrderApi(Map data) async {
     XsProgressHud.show(context);
     final String completeUrl = baseUrl + basket;
-    var data = {"order_id": "12321"};
-    var userToJson = json.encode(data);
+     var userToJson = json.encode(data);
     final response = await http.post(
       completeUrl,
       headers: {
@@ -367,8 +366,12 @@ class Api {
         'Accept': 'application/json',
         HttpHeaders.authorizationHeader: BaseToken
       },
+      // body: data,
       body: userToJson,
     );
+
+    print("statusCodestatusCode:: ${response.statusCode}");
+    print("statusCodestatusCode:: ${response.body}");
     Map<String, dynamic> dataContent = json.decode(response.body);
     XsProgressHud.hide();
     if (response.statusCode == 200) {

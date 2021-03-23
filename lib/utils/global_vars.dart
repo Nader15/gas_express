@@ -5,7 +5,7 @@ import 'package:localize_and_translate/localize_and_translate.dart';
 String imageUrl = 'http://18.188.206.243:8001';
 List<CartModel> cartList=List();
 int selectedAddressId;
-String  selectedAddressString;
+String  selectedAddressString="";
 
 
 String getTranslated(BuildContext context, String key) {
