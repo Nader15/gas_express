@@ -17,8 +17,9 @@ Future setDataToShared(String userToken,int user_Id)async{
 Future getDataFromShared()async{
   SharedPreferences prefs = await SharedPreferences.getInstance();
   BaseToken=  prefs.getString(token);
+  BaseUderId=  prefs.getInt(userId);
 
   print("BaseToken:: ${BaseToken}");
+  print("BaseUderId:: ${BaseUderId}");
   print("token:: ${token}");
-  BaseUderId=  prefs.getInt(userId);
 }

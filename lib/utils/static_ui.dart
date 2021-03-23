@@ -2,6 +2,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:gas_express/ui/HomeScreens/home_page.dart';
+import 'package:gas_express/ui/cart.dart';
 import 'package:gas_express/utils/global_vars.dart';
 import 'package:gas_express/utils/navigator.dart';
 import 'package:gas_express/utils/size_config.dart';
@@ -11,6 +12,28 @@ import 'package:gas_express/utils/colors_file.dart' as colorsValues;
 import 'package:gas_express/utils/image_file.dart' as imagesfile;
 
 class StaticUI {
+
+  Widget cartWidget(BuildContext context){
+    return  Stack(
+      children: [
+        IconButton(icon: Icon(
+          Icons.shopping_cart,
+          size: 20.0,
+        ), onPressed: () {
+          navigateAndKeepStack(context, Cart());
+          // navigateAndKeepStack(context, TestProducts());
+        }),
+
+
+        cartList.length==0?Container():     Padding(
+          padding: const EdgeInsets.all(2),
+          child: Container(
+            decoration: BoxDecoration(    borderRadius: BorderRadius.circular(10),color: Colors.white)
+            ,width: 20,height: 20,child: Center(child: Text(cartList.length.toString(),style: TextStyle(color: Colors.red),)),),
+        )
+      ],
+    );
+  }
   Decoration containerDecoration({
     Color colorValue,
     double borderRidusValue,

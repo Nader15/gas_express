@@ -10,6 +10,7 @@ import 'package:gas_express/utils/colors_file.dart';
 import 'package:gas_express/utils/custom_widgets/drawer.dart';
 import 'package:gas_express/utils/global_vars.dart';
 import 'package:gas_express/utils/navigator.dart';
+import 'package:gas_express/utils/static_ui.dart';
 
 
 class HomePage extends StatefulWidget {
@@ -24,7 +25,12 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   final GlobalKey<FormState> _key = GlobalKey<FormState>();
   GlobalKey<ScaffoldState> _drawerKey = GlobalKey();
-
+  Timer _timer;
+  @override
+  void dispose() {
+    _timer.cancel();
+    super.dispose();
+  }
 @override
   void initState() {
     // TODO: implement initState
@@ -34,12 +40,10 @@ updateCart();
   }
   updateCart(){
 
-    Timer.periodic(Duration(seconds: 1), (timer) {
+    _timer= Timer.periodic(Duration(seconds: 1), (timer) {
       setState(() {
         cartList.length= cartList.length;
-
       });
-
     });
   }
 
@@ -57,25 +61,7 @@ updateCart();
               style: TextStyle(fontWeight: FontWeight.w100),
             ),
             actions: [
-              Stack(
-                children: [
-                  IconButton(icon: Icon(
-                    Icons.shopping_cart,
-                    size: 20.0,
-                  ), onPressed: () {
-                    navigateAndKeepStack(context, Cart());
-                    // navigateAndKeepStack(context, TestProducts());
-                  }),
-
-
-                  cartList.length==0?Container():     Padding(
-                    padding: const EdgeInsets.all(2),
-                    child: Container(
-                      decoration: BoxDecoration(    borderRadius: BorderRadius.circular(10),color: Colors.white)
-                      ,width: 20,height: 20,child: Center(child: Text(cartList.length.toString(),style: TextStyle(color: Colors.red),)),),
-                  )
-                ],
-              )
+             StaticUI().cartWidget(context)
             ],
             backgroundColor: primaryAppColor,
             leading: IconButton(

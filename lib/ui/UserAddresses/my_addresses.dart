@@ -3,13 +3,15 @@ import 'dart:io';
 
 import 'package:gas_express/APiFunctions/Api.dart';
 import 'package:gas_express/ui/UserAddresses/UserAddresses_Model.dart';
-import 'package:gas_express/ui/add_address.dart';
+import 'package:gas_express/ui/UserAddresses/add_address.dart';
 import 'package:gas_express/utils/colors_file.dart';
 import 'package:gas_express/utils/custom_widgets/drawer.dart';
 import 'package:gas_express/utils/global_vars.dart';
 import 'package:gas_express/utils/navigator.dart';
+import 'package:gas_express/utils/static_ui.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
+import 'package:location/location.dart';
 import 'package:xs_progress_hud/xs_progress_hud.dart';
 
 class MyAddresses extends StatefulWidget {
@@ -36,7 +38,7 @@ class _MyAddressesState extends State<MyAddresses> {
 
   gettingData() {
     setState(() {
-      Api(context,_scaffoldKey).customersAddressesApi(_scaffoldKey,"1");
+      Api(context,_scaffoldKey).getCustomersAddressesApi(_scaffoldKey);
     });
   }
 
@@ -52,7 +54,7 @@ class _MyAddressesState extends State<MyAddresses> {
           style: TextStyle(fontWeight: FontWeight.w100),
         ),
         actions: [
-          IconButton(icon: Icon(Icons.shopping_cart), onPressed: () {})
+          StaticUI().cartWidget(context)
         ],
       ),
       body: Container(
@@ -82,7 +84,10 @@ class _MyAddressesState extends State<MyAddresses> {
           ),
           TextButton(
               onPressed: () {
-                navigateAndKeepStack(context, AddAddress());
+                Location().getLocation().then((value) {
+                  navigateAndKeepStack(context, AddAddress(value.latitude,value.longitude));
+
+                });
               },
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,

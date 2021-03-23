@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:gas_express/APiFunctions/sharedPref/SharedPrefClass.dart';
 import 'package:gas_express/ui/HomeScreens/ProductsModel.dart';
@@ -10,6 +11,7 @@ import 'package:gas_express/utils/global_vars.dart';
 import 'package:gas_express/utils/toast.dart';
 
 import 'package:http/http.dart' as http;
+import 'package:image_picker/image_picker.dart';
 import 'package:localize_and_translate/localize_and_translate.dart';
 import 'package:xs_progress_hud/xs_progress_hud.dart';
 
@@ -20,6 +22,7 @@ class Api {
   Api(this.context, this.scaffoldKey);
 
   String baseUrl = 'http://18.188.206.243:8001/api/';
+  String images = "Images/";
   String products = "Products";
   String forgetPassword = "ForgetPassword/";
   String verifyCode = "VerifyCode/";
@@ -233,11 +236,11 @@ class Api {
     }
   }
 
-  Future customersAddressesApi(
-      GlobalKey<ScaffoldState> _scaffoldKey, String Id) async {
+  Future getCustomersAddressesApi(
+      GlobalKey<ScaffoldState> _scaffoldKey) async {
     XsProgressHud.show(context);
 
-    final String completeUrl = baseUrl + customersAddresses + Id;
+    final String completeUrl = baseUrl + customersAddresses + "${BaseUderId}";
 
     final response = await http.get(
       completeUrl,
@@ -261,7 +264,68 @@ class Api {
       return false;
     }
   }
+  Future addCustomersAddressesApi(
+      Map data) async {
+    XsProgressHud.show(context);
 
+    final String completeUrl = baseUrl + customersAddresses ;
+
+    final response = await http.post(
+      completeUrl,
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        HttpHeaders.authorizationHeader: BaseToken
+      },
+      body: jsonEncode(data)
+    );
+
+    print("dataContent:: ${data}");
+    print("dataContent:: ${response.body}");
+    print("dataContent:: ${response.statusCode}");
+    Map<String, dynamic> dataContent = json.decode(response.body);
+
+    XsProgressHud.hide();
+    if (response.statusCode == 200) {
+      print("body :" + json.decode(response.body).toString());
+      return true;
+    } else {
+      print("body :" + json.decode(response.body).toString());
+      FN_showToast(
+          '${json.decode(response.body)}', context, Colors.red, scaffoldKey);
+      return false;
+    }
+  }
+
+  Future uploadImageToApi(File fileName) async {
+
+    print("fileName:: ${fileName.path}");
+    print("fileName:: ${"$baseUrl${images}"}");
+    XsProgressHud.show(context);
+    Dio dio = Dio();
+
+    FormData formData = FormData.fromMap({
+      "imagedata": await MultipartFile.fromFile("${fileName.path}",
+          filename: "${fileName.path.split('/').last}"),
+    });
+    var response =
+    await dio.post("$baseUrl${images}", data: formData,options: Options(
+        headers: {'Authorization': BaseToken},
+        followRedirects: false,
+        validateStatus: (status) {
+          return status <= 500;
+        }
+    ));
+    XsProgressHud.hide();
+    // final response = await Dio().post("$baseUrl$urlData/set/logo/$id",
+    //     data: formData, options: Options(method: "POST", headers: headers));
+
+    print("responseresponse ${formData}");
+    print("responseresponse ${response}");
+     print("responseresponse ${response.data['id']}");
+
+     return response.data['id'];
+  }
   Future addOrderApi(GlobalKey<ScaffoldState> _scaffoldKey) async {
     XsProgressHud.show(context);
     final String completeUrl = baseUrl + basket;
@@ -312,6 +376,13 @@ class Api {
           ?productItem.productnameAr
           : "${productItem.productnameEn}",id: productItem.id,image:  productItem.photoUrl,quantity: 1 ));
 
+
+  }
+
+  Future getImage() async {
+    var image = await ImagePicker.pickImage(source: ImageSource.gallery);
+
+      return image;
 
   }
 }

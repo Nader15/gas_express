@@ -5,6 +5,7 @@ import 'package:gas_express/utils/colors_file.dart';
 import 'package:gas_express/utils/custom_widgets/drawer.dart';
 import 'package:gas_express/utils/global_vars.dart';
 import 'package:gas_express/utils/navigator.dart';
+import 'package:gas_express/utils/static_ui.dart';
 import 'package:localize_and_translate/localize_and_translate.dart';
 
 class Payment extends StatefulWidget {
@@ -26,7 +27,7 @@ class _PaymentState extends State<Payment> {
           style: TextStyle(fontWeight: FontWeight.w100),
         ),
         actions: [
-          IconButton(icon: Icon(Icons.shopping_cart), onPressed: () {})
+          StaticUI().cartWidget(context)
         ],
       ),
       body: Container(

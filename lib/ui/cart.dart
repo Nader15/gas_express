@@ -26,7 +26,7 @@ class _CartState extends State<Cart> {
           style: TextStyle(fontWeight: FontWeight.w100),
         ),
         actions: [
-          IconButton(icon: Icon(Icons.shopping_cart), onPressed: () {})
+          StaticUI().cartWidget(context)
         ],
       ),
       body: Container(
@@ -210,7 +210,7 @@ setState(() {
                   style: TextStyle(color: greenAppColor, fontSize: 20),
                 ),
                 Text(
-                  "15.25 " + getTranslated(context, "SR"),
+                  "0 " + getTranslated(context, "SR"),
                   style: TextStyle(color: greenAppColor, fontSize: 20),
                 ),
               ],
@@ -225,11 +225,11 @@ setState(() {
                   style: TextStyle(color: greenAppColor, fontSize: 20),
                 ),
                 Text(
-                  "15 %",
+                  "0 %",
                   style: TextStyle(color: greenAppColor, fontSize: 20),
                 ),
                 Text(
-                  "6.86 " + getTranslated(context, "SR"),
+                  "0 " + getTranslated(context, "SR"),
                   style: TextStyle(color: greenAppColor, fontSize: 20),
                 ),
               ],
