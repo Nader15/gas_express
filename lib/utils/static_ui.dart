@@ -2,7 +2,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:gas_express/ui/HomeScreens/home_page.dart';
-import 'package:gas_express/ui/cart.dart';
+import 'package:gas_express/ui/Cart/cart.dart';
 import 'package:gas_express/utils/global_vars.dart';
 import 'package:gas_express/utils/navigator.dart';
 import 'package:gas_express/utils/size_config.dart';

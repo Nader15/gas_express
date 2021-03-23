@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gas_express/ui/HomeScreens/home_page.dart';
@@ -9,6 +11,8 @@ import 'package:gas_express/utils/colors_file.dart';
 import 'package:gas_express/utils/global_vars.dart';
 import 'package:gas_express/utils/navigator.dart';
 import 'package:localize_and_translate/localize_and_translate.dart';
+import 'package:share/share.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class drawerList extends StatelessWidget {
   @override
@@ -112,7 +116,10 @@ class drawerList extends StatelessWidget {
                 getTranslated(context, 'ContactUs'),
                 style: _textStyle,
               ),
-              onTap: () {},
+              onTap: () {
+
+                launch("tel:" + "${BaseStaticDataList[1].value}");
+              },
             ),
             ListTile(
               leading: SvgPicture.asset(
@@ -123,7 +130,21 @@ class drawerList extends StatelessWidget {
                 getTranslated(context, 'ShareApp'),
                 style: _textStyle,
               ),
-              onTap: () {},
+              onTap: () {
+
+                print("namename2:: ${BaseStaticDataList[2].name}");
+                print("namename3:: ${BaseStaticDataList[3].name}");
+
+if(Platform.isAndroid){
+  Share.share(BaseStaticDataList[3].value);
+
+}
+else {
+  Share.share(BaseStaticDataList[2].value);
+
+}
+
+              },
             ),
             ListTile(
               leading: SvgPicture.asset(
@@ -154,6 +175,17 @@ class drawerList extends StatelessWidget {
                 style: _textStyle,
               ),
               onTap: () {},
+            ),
+            Divider(),
+
+
+            ListTile(
+
+              title: Text(
+               translator.currentLanguage=='ar'?BaseStaticDataList[5].value: BaseStaticDataList[4].value,
+                style: _textStyle,
+              ),
+
             ),
           ],
         ),

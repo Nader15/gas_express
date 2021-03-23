@@ -8,7 +8,7 @@ import 'package:gas_express/ui/HomeScreens/ProductsModel.dart';
 import 'package:gas_express/ui/HomeScreens/new_products.dart';
 import 'package:gas_express/ui/HomeScreens/products.dart';
 import 'package:gas_express/ui/HomeScreens/recharge.dart';
-import 'package:gas_express/ui/cart.dart';
+import 'package:gas_express/ui/Cart/cart.dart';
 import 'package:gas_express/utils/colors_file.dart';
 import 'package:gas_express/utils/custom_widgets/drawer.dart';
 import 'package:gas_express/utils/global_vars.dart';

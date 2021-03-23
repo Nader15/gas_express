@@ -3,13 +3,14 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:gas_express/APiFunctions/sharedPref/SharedPrefClass.dart';
+import 'package:gas_express/ui/Cart/CartModel.dart';
 import 'package:gas_express/ui/HomeScreens/BannersModel.dart';
 import 'package:gas_express/ui/HomeScreens/ProductsModel.dart';
 import 'package:gas_express/ui/LoginScreens/UserModel.dart';
 import 'package:gas_express/ui/Notifications/NotificationModel.dart';
 import 'package:gas_express/ui/Orders/OrdersModel.dart';
-import 'package:gas_express/ui/TestLocalCart/CartModel.dart';
-import 'package:gas_express/ui/UserAddresses/UserAddresses_Model.dart';
+import 'package:gas_express/ui/StaticDataModel.dart';
+ import 'package:gas_express/ui/UserAddresses/UserAddresses_Model.dart';
 import 'package:gas_express/utils/global_vars.dart';
 import 'package:gas_express/utils/toast.dart';
 
@@ -27,6 +28,7 @@ class Api {
   String baseUrl = 'http://18.188.206.243:8001/api/';
   String images = "Images/";
   String products = "Products";
+  String config = "Config/";
   String banners = "banners/";
   String notifications = "AdminMessages/";
   String forgetPassword = "ForgetPassword/";
@@ -119,6 +121,35 @@ class Api {
 
     if (response.statusCode == 200) {
       return ProductsModel.fromJson(json.decode(response.body));
+      // return EventDetailsModel.fromJson(json.decode(response.body));
+
+    } else {
+      FN_showToast('Error', context, Colors.red, scaffoldKey);
+      return false;
+    }
+  }
+  Future<dynamic> getStaticData() async {
+    XsProgressHud.show(context);
+
+    final String completeUrl = baseUrl + config;
+
+    // TODO: implement getStudents
+    final response = await http.get(
+      completeUrl,
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        HttpHeaders.authorizationHeader: BaseToken
+      },
+    );
+    print("ResponseInfo ${json.decode(response.body)}");
+    print("ResponseInfo ${completeUrl}");
+    print("ResponseInfo ${BaseToken}");
+    XsProgressHud.hide();
+
+    if (response.statusCode == 200) {
+      return StaticDataModel.fromJson(json.decode(utf8.decode(response.bodyBytes)));
+      // return StaticDataModel.fromJson(json.decode(response.body));
       // return EventDetailsModel.fromJson(json.decode(response.body));
 
     } else {

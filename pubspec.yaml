@@ -16,6 +16,7 @@ dependencies:
   dio: ^3.0.10
   cupertino_icons: ^1.0.2
   carousel_slider: ^3.0.0
+  share: ^2.0.1
 
   rxdart:
   http: ^0.12.1
