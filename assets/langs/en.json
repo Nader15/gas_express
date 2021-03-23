@@ -60,6 +60,8 @@
   "cart": "Cart",
   "Location": "Location",
   "orders": "Orders",
+  "orderNo": "order Number",
+  "orderState": "order State",
 
   "Payment": "Payment",
   "RequiredAmount": "Required Amount",

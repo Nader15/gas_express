@@ -3,8 +3,11 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:gas_express/APiFunctions/sharedPref/SharedPrefClass.dart';
+import 'package:gas_express/ui/HomeScreens/BannersModel.dart';
 import 'package:gas_express/ui/HomeScreens/ProductsModel.dart';
 import 'package:gas_express/ui/LoginScreens/UserModel.dart';
+import 'package:gas_express/ui/Notifications/NotificationModel.dart';
+import 'package:gas_express/ui/Orders/OrdersModel.dart';
 import 'package:gas_express/ui/TestLocalCart/CartModel.dart';
 import 'package:gas_express/ui/UserAddresses/UserAddresses_Model.dart';
 import 'package:gas_express/utils/global_vars.dart';
@@ -24,11 +27,13 @@ class Api {
   String baseUrl = 'http://18.188.206.243:8001/api/';
   String images = "Images/";
   String products = "Products";
+  String banners = "banners/";
+  String notifications = "AdminMessages/";
   String forgetPassword = "ForgetPassword/";
   String verifyCode = "VerifyCode/";
   String customersAddresses = "CustomersAddresses/";
   String basket = "basket/";
-  String orders = "Orders";
+  String orders = "Orders/";
   String orderStatusDetails = "OrderStatusDetails";
   String checkCoupon = "check_coupon";
 
@@ -121,6 +126,62 @@ class Api {
       return false;
     }
   }
+  Future<dynamic> getBanners() async {
+    XsProgressHud.show(context);
+
+    final String completeUrl = baseUrl + banners;
+
+    // TODO: implement getStudents
+    final response = await http.get(
+      completeUrl,
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        HttpHeaders.authorizationHeader: BaseToken
+      },
+    );
+    print("ResponseInfo ${json.decode(response.body)}");
+    print("ResponseInfo ${completeUrl}");
+    print("ResponseInfo ${BaseToken}");
+    XsProgressHud.hide();
+
+    if (response.statusCode == 200) {
+      return BannersModel.fromJson(json.decode(response.body));
+      // return EventDetailsModel.fromJson(json.decode(response.body));
+
+    } else {
+      FN_showToast('Error', context, Colors.red, scaffoldKey);
+      return false;
+    }
+  }
+  Future<dynamic> getNotifications({String filterName}) async {
+    XsProgressHud.show(context);
+
+    final String completeUrl = baseUrl + notifications;
+
+    // TODO: implement getStudents
+    final response = await http.get(
+      completeUrl,
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        HttpHeaders.authorizationHeader: BaseToken
+      },
+    );
+    print("ResponseInfo ${json.decode(response.body)}");
+    print("ResponseInfo ${completeUrl}");
+    print("ResponseInfo ${BaseToken}");
+    XsProgressHud.hide();
+
+    if (response.statusCode == 200) {
+      return NotificationModel.fromJson(json.decode(response.body));
+      // return EventDetailsModel.fromJson(json.decode(response.body));
+
+    } else {
+      FN_showToast('Error', context, Colors.red, scaffoldKey);
+      return false;
+    }
+  }
 
   Future ordersListApi(GlobalKey<ScaffoldState> _scaffoldKey) async {
     XsProgressHud.show(context);
@@ -134,10 +195,12 @@ class Api {
         HttpHeaders.authorizationHeader: BaseToken
       },
     );
+    Map<String, dynamic> dataContent = json.decode(response.body);
+
     XsProgressHud.hide();
     if (response.statusCode == 200) {
       print("body :" + json.decode(response.body).toString());
-      // return OrdersListModel.fromJson(dataContent);
+      return OrdersModel.fromJson(dataContent);
     } else {
       print("body :" + json.decode(response.body).toString());
       FN_showToast(

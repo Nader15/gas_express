@@ -4,7 +4,7 @@ import 'package:gas_express/ui/HomeScreens/home_page.dart';
 import 'package:gas_express/ui/Orders/OrdersScreen.dart';
 import 'package:gas_express/ui/UserAddresses/my_addresses.dart';
 import 'package:gas_express/ui/my_wallet.dart';
-import 'package:gas_express/ui/notifications.dart';
+import 'package:gas_express/ui/Notifications/notifications.dart';
 import 'package:gas_express/utils/colors_file.dart';
 import 'package:gas_express/utils/global_vars.dart';
 import 'package:gas_express/utils/navigator.dart';
@@ -62,7 +62,7 @@ class drawerList extends StatelessWidget {
                 style: _textStyle,
               ),
               onTap: () {
-                // navigateAndClearStack(context, OrdersScreen());
+                navigateAndClearStack(context, OrdersScreen());
               },
             ),
             ListTile(

@@ -2,6 +2,9 @@ import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:gas_express/APiFunctions/Api.dart';
+import 'package:gas_express/ui/HomeScreens/BannersModel.dart';
+import 'package:gas_express/ui/HomeScreens/ProductsModel.dart';
 import 'package:gas_express/ui/HomeScreens/new_products.dart';
 import 'package:gas_express/ui/HomeScreens/products.dart';
 import 'package:gas_express/ui/HomeScreens/recharge.dart';
@@ -26,11 +29,25 @@ class _HomePageState extends State<HomePage> {
   final GlobalKey<FormState> _key = GlobalKey<FormState>();
   GlobalKey<ScaffoldState> _drawerKey = GlobalKey();
   // Timer _timer;
-
+   List<BannerItem> bannerItemList = List();
+  BannersModel bannersModel;
+  getBanners() {
+    Api(context, _drawerKey).getBanners().then((value) {
+      bannersModel = value;
+      bannersModel.results.forEach((element) {
+        setState(() {
+          bannerItemList.add(element);
+        });
+      });
+    });
+  }
 @override
   void initState() {
     // TODO: implement initState
 
+  Future.delayed(Duration(milliseconds: 0), () {
+    getBanners();
+  });
 updateCart();
     super.initState();
   }
@@ -114,9 +131,9 @@ updateCart();
           ),
           body: TabBarView(
             children: [
-              Recharge(),
-              NewProducts(),
-              Products(),
+              Recharge(bannerItemList),
+              NewProducts(bannerItemList),
+              Products(bannerItemList),
             ],
           ),
         ),

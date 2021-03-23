@@ -40,6 +40,8 @@
   "AddCodeOrCoupon": "أضافة كود / كوبون",
   "FreeExchange": "تبديل مجاني",
   "Balance": "الرصيد",
+  "orderNo": "رقم الطلب ",
+  "orderState": "حالة الطلب ",
 
   "AlertTitle": "عنوان التنبية",
   "DeleteAll": "مسح الكل",
