@@ -24,7 +24,7 @@ class _MyAddressesState extends State<MyAddresses> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   UserAddresses userAddresses;
-
+  List<AddressItem> addressList = List();
   @override
   void initState() {
     // TODO: implement initState
@@ -38,7 +38,18 @@ class _MyAddressesState extends State<MyAddresses> {
 
   gettingData() {
     setState(() {
-      Api(context,_scaffoldKey).getCustomersAddressesApi(_scaffoldKey);
+      addressList.clear();
+
+      Api(context, _scaffoldKey)
+          .getCustomersAddressesApi(_scaffoldKey)
+          .then((value) {
+        userAddresses = value;
+        userAddresses.results.forEach((element) {
+          setState(() {
+            addressList.add(element);
+          });
+        });
+      });
     });
   }
 
@@ -53,79 +64,81 @@ class _MyAddressesState extends State<MyAddresses> {
           getTranslated(context, "MyAddresses"),
           style: TextStyle(fontWeight: FontWeight.w100),
         ),
-        actions: [
-          StaticUI().cartWidget(context)
-        ],
+        actions: [StaticUI().cartWidget(context)],
       ),
       body: Container(
         padding: EdgeInsets.all(20),
-        child: _mainForm(context),
-      ),
-    );
-  }
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              Container(
+                child: ListView.builder(
+                    physics: NeverScrollableScrollPhysics(),
+                    shrinkWrap: true,
+                    itemCount: addressList.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      return address(addressList[index]);
+                    }),
+              ),
+              SizedBox(
+                height: 20,
+              ),
+              TextButton(
+                  onPressed: () {
+                    XsProgressHud.show(context);
 
-  Form _mainForm(BuildContext context) {
-    return Form(
-      key: _key,
-      child: Column(
-        children: [
-          Align(
-              alignment: Alignment.topRight,
-              child: Column(
-                children: [
-                  address("البيت",
-                      "268 Ibn Bakkar, As Safa District, Jedda 234526651,Saudi Arabia"),
-                  address("البيت",
-                      "268 Ibn Bakkar, As Safa District, Jedda 234526651,Saudi Arabia"),
-                ],
-              )),
-          SizedBox(
-            height: 20,
+                    Location().getLocation().then((value) async {
+                      XsProgressHud.hide();
+
+                      await Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) =>
+                              AddAddress(value.latitude, value.longitude),
+                        ),
+                      ).then((value) {
+                        gettingData();
+                      });
+                      // navigateAndKeepStack(context, AddAddress(value.latitude,value.longitude));
+                    });
+                  },
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Container(
+                        height: 22,
+                        width: 22,
+                        alignment: Alignment.center,
+                        decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            border: Border.all(color: greenAppColor)),
+                        child: Icon(
+                          Icons.add,
+                          color: greenAppColor,
+                          size: 20,
+                        ),
+                      ),
+                      SizedBox(
+                        width: 10,
+                      ),
+                      Text(
+                        getTranslated(context, "AddAddress"),
+                        style: _titleTextStyle,
+                      ),
+                      SizedBox(
+                        width: 10,
+                      ),
+                    ],
+                  ))
+            ],
           ),
-          TextButton(
-              onPressed: () {
-                Location().getLocation().then((value) {
-                  navigateAndKeepStack(context, AddAddress(value.latitude,value.longitude));
-
-                });
-              },
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Container(
-                    height: 22,
-                    width: 22,
-                    alignment: Alignment.center,
-                    decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        border: Border.all(color: greenAppColor)),
-                    child: Icon(
-                      Icons.add,
-                      color: greenAppColor,
-                      size: 20,
-                    ),
-                  ),
-                  SizedBox(
-                    width: 10,
-                  ),
-                  Text(
-                    getTranslated(context, "AddAddress"),
-                    style: _titleTextStyle,
-                  ),
-                  SizedBox(
-                    width: 10,
-                  ),
-                ],
-              ))
-        ],
+        ),
       ),
     );
   }
 
-  bool defaultAddress = false;
-
-  Card address(String title, String location) {
+  Card address(AddressItem addressItem) {
     return Card(
       elevation: 10,
       child: Padding(
@@ -138,14 +151,14 @@ class _MyAddressesState extends State<MyAddresses> {
                 Row(
                   children: [
                     Text(
-                      title,
+                      addressItem.name.split(',')[0],
                       style:
                           TextStyle(fontSize: 20, fontWeight: FontWeight.w100),
                     ),
                     SizedBox(
                       width: 10,
                     ),
-                    defaultAddress == true
+                    addressItem.isDefault == true
                         ? Text(
                             "(${getTranslated(context, "Default")})",
                             style: _titleTextStyle,
@@ -153,11 +166,18 @@ class _MyAddressesState extends State<MyAddresses> {
                         : Container(),
                   ],
                 ),
-                defaultAddress == false
+                addressItem.isDefault == false
                     ? TextButton(
                         onPressed: () {
+                          addressList.forEach((element) {
+                            setState(() {
+                              element.isDefault = false;
+                            });
+                          });
                           setState(() {
-                            defaultAddress = !defaultAddress;
+                              selectedAddressId=addressItem.id;
+                               selectedAddressString=addressItem.name;
+                            addressItem.isDefault = !addressItem.isDefault;
                           });
                         },
                         child: Text(
@@ -172,7 +192,7 @@ class _MyAddressesState extends State<MyAddresses> {
               height: 10,
             ),
             Text(
-              location,
+              addressItem.name,
               style: TextStyle(fontWeight: FontWeight.w400, fontSize: 15),
             ),
             SizedBox(
@@ -181,18 +201,26 @@ class _MyAddressesState extends State<MyAddresses> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                TextButton(
-                  onPressed: () {},
-                  child: Text(
-                    getTranslated(context, "Edit"),
-                    style: _bttnTextStyle,
-                  ),
-                ),
+                // TextButton(
+                //   onPressed: () {},
+                //   child: Text(
+                //     getTranslated(context, "Edit"),
+                //     style: _bttnTextStyle,
+                //   ),
+                // ),
                 SizedBox(
                   width: 10,
                 ),
                 TextButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Api(context, _scaffoldKey)
+                        .deleteCustomersAddressesApi(addressItem.id)
+                        .then((value) {
+                      setState(() {
+                        addressList.remove(addressItem);
+                      });
+                    });
+                  },
                   child: Text(
                     getTranslated(context, "Delete"),
                     style: _bttnTextStyle,

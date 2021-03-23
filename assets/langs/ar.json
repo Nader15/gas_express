@@ -9,6 +9,10 @@
   "logOut": "تسجيل خروج",
   "lang": "AR",
   "changeLanguage": "تغيير اللغة",
+  "pleaseAddAddress": "من فضلك اضف العنوان",
+  "buildingNo": "رقم المبنى",
+  "flatNo": "رقم الشقة",
+  "floorNo": "رقم الطابق",
 
   "TheProducts": "المنتجات",
   "Recharge": "اعادة تعبئة",

@@ -1,10 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gas_express/ui/TestLocalCart/CartModel.dart';
+import 'package:gas_express/ui/UserAddresses/my_addresses.dart';
 import 'package:gas_express/utils/colors_file.dart';
 import 'package:gas_express/utils/custom_widgets/custom_divider.dart';
 import 'package:gas_express/utils/custom_widgets/drawer.dart';
 import 'package:gas_express/utils/global_vars.dart';
+import 'package:gas_express/utils/navigator.dart';
 import 'package:gas_express/utils/static_ui.dart';
 
 class Cart extends StatefulWidget {
@@ -14,7 +16,29 @@ class Cart extends StatefulWidget {
 
 class _CartState extends State<Cart> {
   final GlobalKey<FormState> _key = GlobalKey<FormState>();
+  var total=0;
+  int productNo=0;
 
+
+  @override
+  void initState() {
+    gettotoalCost();
+    super.initState();
+  }
+
+  gettotoalCost(){
+    productNo=0;
+    total=0;
+  cartList.forEach((element) {
+    setState(() {
+
+      productNo+=element.quantity;
+      total+=  (  element.price* element.quantity);
+
+    });
+  });
+
+}
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -105,6 +129,7 @@ class _CartState extends State<Cart> {
                               onTap: () {
 setState(() {
   cartModel.quantity+=1;
+  gettotoalCost();
 });
                               },
                               child: Icon(
@@ -122,11 +147,13 @@ setState(() {
                                 if(cartModel.quantity==0){
                                   setState(() {
                                     cartList.remove(cartModel);
+                                    gettotoalCost();
                                   });
                                 }
                                 else if(cartModel.quantity>0){
                                   setState(() {
                                     cartModel.quantity-=1;
+                                    gettotoalCost();
                                   });
                                 }
 
@@ -191,11 +218,11 @@ setState(() {
                   style: TextStyle(color: greenAppColor, fontSize: 20),
                 ),
                 Text(
-                  "3",
+                  "${productNo}",
                   style: TextStyle(color: greenAppColor, fontSize: 20),
                 ),
                 Text(
-                  "45.75 " + getTranslated(context, "SR"),
+                  "${total} " + getTranslated(context, "SR"),
                   style: TextStyle(color: greenAppColor, fontSize: 20),
                 ),
               ],
@@ -252,77 +279,77 @@ setState(() {
             SizedBox(
               height: 10,
             ),
-            InkWell(
-              onTap: () {},
-              child: Row(
-                children: [
-                  Container(
-                    height: 22,
-                    width: 22,
-                    alignment: Alignment.center,
-                    decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        border: Border.all(color: greenAppColor)),
-                    child: Icon(
-                      Icons.add,
-                      color: greenAppColor,
-                      size: 20,
-                    ),
-                  ),
-                  SizedBox(
-                    width: 10,
-                  ),
-                  Text(getTranslated(context, "AddCodeOrCoupon"),
-                      style: _titleTextStyle),
-                ],
-              ),
-            ),
-            SizedBox(
-              height: 10,
-            ),
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  "XKFON",
-                  style: TextStyle(color: greenAppColor, fontSize: 20),
-                ),
-                InkWell(
-                  onTap: () {},
-                  child: Icon(
-                    Icons.delete_forever,
-                    color: redColor,
-                  ),
-                ),
-              ],
-            ),
-            CustomDivider(),
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Row(
-                  children: [
-                    Icon(
-                      Icons.radio_button_unchecked,
-                      color: greenAppColor,
-                    ),
-                    SizedBox(
-                      width: 10,
-                    ),
-                    Text(
-                      getTranslated(context, "AvailableBalance"),
-                      style: TextStyle(color: greenAppColor, fontSize: 20),
-                    ),
-                  ],
-                ),
-                Text(
-                  "7.86 " + getTranslated(context, "SR"),
-                  style: TextStyle(color: greenAppColor, fontSize: 20),
-                ),
-              ],
-            ),
+            // InkWell(
+            //   onTap: () {},
+            //   child: Row(
+            //     children: [
+            //       Container(
+            //         height: 22,
+            //         width: 22,
+            //         alignment: Alignment.center,
+            //         decoration: BoxDecoration(
+            //             shape: BoxShape.circle,
+            //             border: Border.all(color: greenAppColor)),
+            //         child: Icon(
+            //           Icons.add,
+            //           color: greenAppColor,
+            //           size: 20,
+            //         ),
+            //       ),
+            //       SizedBox(
+            //         width: 10,
+            //       ),
+            //       Text(getTranslated(context, "AddCodeOrCoupon"),
+            //           style: _titleTextStyle),
+            //     ],
+            //   ),
+            // ),
+            // SizedBox(
+            //   height: 10,
+            // ),
+            // Row(
+            //   crossAxisAlignment: CrossAxisAlignment.center,
+            //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            //   children: [
+            //     Text(
+            //       "XKFON",
+            //       style: TextStyle(color: greenAppColor, fontSize: 20),
+            //     ),
+            //     InkWell(
+            //       onTap: () {},
+            //       child: Icon(
+            //         Icons.delete_forever,
+            //         color: redColor,
+            //       ),
+            //     ),
+            //   ],
+            // ),
+            // CustomDivider(),
+            // Row(
+            //   crossAxisAlignment: CrossAxisAlignment.center,
+            //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            //   children: [
+            //     Row(
+            //       children: [
+            //         Icon(
+            //           Icons.radio_button_unchecked,
+            //           color: greenAppColor,
+            //         ),
+            //         SizedBox(
+            //           width: 10,
+            //         ),
+            //         Text(
+            //           getTranslated(context, "AvailableBalance"),
+            //           style: TextStyle(color: greenAppColor, fontSize: 20),
+            //         ),
+            //       ],
+            //     ),
+            //     Text(
+            //       "7.86 " + getTranslated(context, "SR"),
+            //       style: TextStyle(color: greenAppColor, fontSize: 20),
+            //     ),
+            //   ],
+            // ),
           ],
         ),
       ),
@@ -397,14 +424,20 @@ setState(() {
                   width: MediaQuery.of(context).size.width / 1.7,
                   height: 30,
                   child: TextFormField(
+                    onTap: (){
+                      if(selectedAddressString==null){
+                        navigateAndKeepStack(context, MyAddresses());
+                      }
+                    },
+                    enabled: false,
                     decoration: InputDecoration(
-                        prefixIcon: Icon(
+                        prefixIcon: selectedAddressString==null?Container():Icon(
                           Icons.location_on,
                           color: greenAppColor,
                         ),
                         alignLabelWithHint: false,
                         contentPadding: EdgeInsets.zero,
-                        hintText: "حي الصفا ، شارع ابو محجن 10201",
+                        hintText: selectedAddressString??getTranslated(context, "pleaseAddAddress"),
                         border: OutlineInputBorder()),
                   ),
                 ),

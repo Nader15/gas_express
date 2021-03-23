@@ -25,12 +25,8 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   final GlobalKey<FormState> _key = GlobalKey<FormState>();
   GlobalKey<ScaffoldState> _drawerKey = GlobalKey();
-  Timer _timer;
-  @override
-  void dispose() {
-    _timer.cancel();
-    super.dispose();
-  }
+  // Timer _timer;
+
 @override
   void initState() {
     // TODO: implement initState
@@ -39,12 +35,14 @@ updateCart();
     super.initState();
   }
   updateCart(){
+// if(!mounted){
+//   _timer= Timer.periodic(Duration(seconds: 1), (timer) {
+//     setState(() {
+//       cartList.length= cartList.length;
+//     });
+//   });
+// }
 
-    _timer= Timer.periodic(Duration(seconds: 1), (timer) {
-      setState(() {
-        cartList.length= cartList.length;
-      });
-    });
   }
 
   @override

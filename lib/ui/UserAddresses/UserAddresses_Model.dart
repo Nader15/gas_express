@@ -2,7 +2,7 @@ class UserAddresses {
   int count;
   dynamic next;
   dynamic previous;
-  List<Results> results;
+  List<AddressItem> results;
 
   UserAddresses({this.count, this.next, this.previous, this.results});
 
@@ -11,9 +11,9 @@ class UserAddresses {
     next = json['next'];
     previous = json['previous'];
     if (json['results'] != null) {
-      results = new List<Results>();
+      results = new List<AddressItem>();
       json['results'].forEach((v) {
-        results.add(new Results.fromJson(v));
+        results.add(new AddressItem.fromJson(v));
       });
     }
   }
@@ -30,7 +30,8 @@ class UserAddresses {
   }
 }
 
-class Results {
+class AddressItem {
+  bool isDefault=false;
   int id;
   String name;
   String city;
@@ -43,8 +44,10 @@ class Results {
   String buildingphotoid;
   int customerid;
 
-  Results(
-      {this.id,
+  AddressItem(
+      {
+        this.isDefault,
+        this.id,
         this.name,
         this.city,
         this.section,
@@ -56,7 +59,7 @@ class Results {
         this.buildingphotoid,
         this.customerid});
 
-  Results.fromJson(Map<String, dynamic> json) {
+  AddressItem.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     name = json['name'];
     city = json['city'];

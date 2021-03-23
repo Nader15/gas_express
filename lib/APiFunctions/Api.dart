@@ -240,7 +240,7 @@ class Api {
       GlobalKey<ScaffoldState> _scaffoldKey) async {
     XsProgressHud.show(context);
 
-    final String completeUrl = baseUrl + customersAddresses + "${BaseUderId}";
+    final String completeUrl = baseUrl + customersAddresses ;
 
     final response = await http.get(
       completeUrl,
@@ -252,11 +252,40 @@ class Api {
     );
     Map<String, dynamic> dataContent = json.decode(response.body);
 
+    print("completeUrl:: ${completeUrl}");
     print("dataContent:: ${dataContent}");
     XsProgressHud.hide();
     if (response.statusCode == 200) {
       print("body :" + json.decode(response.body).toString());
       return UserAddresses.fromJson(dataContent);
+    } else {
+      print("body :" + json.decode(response.body).toString());
+      FN_showToast(
+          '${json.decode(response.body)}', context, Colors.red, scaffoldKey);
+      return false;
+    }
+  }
+
+  Future deleteCustomersAddressesApi(int addressID) async {
+    XsProgressHud.show(context);
+
+    final String completeUrl = baseUrl + customersAddresses+addressID.toString()+"/" ;
+
+    final response = await http.delete(
+      completeUrl,
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        HttpHeaders.authorizationHeader: BaseToken
+      },
+    );
+
+    print("completeUrl:: ${completeUrl}");
+    print("dataContent:: ${response.body}");
+    print("statusCode:: ${response.statusCode}");
+    XsProgressHud.hide();
+    if (response.statusCode == 204) {
+       return true;
     } else {
       print("body :" + json.decode(response.body).toString());
       FN_showToast(
@@ -286,7 +315,7 @@ class Api {
     Map<String, dynamic> dataContent = json.decode(response.body);
 
     XsProgressHud.hide();
-    if (response.statusCode == 200) {
+    if (response.statusCode == 201) {
       print("body :" + json.decode(response.body).toString());
       return true;
     } else {

@@ -9,6 +9,10 @@
   "logOut": "log out",
   "lang": "EN",
   "changeLanguage": "Change Language",
+  "pleaseAddAddress": "Please add address",
+  "buildingNo": "Building No",
+  "flatNo": "Flat No",
+  "floorNo": "Floor No",
 
   "TheProducts": "Products",
   "Recharge": "Recharge",

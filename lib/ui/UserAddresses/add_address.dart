@@ -6,6 +6,7 @@ import 'package:gas_express/APiFunctions/Api.dart';
 import 'package:gas_express/APiFunctions/sharedPref/SharedPrefClass.dart';
 import 'package:gas_express/utils/colors_file.dart';
 import 'package:gas_express/utils/custom_widgets/drawer.dart';
+import 'package:gas_express/utils/global_vars.dart';
 import 'package:geocoder/geocoder.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
@@ -40,7 +41,16 @@ class _AddAddressState extends State<AddAddress> {
 
   double lat;
   double long;
-
+sendAddAddressRequest(Map data,BuildContext context){
+  Api(context, _scaffoldKey)
+      .addCustomersAddressesApi(data)
+      .then((value) {
+    if (value) {
+      Navigator.of(context).pop();
+      Navigator.of(context).pop();
+    }
+  });
+}
   @override
   void initState() {
     // TODO: implement initState
@@ -81,7 +91,7 @@ class _AddAddressState extends State<AddAddress> {
                               borderSide: BorderSide(color: grey)),
                           focusedBorder: UnderlineInputBorder(
                               borderSide: BorderSide(color: grey)),
-                          labelText: "رقم المبنى",
+                          labelText: getTranslated(context, "buildingNo"),
                           labelStyle: TextStyle(color: grey),
                         ),
                       ),
@@ -100,7 +110,8 @@ class _AddAddressState extends State<AddAddress> {
                               borderSide: BorderSide(color: grey)),
                           focusedBorder: UnderlineInputBorder(
                               borderSide: BorderSide(color: grey)),
-                          labelText: "رقم الشقه",
+                          labelText: getTranslated(context, "flatNo"),
+                          // labelText: "رقم الشقه",
                           labelStyle: TextStyle(color: grey),
                         ),
                       ),
@@ -119,7 +130,8 @@ class _AddAddressState extends State<AddAddress> {
                               borderSide: BorderSide(color: grey)),
                           focusedBorder: UnderlineInputBorder(
                               borderSide: BorderSide(color: grey)),
-                          labelText: "رقم الطابق",
+                          labelText: getTranslated(context, "floorNo"),
+                          // labelText: "رقم الطابق",
                           labelStyle: TextStyle(color: grey),
                         ),
                       ),
@@ -133,7 +145,7 @@ class _AddAddressState extends State<AddAddress> {
                             onPrimary: Colors.white, // foreground
                           ),
                           onPressed: () {
-                            Map data;
+                            Map data={};
                             if (_image == null) {
                               data = {
                                 "name": "${UserAddress}",
@@ -143,6 +155,8 @@ class _AddAddressState extends State<AddAddress> {
                                 "GPS": "${widget.userLat},${widget.userLong}",
                                 "customerid": BaseUderId
                               };
+                              sendAddAddressRequest(data,context1);
+
                             } else {
 
                               Api(context1,_scaffoldKey).uploadImageToApi(_image).then((value) {
@@ -155,18 +169,12 @@ class _AddAddressState extends State<AddAddress> {
                                   "buildingphotoid": "$value",
                                   "customerid": BaseUderId
                                 };
+                                sendAddAddressRequest(data,context1);
                               });
 
                             }
                             print("datadata:: ${data}");
-                            Api(context, _scaffoldKey)
-                                .addCustomersAddressesApi(data)
-                                .then((value) {
-                              if (value) {
-                                Navigator.of(context).pop();
-                                Navigator.of(context).pop();
-                              }
-                            });
+
                           },
                           child: Text("حفظ")),
                     )
