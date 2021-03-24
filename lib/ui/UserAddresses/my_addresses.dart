@@ -151,7 +151,7 @@ class _MyAddressesState extends State<MyAddresses> {
                 Row(
                   children: [
                     Text(
-                      addressItem.name.split(',')[0],
+                      addressItem.name.split(' ')[0],
                       style:
                           TextStyle(fontSize: 20, fontWeight: FontWeight.w100),
                     ),

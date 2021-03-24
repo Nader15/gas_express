@@ -35,6 +35,7 @@ class ProductsModel {
 }
 
 class ProductItem {
+  int quantity=1;
   int id;
   String imageurl;
   String photoUrl;
@@ -46,7 +47,9 @@ class ProductItem {
   int imageid;
 
   ProductItem(
-      {this.id,
+      {
+        this.quantity,
+        this.id,
         this.imageurl,
         this.photoUrl,
         this.productnameAr,

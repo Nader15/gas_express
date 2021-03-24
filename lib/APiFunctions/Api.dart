@@ -487,8 +487,7 @@ class Api {
       print("elementname  ${cartList[x].name}");
       if(productItem.id==cartList[x].id){
         print("increseeee");
-
-          cartList[x].quantity +=1;
+           cartList[x].quantity +=1;
 
 
         return ;
@@ -498,7 +497,7 @@ class Api {
     }
 
       print ("add new ");
-      cartList.add(CartModel(price:productItem.unitprice ,name:translator.currentLanguage == 'ar'
+       cartList.add(CartModel(price:productItem.unitprice ,name:translator.currentLanguage == 'ar'
           ?productItem.productnameAr
           : "${productItem.productnameEn}",id: productItem.id,image:  productItem.photoUrl,quantity: 1 ));
 

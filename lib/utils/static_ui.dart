@@ -20,7 +20,11 @@ class StaticUI {
           Icons.shopping_cart,
           size: 20.0,
         ), onPressed: () {
-          navigateAndKeepStack(context, Cart());
+          if(cartList.length!=0){
+            navigateAndKeepStack(context, Cart());
+
+          }
+
           // navigateAndKeepStack(context, TestProducts());
         }),
 

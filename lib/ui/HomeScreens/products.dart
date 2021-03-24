@@ -1,10 +1,13 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:gas_express/APiFunctions/Api.dart';
+import 'package:gas_express/ui/HomeScreens/AddButtonWidget.dart';
 import 'package:gas_express/ui/HomeScreens/BannersModel.dart';
 import 'package:gas_express/ui/HomeScreens/ProductsModel.dart';
+import 'package:gas_express/ui/Orders/OrdersScreen.dart';
 import 'package:gas_express/utils/colors_file.dart';
 import 'package:gas_express/utils/global_vars.dart';
+import 'package:gas_express/utils/navigator.dart';
 import 'package:gas_express/utils/static_ui.dart';
 
 import 'package:localize_and_translate/localize_and_translate.dart';
@@ -52,16 +55,21 @@ class _ProductsState extends State<Products> {
         key: _scaffoldKey,
         bottomNavigationBar: Padding(
           padding: const EdgeInsets.all(20.0),
-          child: Container(
-            height: 40,
-            decoration: BoxDecoration(
-                color: redColor, borderRadius: BorderRadius.circular(5)),
-            alignment: Alignment.center,
-            child: Text(getTranslated(context, "OrderStatus"),
-                style: TextStyle(
-                    fontWeight: FontWeight.w100,
-                    fontSize: 18,
-                    color: whiteColor)),
+          child: InkWell(onTap: (){
+            navigateAndKeepStack(context, OrdersScreen());
+
+          },
+            child: Container(
+              height: 40,
+              decoration: BoxDecoration(
+                  color: redColor, borderRadius: BorderRadius.circular(5)),
+              alignment: Alignment.center,
+              child: Text(getTranslated(context, "OrderStatus"),
+                  style: TextStyle(
+                      fontWeight: FontWeight.w100,
+                      fontSize: 18,
+                      color: whiteColor)),
+            ),
           ),
         ),
         body: productsList.length==0?StaticUI().NoDataFoundWidget(context):Padding(
@@ -137,24 +145,20 @@ class _ProductsState extends State<Products> {
                                     ? productsList[index].productnameAr
                                     : "${productsList[index].productnameEn}"),
                                 // Text("منظم غاز 50 مل بار"),
-                                ElevatedButton(
-                                  style: ButtonStyle(
-                                    backgroundColor: MaterialStateProperty.all<Color>(
-                                        greenAppColor),
-                                  ),
-                                  onPressed: () {
-                                 Api(context, _scaffoldKey).   checkItemsInCart(productsList[index]);
 
-                                  },
-                                  child: Container(
-                                    alignment: Alignment.center,
-                                    width: MediaQuery.of(context).size.width,
-                                    child: Text(
-                                      getTranslated(context, "Add"),
-                                      style: TextStyle(fontWeight: FontWeight.w100),
-                                    ),
-                                  ),
-                                ),
+
+                                Container(
+                                    height: 40,
+                                    margin: EdgeInsets.only(top: 20),
+                                    child: AddButtonWidget(productsList[index]))
+
+                                // Row(children: [
+                                //   Expanded(child: Container(color: Colors.green,width: 30,height: 30,child: Center(child: Text("-")),)),
+                                //
+                                //   Expanded(child: Container(width: 50,height: 50,child: Center(child: Text("2")),)),
+                                //   Expanded(child: Container(color: Colors.green,width: 30,height: 30,child: Center(child: Text("+")),)),
+                                //
+                                // ],),
                               ],
                             )
                           ],

@@ -1,8 +1,10 @@
 import 'dart:io';
 
 import 'package:flutter/gestures.dart';
+import 'package:flutter_statusbarcolor/flutter_statusbarcolor.dart';
 import 'package:gas_express/ui/splash.dart';
 import 'package:flutter/material.dart';
+import 'package:gas_express/utils/colors_file.dart';
 import 'package:localize_and_translate/localize_and_translate.dart';
 
 main() async {
@@ -33,6 +35,8 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
+    FlutterStatusbarcolor.setStatusBarColor(primaryAppColor);
+
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: "Gas Express",

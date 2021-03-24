@@ -17,7 +17,7 @@ dependencies:
   cupertino_icons: ^1.0.2
   carousel_slider: ^3.0.0
   share: ^2.0.1
-
+  flutter_statusbarcolor:
   rxdart:
   http: ^0.12.1
   url_launcher:

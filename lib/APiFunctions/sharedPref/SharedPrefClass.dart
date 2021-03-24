@@ -12,7 +12,7 @@ Future setDataToShared(String userToken,int user_Id,String phone)async{
   prefs.setString(token, "Token "+userToken);
   prefs.setString(userPhone,phone);
   BaseToken= "Token "+userToken;
-
+  BaseUderId=user_Id;
   print("tokentoken:: ${userToken}");
   print("tokentoken:: ${token}");
   prefs.setInt(userId, user_Id);
