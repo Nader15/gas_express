@@ -87,7 +87,7 @@ bool FawreyCheck=false;
                     Timeofreceipt == getTranslated(context, "Timeofreceipt")) {
                   FN_showToast(getTranslated(context, "pleaseSelectTime"),
                       context, Colors.red, _scaffoldKey);
-                } else if (  DaySelected==translator.translate('Day') ||
+                } else if (  DaySelected!=translator.translate('Day') ||
                         FawreyCheck==false) {
                   FN_showToast(getTranslated(context, "pleaseSelectDay"),
                       context, Colors.red, _scaffoldKey);
@@ -152,7 +152,7 @@ bool FawreyCheck=false;
               child: Container(
                 alignment: Alignment.center,
                 width: MediaQuery.of(context).size.width,
-                height: 75,
+                height: 50,
                 child: Text(
                   getTranslated(context, "confirm"),
                   style: TextStyle(fontWeight: FontWeight.w400, fontSize: 20),
@@ -205,7 +205,7 @@ bool FawreyCheck=false;
                       ],
                     )),
             SizedBox(
-              height: 20,
+              height: 120,
             ),
           ],
         ),
