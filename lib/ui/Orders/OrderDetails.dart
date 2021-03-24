@@ -29,6 +29,31 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      floatingActionButton:  Container(
+        width: MediaQuery.of(context).size.width,
+        height: 100,
+        color: Colors.red,
+        child: Column(
+          children: [
+            Container(
+              padding: EdgeInsets.only(right: 20, left: 20, top: 20),
+              alignment: Alignment.centerRight,
+              child: Text(
+                getTranslated(context, 'Total'),
+                style: TextStyle(color: Colors.white),
+              ),
+            ),
+            SizedBox(
+              height: 20,
+            ),
+            Text(
+              widget.orderItem.totalprice.toString(),
+              style: TextStyle(color: Colors.white, fontSize: 20),
+            ),
+          ],
+        ),
+      ),
       key: _scaffoldKey,
       drawer: drawerList(),
       appBar: AppBar(
@@ -99,31 +124,8 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                   );
                 }),
 
+SizedBox(height: 130,)
 
-            Container(
-              width: MediaQuery.of(context).size.width,
-              height: 100,
-              color: Colors.red,
-              child: Column(
-                children: [
-                  Container(
-                    padding: EdgeInsets.only(right: 20, left: 20, top: 20),
-                    alignment: Alignment.centerRight,
-                    child: Text(
-                      getTranslated(context, 'Total'),
-                      style: TextStyle(color: Colors.white),
-                    ),
-                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  Text(
-                    widget.orderItem.totalprice.toString(),
-                    style: TextStyle(color: Colors.white, fontSize: 20),
-                  ),
-                ],
-              ),
-            ),
           ],
         ),
       ),

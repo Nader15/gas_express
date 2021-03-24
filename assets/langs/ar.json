@@ -46,7 +46,12 @@
   "AlertTitle": "عنوان التنبية",
   "DeleteAll": "مسح الكل",
   "DeleteSelected": "مسح المحدد",
-
+  "Day": "اليوم",
+  "Time": "الوقت",
+  "Today": "نفس اليوم",
+  "Tomorrow": "خلال يوم واحد",
+  "AfterTomorrow": "خلال يومان",
+  "AfterAfterTomorrow": "خلال ٣ ايام",
   "CompleteThePurchase": "اتمام عملية الشراء",
   "OrderDetails": "تفاصيل الطلب",
   "ProductsValue": "قيمة المنتجات",

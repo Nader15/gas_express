@@ -52,7 +52,7 @@ class _NewProductsState extends State<NewProducts> {
   Widget build(BuildContext context) {
     return Scaffold(
         key: _scaffoldKey,
-        bottomNavigationBar: BaseOrdersList.length==0?Container():Padding(
+        bottomNavigationBar: BaseOrdersList.length==0?Container(height: 2,):Padding(
           padding: const EdgeInsets.all(20.0),
           child: InkWell(
             onTap: (){
@@ -84,8 +84,7 @@ class _NewProductsState extends State<NewProducts> {
                     return Builder(
                       builder: (BuildContext context) {
 
-                        print("imageimage:: ${i.image}");
-                        return Container(
+                         return Container(
                             width: MediaQuery.of(context).size.width,
                             margin: EdgeInsets.symmetric(horizontal: 5.0),
 

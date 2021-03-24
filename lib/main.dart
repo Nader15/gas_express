@@ -2,6 +2,8 @@ import 'dart:io';
 
 import 'package:flutter/gestures.dart';
 import 'package:flutter_statusbarcolor/flutter_statusbarcolor.dart';
+import 'package:gas_express/ui/order_status.dart';
+import 'package:gas_express/ui/orders_list.dart';
 import 'package:gas_express/ui/splash.dart';
 import 'package:flutter/material.dart';
 import 'package:gas_express/utils/colors_file.dart';
@@ -44,6 +46,8 @@ class _MyAppState extends State<MyApp> {
         fontFamily: translator.currentLanguage == "ar" ? 'Almarai' : "SourceSansPro",
       ),
       // home: HomePage(),
+      // home: OrderStatus(),
+      // home: OrdersList(),
       home: Splash(),
       localizationsDelegates: translator.delegates,
       // Android + iOS Delegates

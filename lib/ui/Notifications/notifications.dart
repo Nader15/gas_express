@@ -60,8 +60,8 @@ class _NotificationsState extends State<Notifications> {
         padding: EdgeInsets.all(20),
         child:    Container(
           child: notificationsList.length==0?StaticUI().NoDataFoundWidget(context):ListView.builder(
-              physics: NeverScrollableScrollPhysics(),
-              shrinkWrap: true,
+              // physics: NeverScrollableScrollPhysics(),
+              // shrinkWrap: true,
               itemCount: notificationsList.length,
               itemBuilder: (BuildContext context, int index) {
                 return  Column(

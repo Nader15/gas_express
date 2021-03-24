@@ -30,12 +30,12 @@ class Api {
   String products = "Products";
   String config = "Config/";
   String banners = "banners/";
-  String notifications = "AdminMessages/";
+  String notifications = "AdminMessages/?messageto=$BaseUderId";
   String forgetPassword = "ForgetPassword/";
   String verifyCode = "VerifyCode/";
-  String customersAddresses = "CustomersAddresses/";
+  String customersAddresses = "CustomersAddresses/?customerid=$BaseUderId";
   String basket = "basket/";
-  String orders = "Orders/";
+  String orders = "Orders/?customerid=$BaseUderId";
   String orderStatusDetails = "OrderStatusDetails";
   String checkCoupon = "check_coupon";
 

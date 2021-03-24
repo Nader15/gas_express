@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:gas_express/APiFunctions/Api.dart';
+import 'package:gas_express/APiFunctions/sharedPref/SharedPrefClass.dart';
 import 'package:gas_express/ui/UserAddresses/UserAddresses_Model.dart';
 import 'package:gas_express/ui/UserAddresses/add_address.dart';
 import 'package:gas_express/utils/colors_file.dart';
@@ -15,6 +16,10 @@ import 'package:location/location.dart';
 import 'package:xs_progress_hud/xs_progress_hud.dart';
 
 class MyAddresses extends StatefulWidget {
+  bool fromSideMenu;
+
+  MyAddresses(this.fromSideMenu);
+
   @override
   _MyAddressesState createState() => _MyAddressesState();
 }
@@ -47,6 +52,10 @@ class _MyAddressesState extends State<MyAddresses> {
         userAddresses.results.forEach((element) {
           setState(() {
             addressList.add(element);
+
+            if(selectedAddressId!=null&&element.id==selectedAddressId){
+              element.isDefault=true;
+            }
           });
         });
       });
@@ -141,94 +150,105 @@ class _MyAddressesState extends State<MyAddresses> {
   Card address(AddressItem addressItem) {
     return Card(
       elevation: 10,
-      child: Padding(
-        padding: const EdgeInsets.all(10.0),
-        child: Column(
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Row(
-                  children: [
-                    Text(
-                      addressItem.name.split(' ')[0],
-                      style:
-                          TextStyle(fontSize: 20, fontWeight: FontWeight.w100),
-                    ),
-                    SizedBox(
-                      width: 10,
-                    ),
-                    addressItem.isDefault == true
-                        ? Text(
-                            "(${getTranslated(context, "Default")})",
-                            style: _titleTextStyle,
-                          )
-                        : Container(),
-                  ],
-                ),
-                addressItem.isDefault == false
-                    ? TextButton(
-                        onPressed: () {
-                          addressList.forEach((element) {
-                            setState(() {
-                              element.isDefault = false;
-                            });
-                          });
-                          setState(() {
-                              selectedAddressId=addressItem.id;
-                               selectedAddressString=addressItem.name;
-                            addressItem.isDefault = !addressItem.isDefault;
-                          });
-                        },
-                        child: Text(
-                          getTranslated(context, "MakeDefault"),
-                          style: _titleTextStyle,
-                        ),
-                      )
-                    : Container()
-              ],
-            ),
-            SizedBox(
-              height: 10,
-            ),
-            Text(
-              addressItem.name,
-              style: TextStyle(fontWeight: FontWeight.w400, fontSize: 15),
-            ),
-            SizedBox(
-              height: 10,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                // TextButton(
-                //   onPressed: () {},
-                //   child: Text(
-                //     getTranslated(context, "Edit"),
-                //     style: _bttnTextStyle,
-                //   ),
-                // ),
-                SizedBox(
-                  width: 10,
-                ),
-                TextButton(
-                  onPressed: () {
-                    Api(context, _scaffoldKey)
-                        .deleteCustomersAddressesApi(addressItem.id)
-                        .then((value) {
-                      setState(() {
-                        addressList.remove(addressItem);
-                      });
-                    });
-                  },
-                  child: Text(
-                    getTranslated(context, "Delete"),
-                    style: _bttnTextStyle,
+      child: InkWell(onTap: (){
+
+
+
+        selectedAddressId=addressItem.id;
+        selectedAddressString=addressItem.name;
+
+        Navigator.of(context).pop();
+      },
+        child: Padding(
+          padding: const EdgeInsets.all(10.0),
+          child: Column(
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Row(
+                    children: [
+                      Text(
+                        addressItem.name.split(' ')[0],
+                        style:
+                            TextStyle(fontSize: 20, fontWeight: FontWeight.w100),
+                      ),
+                      SizedBox(
+                        width: 10,
+                      ),
+                      addressItem.isDefault == true
+                          ? Text(
+                              "(${getTranslated(context, "Default")})",
+                              style: _titleTextStyle,
+                            )
+                          : Container(),
+                    ],
                   ),
-                ),
-              ],
-            ),
-          ],
+                  addressItem.isDefault == false
+                      ? TextButton(
+                          onPressed: () {
+                            addressList.forEach((element) {
+                              setState(() {
+                                element.isDefault = false;
+                              });
+                            });
+                            setState(() {
+                                selectedAddressId=addressItem.id;
+                                 selectedAddressString=addressItem.name;
+                                setAddressToShared(selectedAddressString,selectedAddressId);
+                              addressItem.isDefault = !addressItem.isDefault;
+                            });
+                          },
+                          child: Text(
+                            getTranslated(context, "MakeDefault"),
+                            style: _titleTextStyle,
+                          ),
+                        )
+                      : Container()
+                ],
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              Text(
+                addressItem.name,
+                style: TextStyle(fontWeight: FontWeight.w400, fontSize: 15),
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  // TextButton(
+                  //   onPressed: () {},
+                  //   child: Text(
+                  //     getTranslated(context, "Edit"),
+                  //     style: _bttnTextStyle,
+                  //   ),
+                  // ),
+                  SizedBox(
+                    width: 10,
+                  ),
+                  TextButton(
+                    onPressed: () {
+                      Api(context, _scaffoldKey)
+                          .deleteCustomersAddressesApi(addressItem.id)
+                          .then((value) {
+                        setState(() {
+                          addressList.remove(addressItem);
+                        });
+                      });
+                    },
+                    child: Text(
+                      getTranslated(context, "Delete"),
+                      style: _bttnTextStyle,
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );

@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:gas_express/APiFunctions/Api.dart';
 import 'package:gas_express/APiFunctions/sharedPref/SharedPrefClass.dart';
 import 'package:gas_express/ui/Cart/CartModel.dart';
- import 'package:gas_express/ui/UserAddresses/my_addresses.dart';
+import 'package:gas_express/ui/UserAddresses/my_addresses.dart';
+import 'package:gas_express/utils/bottomSheet.dart';
 import 'package:gas_express/utils/colors_file.dart';
 import 'package:gas_express/utils/custom_widgets/custom_divider.dart';
 import 'package:gas_express/utils/custom_widgets/drawer.dart';
@@ -11,6 +12,7 @@ import 'package:gas_express/utils/global_vars.dart';
 import 'package:gas_express/utils/navigator.dart';
 import 'package:gas_express/utils/static_ui.dart';
 import 'package:gas_express/utils/toast.dart';
+import 'package:localize_and_translate/localize_and_translate.dart';
 
 class Cart extends StatefulWidget {
   @override
@@ -19,95 +21,106 @@ class Cart extends StatefulWidget {
 
 class _CartState extends State<Cart> {
   final GlobalKey<FormState> _key = GlobalKey<FormState>();
-  var total=0;
-  int productNo=0;
+  var total = 0;
+  int productNo = 0;
 
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   String delivaryTime;
   String Timeofreceipt;
+  String DaySelected=translator.translate('Day');
+bool FawreyCheck=false;
+  List DaysList=["${DateTime.now().toIso8601String().split("T")[0]}","${DateTime.now().add(Duration(days: 1)).toIso8601String().split("T")[0]}","${DateTime.now().add(Duration(days: 2)).toIso8601String().split("T")[0]}","${DateTime.now().add(Duration(days: 3)).toIso8601String().split("T")[0]}"];
+  List DaysListStrings=[translator.translate('Today'),
+    translator.translate('Tomorrow'),
+    translator.translate('AfterTomorrow'),
+    translator.translate('AfterAfterTomorrow'),
+
+  ];
+
+
   @override
   void initState() {
-    setState(() {
-      delivaryTime=getTranslated(context, "DelivaryTime");
-      Timeofreceipt=getTranslated(context, "Timeofreceipt");
+    
+    print("DaysList:: ${DaysList}");
+    Future.delayed(Duration(milliseconds: 0), () {
+      setState(() {
+        delivaryTime = getTranslated(context, "DelivaryTime");
+        Timeofreceipt = getTranslated(context, "Timeofreceipt");
+      });
     });
+
     gettotoalCost();
     super.initState();
   }
 
-  gettotoalCost(){
-    productNo=0;
-    total=0;
-  cartList.forEach((element) {
-    setState(() {
-
-      productNo+=element.quantity;
-      total+=  (  element.price* element.quantity);
-
+  gettotoalCost() {
+    productNo = 0;
+    total = 0;
+    cartList.forEach((element) {
+      setState(() {
+        productNo += element.quantity;
+        total += (element.price * element.quantity);
+      });
     });
-  });
+  }
 
-}
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       key: _scaffoldKey,
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      floatingActionButton:  cartList.length==0?Container(): ElevatedButton(
-        style: ButtonStyle(
-          backgroundColor: MaterialStateProperty.all<Color>(
-              greenAppColor),
-        ),
-        onPressed: () {
-if(selectedAddressString.isEmpty){
-  FN_showToast(
-      getTranslated(context, "pleaseAddAddress"), context, Colors.red, _scaffoldKey);
-}else if(delivaryTime==getTranslated(context, "DelivaryTime")|| Timeofreceipt==getTranslated(context, "Timeofreceipt")){
+      floatingActionButton: cartList.length == 0
+          ? Container()
+          : ElevatedButton(
+              style: ButtonStyle(
+                backgroundColor:
+                    MaterialStateProperty.all<Color>(greenAppColor),
+              ),
+              onPressed: () {
+                if (selectedAddressString.isEmpty) {
+                  FN_showToast(getTranslated(context, "pleaseAddAddress"),
+                      context, Colors.red, _scaffoldKey);
+                } else if (delivaryTime ==
+                        getTranslated(context, "DelivaryTime") ||
+                    Timeofreceipt == getTranslated(context, "Timeofreceipt")) {
+                  FN_showToast(getTranslated(context, "pleaseSelectTime"),
+                      context, Colors.red, _scaffoldKey);
+                } else {
+                  List itemsList = List();
+                  cartList.forEach((element) {
+                    itemsList
+                        .add({"quantity": element.quantity, "id": element.id});
+                  });
 
+                  Map data = {
+                    "items": itemsList,
+                    "date": "${DateTime.now().toIso8601String().split("T")[0]}",
+                    "timeStarts": "${Timeofreceipt}",
+                    "timeEnds": "${delivaryTime}",
+                    // "timeEnds": "${delivaryTime}",
+                    "mobile": BasePhone ?? "12312233333",
+                    "addressid": selectedAddressId,
+                    "location": selectedAddressString,
+                    "expecteddeliverdatename":
+                        "${DateTime.now().toIso8601String().split("T")[0]}",
 
-  FN_showToast(
-      getTranslated(context, "pleaseSelectTime"), context, Colors.red, _scaffoldKey);
-}
+                    // "expecteddeliverdatename": "string"
+                  };
 
-else {  List itemsList=List();
-cartList.forEach((element) {
-  itemsList.add({"quantity":element.quantity,
-    "id":element.id
-  });
-
-});
-
-Map data={
-  "items": itemsList,
-  "date": "${DateTime.now().toIso8601String().split("T")[0]}",
-  "timeStarts": "${Timeofreceipt}",
-  "timeEnds": "${delivaryTime}",
-  // "timeEnds": "${delivaryTime}",
-  "mobile": BasePhone??"12312233333",
-  "addressid": selectedAddressId,
-  "location": selectedAddressString,
-  "expecteddeliverdatename": "${DateTime.now().toIso8601String().split("T")[0]}",
-
-  // "expecteddeliverdatename": "string"
-};
-
-print("data:::data ${data}");
-Api(context, _scaffoldKey).addOrderApi(data).then((value) {
-
-
-});
-}
-        },
-        child: Container(
-          alignment: Alignment.center,
-          width: MediaQuery.of(context).size.width,
-          height: 75,
-          child: Text(
-            getTranslated(context, "confirm"),
-            style: TextStyle(fontWeight: FontWeight.w400,fontSize: 20),
-          ),
-        ),
-      ),
+                  print("data:::data ${data}");
+                  Api(context, _scaffoldKey).addOrderApi(data).then((value) {});
+                }
+              },
+              child: Container(
+                alignment: Alignment.center,
+                width: MediaQuery.of(context).size.width,
+                height: 75,
+                child: Text(
+                  getTranslated(context, "confirm"),
+                  style: TextStyle(fontWeight: FontWeight.w400, fontSize: 20),
+                ),
+              ),
+            ),
       drawer: drawerList(),
       appBar: AppBar(
         backgroundColor: primaryAppColor,
@@ -115,9 +128,7 @@ Api(context, _scaffoldKey).addOrderApi(data).then((value) {
           getTranslated(context, "cart"),
           style: TextStyle(fontWeight: FontWeight.w100),
         ),
-        actions: [
-          StaticUI().cartWidget(context)
-        ],
+        actions: [StaticUI().cartWidget(context)],
       ),
       body: Container(
         padding: EdgeInsets.all(10),
@@ -132,27 +143,29 @@ Api(context, _scaffoldKey).addOrderApi(data).then((value) {
       child: SingleChildScrollView(
         child: Column(
           children: [
-            cartList.length==0?StaticUI().NoDataFoundWidget(context):   Align(
-                alignment: Alignment.topRight,
-                child: Column(
-                  children: [
-                    Card(
-                      elevation:10,
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: ListView.builder(
-                          shrinkWrap: true,
-                          itemCount: cartList.length,
-                          itemBuilder: (context, index) {
-                            return order(cartList[index]);
-                          },
+            cartList.length == 0
+                ? StaticUI().NoDataFoundWidget(context)
+                : Align(
+                    alignment: Alignment.topRight,
+                    child: Column(
+                      children: [
+                        Card(
+                          elevation: 10,
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: ListView.builder(
+                              shrinkWrap: true,
+                              itemCount: cartList.length,
+                              itemBuilder: (context, index) {
+                                return order(cartList[index]);
+                              },
+                            ),
+                          ),
                         ),
-                      ),
-                    ),
-                    details(),
-                    delivery()
-                  ],
-                )),
+                        details(),
+                        delivery()
+                      ],
+                    )),
             SizedBox(
               height: 20,
             ),
@@ -161,6 +174,7 @@ Api(context, _scaffoldKey).addOrderApi(data).then((value) {
       ),
     );
   }
+
   Widget order(CartModel cartModel) {
     return Column(
       children: [
@@ -193,10 +207,10 @@ Api(context, _scaffoldKey).addOrderApi(data).then((value) {
                           children: [
                             InkWell(
                               onTap: () {
-setState(() {
-  cartModel.quantity+=1;
-  gettotoalCost();
-});
+                                setState(() {
+                                  cartModel.quantity += 1;
+                                  gettotoalCost();
+                                });
                               },
                               child: Icon(
                                 Icons.add,
@@ -210,19 +224,17 @@ setState(() {
                             ),
                             InkWell(
                               onTap: () {
-                                if(cartModel.quantity==0){
+                                if (cartModel.quantity == 0) {
                                   setState(() {
                                     cartList.remove(cartModel);
                                     gettotoalCost();
                                   });
-                                }
-                                else if(cartModel.quantity>0){
+                                } else if (cartModel.quantity > 0) {
                                   setState(() {
-                                    cartModel.quantity-=1;
+                                    cartModel.quantity -= 1;
                                     gettotoalCost();
                                   });
                                 }
-
                               },
                               child: Icon(
                                 Icons.remove,
@@ -257,7 +269,8 @@ setState(() {
                   shape: BoxShape.rectangle,
                   border: Border.all(color: greenAppColor)),
               child: Text(
-                "${(cartModel.price)*cartModel.quantity} " + getTranslated(context, "Currency"),
+                "${(cartModel.price) * cartModel.quantity} " +
+                    getTranslated(context, "Currency"),
                 style: TextStyle(color: greenAppColor),
               ),
             ),
@@ -267,6 +280,7 @@ setState(() {
       ],
     );
   }
+
   Widget details() {
     return Card(
       elevation: 10,
@@ -345,52 +359,52 @@ setState(() {
             SizedBox(
               height: 10,
             ),
-            // InkWell(
-            //   onTap: () {},
-            //   child: Row(
-            //     children: [
-            //       Container(
-            //         height: 22,
-            //         width: 22,
-            //         alignment: Alignment.center,
-            //         decoration: BoxDecoration(
-            //             shape: BoxShape.circle,
-            //             border: Border.all(color: greenAppColor)),
-            //         child: Icon(
-            //           Icons.add,
-            //           color: greenAppColor,
-            //           size: 20,
-            //         ),
-            //       ),
-            //       SizedBox(
-            //         width: 10,
-            //       ),
-            //       Text(getTranslated(context, "AddCodeOrCoupon"),
-            //           style: _titleTextStyle),
-            //     ],
-            //   ),
-            // ),
-            // SizedBox(
-            //   height: 10,
-            // ),
-            // Row(
-            //   crossAxisAlignment: CrossAxisAlignment.center,
-            //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            //   children: [
-            //     Text(
-            //       "XKFON",
-            //       style: TextStyle(color: greenAppColor, fontSize: 20),
-            //     ),
-            //     InkWell(
-            //       onTap: () {},
-            //       child: Icon(
-            //         Icons.delete_forever,
-            //         color: redColor,
-            //       ),
-            //     ),
-            //   ],
-            // ),
-            // CustomDivider(),
+            InkWell(
+              onTap: () {},
+              child: Row(
+                children: [
+                  Container(
+                    height: 22,
+                    width: 22,
+                    alignment: Alignment.center,
+                    decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        border: Border.all(color: greenAppColor)),
+                    child: Icon(
+                      Icons.add,
+                      color: greenAppColor,
+                      size: 20,
+                    ),
+                  ),
+                  SizedBox(
+                    width: 10,
+                  ),
+                  Text(getTranslated(context, "AddCodeOrCoupon"),
+                      style: _titleTextStyle),
+                ],
+              ),
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  "XKFON",
+                  style: TextStyle(color: greenAppColor, fontSize: 20),
+                ),
+                InkWell(
+                  onTap: () {},
+                  child: Icon(
+                    Icons.delete_forever,
+                    color: redColor,
+                  ),
+                ),
+              ],
+            ),
+            CustomDivider(),
             // Row(
             //   crossAxisAlignment: CrossAxisAlignment.center,
             //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -421,7 +435,36 @@ setState(() {
       ),
     );
   }
+  selectDaySheet(){
+    return Container(
+      height: MediaQuery.of(context).size.height/3,
+      child: Column(children: [
+        SizedBox(height: 10,),
+      Container(height: 1,color: Colors.grey,width: MediaQuery.of(context).size.width/2,),
+        SizedBox(height: 10,),
 
+      Container(
+        height: MediaQuery.of(context).size.height/4,
+        child: ListView.builder(itemCount: DaysList.length,itemBuilder: (BuildContext context,int index){
+          return InkWell(
+            onTap: (){
+              setState(() {
+                DaySelected=DaysList[index];
+                Navigator.of(context).pop();
+              });
+            },
+            child: Column(
+              children: [
+                Container(child: Text("${DaysListStrings[index]} ${DaysList[index]}"),),
+                Divider()
+              ],
+            ),
+          );
+        }),
+      )
+
+    ],),);
+  }
   Widget delivery() {
     return Card(
       elevation: 10,
@@ -430,67 +473,124 @@ setState(() {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+Row(children: [
+
+
+  Checkbox(activeColor: greenAppColor,checkColor: primaryAppColor,value: FawreyCheck, onChanged: (value){
+setState(() {
+  FawreyCheck=!FawreyCheck;
+    DaySelected=translator.translate('Day');
+
+});
+  }),
+  Text(translator.translate('Fawrey'),style: TextStyle(color: Colors.black),),
+
+],),
+            SizedBox(height: 10,),
+
             Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  getTranslated(context, "Appointment"),
+                  getTranslated(context, "Day"),
                   style: TextStyle(color: greenAppColor, fontSize: 15),
                 ),
                 Row(
                   children: [
-                    InkWell(onTap: ()async{
-                  showTimePicker(
-                        initialTime: TimeOfDay.now(),
-                        context: context,
-                      ).then((value) {
-                        print("Timeofreceiptvalue::: ${value.format(context)}");
-setState(() {
-  Timeofreceipt=value.format(context).split(" ")[0];
-});
-                  });
-                    },
+
+
+                    InkWell(
+                      onTap: () {
+                        if(FawreyCheck==false){
+                          showRoundedModalBottomSheet(
+                              autoResize: true,
+                              dismissOnTap: false,
+                              context: context,
+                              radius: 30.0,
+                              // This is the default
+                              color: Colors.white,
+                              // Also default
+                              builder: (context) => selectDaySheet());
+                        }
+
+
+                      },
                       child: SizedBox(
-                        width: MediaQuery.of(context).size.width / 4,
+                        width: MediaQuery.of(context).size.width / 2,
                         height: 30,
                         child: Container(
                             decoration: BoxDecoration(
-                                border: Border.all(color: Colors.grey)
-                            ),
-                            child: Text(Timeofreceipt)),
+                                border: Border.all(color: Colors.grey)),
+                            child: Center(child: Text(DaySelected))),
+                      ),
+                    ),
+                  ],
+                ),
+
+              ],
+            ),
+SizedBox(height: 10,),
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  getTranslated(context, "Time"),
+                  style: TextStyle(color: greenAppColor, fontSize: 15),
+                ),
+                Row(
+                  children: [
+                    InkWell(
+                      onTap: () async {
+                        showTimePicker(
+                          initialTime: TimeOfDay.now(),
+                          context: context,
+                        ).then((value) {
+                          print(
+                              "Timeofreceiptvalue::: ${value.format(context)}");
+                          setState(() {
+                            Timeofreceipt = value.format(context).split(" ")[0];
+                          });
+                        });
+                      },
+                      child: SizedBox(
+                        width: MediaQuery.of(context).size.width / 3.5,
+                        height: 30,
+                        child: Container(
+                            decoration: BoxDecoration(
+                                border: Border.all(color: Colors.grey)),
+                            child: Center(child: Text(Timeofreceipt))),
                       ),
                     ),
                     SizedBox(
                       width: 10,
                     ),
-                    InkWell(onTap: (){
-                      showTimePicker(
-                        initialTime: TimeOfDay.now(),
-                        context: context,
-                      ).then((value) {
-                        print("Timeofreceiptvalue::: ${value.format(context)}");
-                        setState(() {
-                          delivaryTime=value.format(context).split(" ")[0];
+                    InkWell(
+                      onTap: () {
+                        showTimePicker(
+                          initialTime: TimeOfDay.now(),
+                          context: context,
+                        ).then((value) {
+                          print(
+                              "Timeofreceiptvalue::: ${value.format(context)}");
+                          setState(() {
+                            delivaryTime = value.format(context).split(" ")[0];
+                          });
                         });
-                      });
-                    },
+                      },
                       child: SizedBox(
-                        width: MediaQuery.of(context).size.width / 4,
+                        width: MediaQuery.of(context).size.width / 3.5,
                         height: 30,
                         child: Container(
                             decoration: BoxDecoration(
-                                border: Border.all(color: Colors.grey)
-                            ),
-                            child: Text(delivaryTime)),
+                                border: Border.all(color: Colors.grey)),
+                            child: Center(child: Text(delivaryTime))),
                       ),
                     ),
                   ],
                 ),
-                Icon(
-                  Icons.check_box,
-                  color: greenAppColor,
-                ),
+
               ],
             ),
             SizedBox(
@@ -505,23 +605,35 @@ setState(() {
                   style: TextStyle(color: greenAppColor, fontSize: 15),
                 ),
 
-                InkWell(onTap: (){
-                  navigateAndKeepStack(context, MyAddresses());
-
-                },
+                InkWell(
+                  onTap: () async {
+                    await Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => MyAddresses(false),
+                      ),
+                    ).then((value) {
+                      setState(() {
+                        selectedAddressId = selectedAddressId;
+                        selectedAddressString = selectedAddressString;
+                      });
+                    });
+                    // navigateAndKeepStack(context, AddAddress(value.latitude,value.longitude));
+                  },
                   child: Container(
-                     decoration: BoxDecoration(
-                        border: Border.all(color: Colors.grey)
-                    ),
+                    decoration:
+                        BoxDecoration(border: Border.all(color: Colors.grey)),
                     child: Row(
                       children: [
-                    Icon(
-                              Icons.location_on,
-                              color: greenAppColor,
-                            ),
-
+                        Icon(
+                          Icons.location_on,
+                          color: greenAppColor,
+                        ),
                         Text(
-                          selectedAddressString.isEmpty?getTranslated(context, "pleaseAddAddress"):selectedAddressString,
+                          selectedAddressString == null ||
+                                  selectedAddressString.isEmpty
+                              ? getTranslated(context, "pleaseAddAddress")
+                              : selectedAddressString.length>25?selectedAddressString.substring(0,25)+"...":selectedAddressString,
                           style: TextStyle(color: greenAppColor, fontSize: 15),
                         ),
                       ],
@@ -561,6 +673,4 @@ setState(() {
 }
 
 TextStyle _titleTextStyle =
-TextStyle(color: greenAppColor, fontSize: 15, fontWeight: FontWeight.w100);
-
-
+    TextStyle(color: greenAppColor, fontSize: 15, fontWeight: FontWeight.w100);

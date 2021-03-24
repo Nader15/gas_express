@@ -55,7 +55,7 @@ class drawerList extends StatelessWidget {
                 style: _textStyle,
               ),
               onTap: () {
-                navigateAndClearStack(context, MyAddresses());
+                navigateAndKeepStack(context, MyAddresses(true));
               },
             ),
 
@@ -66,7 +66,7 @@ class drawerList extends StatelessWidget {
                 style: _textStyle,
               ),
               onTap: () {
-                navigateAndClearStack(context, OrdersScreen());
+                navigateAndKeepStack(context, OrdersScreen());
               },
             ),
             ListTile(
@@ -79,7 +79,7 @@ class drawerList extends StatelessWidget {
                 style: _textStyle,
               ),
               onTap: () {
-                navigateAndClearStack(context, MyWallet());
+                navigateAndKeepStack(context, MyWallet());
               },
             ),
             ListTile(
@@ -92,7 +92,7 @@ class drawerList extends StatelessWidget {
                 style: _textStyle,
               ),
               onTap: () {
-                navigateAndClearStack(context, Notifications());
+                navigateAndKeepStack(context, Notifications());
               },
             ),
             Divider(),

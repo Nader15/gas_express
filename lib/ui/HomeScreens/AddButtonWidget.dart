@@ -51,6 +51,7 @@ class _AddButtonWidgetState extends State<AddButtonWidget> {
                           setState(() {
                             cartList.removeWhere((element) =>
                                 element.id == widget.productItem.id);
+                            widget.productItem.quantity=1;
                             inCart = false;
                           });
                         },
@@ -61,9 +62,20 @@ class _AddButtonWidgetState extends State<AddButtonWidget> {
                 Expanded(
                     child: InkWell(
                         onTap: () {
-                          setState(() {
-                            widget.productItem.quantity -= 1;
-                          });
+                          if(widget.productItem.quantity>1){
+                            setState(() {
+                              widget.productItem.quantity -= 1;
+                            });
+                          }
+                          else {
+                            setState(() {
+                              cartList.removeWhere((element) =>
+                              element.id == widget.productItem.id);
+                              widget.productItem.quantity=1;
+                              inCart = false;
+                            });
+                          }
+
                         },
                         child: Container(
                           color: Colors.green,

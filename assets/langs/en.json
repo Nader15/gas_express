@@ -30,6 +30,13 @@
   "Delete": "Delete",
   "AddAddress": "Add Address",
   "Default": "Default",
+  "Day": "Day",
+  "Time": "Time",
+  "Today": "Same day",
+  "Tomorrow": "Duration one day",
+  "AfterTomorrow": "Duration 2 days",
+  "AfterAfterTomorrow": "Duration 3 days",
+
 
   "YourBalance": "Your Balance",
   "SR": "SR",
@@ -56,7 +63,7 @@
   "Timeofreceipt": "Time of receipt",
   "pleaseSelectTime": "Please select time",
   "DelivaryTime": "Delivary Time",
-  "Fawrey": "",
+  "Fawrey": "immediately",
   "cart": "Cart",
   "Location": "Location",
   "orders": "Orders",
