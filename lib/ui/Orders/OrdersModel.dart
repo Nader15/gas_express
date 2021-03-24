@@ -90,7 +90,7 @@ class OrderItem {
     id = json['id'];
     customername = json['customername'];
     customeraddressname = json['customeraddressname'] != null
-        ? new Customeraddressname.fromJson(json['customeraddressname'])
+        ? json['customeraddressname'].runtimeType.toString()=='String'? json['customeraddressname']: new Customeraddressname.fromJson(json['customeraddressname'])
         : null;
     customerdetails = json['customerdetails'] != null
         ?

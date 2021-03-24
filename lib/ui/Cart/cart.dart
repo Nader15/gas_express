@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:gas_express/APiFunctions/Api.dart';
 import 'package:gas_express/APiFunctions/sharedPref/SharedPrefClass.dart';
 import 'package:gas_express/ui/Cart/CartModel.dart';
+import 'package:gas_express/ui/Orders/OrdersScreen.dart';
 import 'package:gas_express/ui/UserAddresses/my_addresses.dart';
 import 'package:gas_express/utils/bottomSheet.dart';
 import 'package:gas_express/utils/colors_file.dart';
@@ -36,6 +37,7 @@ bool FawreyCheck=false;
     translator.translate('AfterAfterTomorrow'),
 
   ];
+  TextEditingController promoCodeController = TextEditingController();
 
 
   @override
@@ -94,7 +96,8 @@ bool FawreyCheck=false;
 
                   Map data = {
                     "items": itemsList,
-                    "date": "${DateTime.now().toIso8601String().split("T")[0]}",
+                    "date":                     FawreyCheck?  "${DateTime.now().toIso8601String().split("T")[0]}":DaySelected,
+
                     "timeStarts": "${Timeofreceipt}",
                     "timeEnds": "${delivaryTime}",
                     // "timeEnds": "${delivaryTime}",
@@ -102,13 +105,20 @@ bool FawreyCheck=false;
                     "addressid": selectedAddressId,
                     "location": selectedAddressString,
                     "expecteddeliverdatename":
-                        "${DateTime.now().toIso8601String().split("T")[0]}",
+                    FawreyCheck?  "${DateTime.now().toIso8601String().split("T")[0]}":DaySelected,
+                    "coupon_code": "${promoCodeController.text}"
 
                     // "expecteddeliverdatename": "string"
                   };
 
                   print("data:::data ${data}");
-                  Api(context, _scaffoldKey).addOrderApi(data).then((value) {});
+                  Api(context, _scaffoldKey).addOrderApi(data).then((value) {
+
+                    if(value){
+                      navigateAndClearStack(context, OrdersScreen());
+
+                    }
+                  });
                 }
               },
               child: Container(
@@ -360,7 +370,17 @@ bool FawreyCheck=false;
               height: 10,
             ),
             InkWell(
-              onTap: () {},
+              onTap: () {
+                showRoundedModalBottomSheet(
+                    autoResize: true,
+                    dismissOnTap: false,
+                    context: context,
+                    radius: 30.0,
+                    // This is the default
+                    color: Colors.white,
+                    // Also default
+                    builder: (context) => addPromoCode());
+              },
               child: Row(
                 children: [
                   Container(
@@ -392,11 +412,16 @@ bool FawreyCheck=false;
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  "XKFON",
+                  "${promoCodeController.text}",
                   style: TextStyle(color: greenAppColor, fontSize: 20),
                 ),
                 InkWell(
-                  onTap: () {},
+                  onTap: () {
+
+                    setState(() {
+                      promoCodeController.clear();
+                    });
+                  },
                   child: Icon(
                     Icons.delete_forever,
                     color: redColor,
@@ -434,6 +459,54 @@ bool FawreyCheck=false;
         ),
       ),
     );
+  }
+  Widget addPromoCode(){
+    return Container(
+      height: MediaQuery.of(context).size.height/3,
+      child: Column(children: [
+        SizedBox(height: 10,),
+        Container(height: 1,color: Colors.grey,width: MediaQuery.of(context).size.width/2,),
+        SizedBox(height: 10,),
+        TextFormField(
+          controller: promoCodeController,
+          // enabled: false,
+          decoration: InputDecoration(
+
+              alignLabelWithHint: false,
+              contentPadding: EdgeInsets.zero,
+              hintStyle: TextStyle(color: Colors.black),
+              hintText:  translator.translate('promoCode'),
+              border: OutlineInputBorder()),
+        ),
+        SizedBox(height: 10,),
+
+        TextButton(
+            onPressed: () {
+
+              if(promoCodeController.text.isEmpty){
+                Navigator.of(context).pop();
+              }
+              else {
+                Map data ={
+                  "coupon_code":promoCodeController.text
+                };
+                Api(context, _scaffoldKey).checkCouponApi(data).then((value) {
+
+
+                    Navigator.of(context).pop();
+                    // Navigator.of(context).pop();
+
+
+                });
+              }
+            },
+            child: Text(
+              getTranslated(context, "AddCodeOrCoupon"),
+              style: TextStyle(
+                  color: greenAppColor,
+                  fontWeight: FontWeight.w100),
+            )),
+      ],),);
   }
   selectDaySheet(){
     return Container(

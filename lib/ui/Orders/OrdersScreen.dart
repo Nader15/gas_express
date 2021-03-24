@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:gas_express/APiFunctions/Api.dart';
 import 'package:gas_express/APiFunctions/sharedPref/SharedPrefClass.dart';
-import 'package:gas_express/ui/Orders/OrderDetails.dart';
-import 'package:gas_express/ui/Orders/OrdersModel.dart';
+ import 'package:gas_express/ui/Orders/OrdersModel.dart';
  import 'package:gas_express/ui/UserAddresses/my_addresses.dart';
+import 'package:gas_express/ui/Orders/order_status.dart';
 import 'package:gas_express/utils/colors_file.dart';
 import 'package:gas_express/utils/custom_widgets/custom_divider.dart';
 import 'package:gas_express/utils/custom_widgets/drawer.dart';
@@ -72,151 +72,189 @@ class _OrdersScreenState extends State<OrdersScreen> {
                   // shrinkWrap: true,
                   itemCount: ordersList.length,
                   itemBuilder: (BuildContext context, int index) {
-                    return OrderWidget(ordersList[index]);
+                    return ItemWidget(ordersList[index]);
                   }),
             ),
     );
   }
-  Widget OrderWidget(OrderItem orderItem){
-    return Padding(
-      padding: EdgeInsets.only(left: 20,right: 20),
-      child: Card(
-        child: Container(
-          child: Column(
-            children: [
-              Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              crossAxisAlignment: CrossAxisAlignment.center,
+  Widget ItemWidget(OrderItem orderItem){
+    print("orderstatus:: ${ orderItem.orderstatus }");
+ return   Card(
+      elevation: 10,
+      child: Padding(
+        padding: const EdgeInsets.all(20.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
+                Text(getTranslated(context, "OrderNumber"),
+                    style: TextStyle(
+                      fontWeight: FontWeight.w100,
+                      fontSize: 20,
+                    )),
+                Text("${orderItem.id}",
+                    style: TextStyle(
+                      fontSize: 20,
+                    )),
+              ],
+            ),
+            SizedBox(
+              height: 20,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(getTranslated(context, "OrderStatus2"),
+                    style: TextStyle(
+                      color: greenAppColor,
+                      fontWeight: FontWeight.w100,
+                      fontSize: 20,
+                    )),
+                Text(orderItem.orderstatus,
+                    style: TextStyle(
+                      color: redColor,
+                      fontSize: 20,
+                    )),
+              ],
+            ),
+            SizedBox(
+              height: 20,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                InkWell(
+                  onTap: () {
 
-              Text(getTranslated(context, 'orderNo'),style: TextStyle(color: Colors.red),),Text("${orderItem.id}",style: TextStyle(color: Colors.green),),
-        ],),
-
-              SizedBox(height: 10,),
-
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [                  Text(getTranslated(context, 'orderState'),style: TextStyle(color: Colors.green,),),
-
-                  Text("${orderItem.orderstatus}",style: TextStyle(color: Colors.red,fontSize: 20),),
-                ],),
-
-              SizedBox(height: 10,),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  InkWell(onTap: (){
-                    navigateAndClearStack(context, OrderDetailsScreen(orderItem));
+                    navigateAndClearStack(context, OrderDetails(orderItem));
+                    // navigateAndClearStack(context, OrderDetailsScreen(orderItem));
 
                   },
-                    child: Container(
-                        width: 100,height: 30,color: Colors.green,
-                        child: Center(child: Text(getTranslated(context, 'OrderDetails'),style: TextStyle(color: Colors.white),))),
+                  child: Container(
+                    padding: EdgeInsets.all(8),
+                    decoration: BoxDecoration(
+                        color: greenAppColor,
+                        borderRadius: BorderRadius.circular(5)),
+                    alignment: Alignment.center,
+                    child: Text(
+                        getTranslated(
+                            context, "OrderDetails"),
+                        style: TextStyle(
+                            fontWeight: FontWeight.w100,
+                            fontSize: 13,
+                            color: whiteColor)),
                   ),
+                ),
+                Row(
+                  children: [
+                    // InkWell(
+                    //   onTap: () {},
+                    //   child: Container(
+                    //     padding: EdgeInsets.all(7),
+                    //     decoration: BoxDecoration(
+                    //         borderRadius:
+                    //         BorderRadius.circular(5),
+                    //         border:
+                    //         Border.all(color: Colors.blue)),
+                    //     alignment: Alignment.center,
+                    //     child: Text(
+                    //         getTranslated(context, "EditOrder"),
+                    //         style: TextStyle(
+                    //             fontWeight: FontWeight.w100,
+                    //             fontSize: 13,
+                    //             color: Colors.blue)),
+                    //   ),
+                    // ),
+                    SizedBox(
+                      width: 10,
+                    ),
+                    orderItem.orderstatus =="new"?
+                    InkWell(
+                      onTap: () {
+                        Api(context, _scaffoldKey).cancelOrder(orderItem.id).then((value) {
 
-                  Icon(Icons.delete)
-                ],),
+                          if(value){
 
-              SizedBox(height: 10,),
-            ],
-          ),),
+                            ordersList.clear();
+                            gettingData();
+
+                          }
+                        });
+
+                      },
+                      child: Icon(
+                        Icons.delete_forever,
+                        color: redColor,
+                      ),
+                    ):Container(),
+                    SizedBox(
+                      width: 10,
+                    ),
+                    // InkWell(
+                    //   onTap: () {},
+                    //   child: Icon(
+                    //     Icons.alternate_email,
+                    //     color: Colors.blue,
+                    //   ),
+                    // ),
+                  ],
+                ),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }
-  // Widget OrderWidget(OrderItem orderItem) {
-  //   return Card(
-  //     child: ListTile(
-  //       title: Column(
-  //         mainAxisAlignment: MainAxisAlignment.start,
-  //         crossAxisAlignment: CrossAxisAlignment.start,
-  //         children: [
-  //           Text(
-  //             orderItem.id.toString(),
-  //             style: TextStyle(color: Colors.red),
-  //           ),
-  //           SizedBox(
-  //             height: 10,
-  //           ),
-  //           Text(
-  //             orderItem.addressname.toString(),
-  //             style: TextStyle(color: Colors.green),
-  //           ),
-  //           SizedBox(
-  //             height: 10,
-  //           ),
-  //           InkWell(
-  //             onTap: () {
-  //               launch("tel:" + "${orderItem.mobile}");
-  //             },
-  //             child: Row(
-  //               children: [
-  //                 Icon(Icons.call),
-  //                 Text(
-  //                   orderItem.mobile ?? "".toString(),
-  //                   style: TextStyle(color: Colors.black),
-  //                 ),
-  //               ],
-  //             ),
-  //           ),
-  //           SizedBox(
-  //             height: 10,
-  //           ),
-  //           Row(
+  // Widget OrderWidget(OrderItem orderItem){
+  //   return Padding(
+  //     padding: EdgeInsets.only(left: 20,right: 20),
+  //     child: Card(
+  //       child: Container(
+  //         child: Column(
+  //           children: [
+  //             Row(
+  //             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+  //             crossAxisAlignment: CrossAxisAlignment.center,
   //             children: [
-  //               Text(
-  //                 getTranslated(context, "DelivaryTime"),
-  //                 style: TextStyle(color: Colors.red),
-  //               ),
-  //               Text(
-  //                 orderItem.orderdatetime.toString(),
-  //                 style: TextStyle(color: Colors.red),
-  //               ),
-  //             ],
-  //           ),
-  //           SizedBox(
-  //             height: 10,
-  //           ),
-  //           Row(
-  //             children: [
-  //               Container(
-  //                 width: 100,height: 50,
-  //                 decoration: BoxDecoration(color: Colors.green),
-  //                 child: Text(
-  //                   getTranslated(context, "OrderDetails"),
-  //                   style: TextStyle(color: Colors.white),
-  //                 ),
-  //               ),
-  //               SizedBox(width: 20,),
-  //               Container(
-  //                 width: 50,height: 50,
-  //                 decoration: BoxDecoration(color: Colors.red),
-  //                 child: Column(
-  //                   children: [
-  //                     Text(
-  //                       orderItem.totalprice.toString(),
-  //                       style: TextStyle(color: Colors.white),
-  //                     ),
-  //                     Text(
-  //                       getTranslated(context, "SR"),
-  //                       style: TextStyle(color: Colors.white),
-  //                     ),
-  //                   ],
-  //                 ),
-  //               ),
   //
-  //             ],
-  //           ),
-  //         ],
-  //       ),
-  //       leading: Image.asset(
-  //         "assets/images/googlemap.jpeg",
-  //         width: 100,
-  //         height: 100,
-  //         fit: BoxFit.cover,
-  //       ),
+  //             Text(getTranslated(context, 'orderNo'),style: TextStyle(color: Colors.red),),Text("${orderItem.id}",style: TextStyle(color: Colors.green),),
+  //       ],),
+  //
+  //             SizedBox(height: 10,),
+  //
+  //             Row(
+  //               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+  //               crossAxisAlignment: CrossAxisAlignment.center,
+  //               children: [                  Text(getTranslated(context, 'orderState'),style: TextStyle(color: Colors.green,),),
+  //
+  //                 Text("${orderItem.orderstatus}",style: TextStyle(color: Colors.red,fontSize: 20),),
+  //               ],),
+  //
+  //             SizedBox(height: 10,),
+  //             Row(
+  //               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+  //               crossAxisAlignment: CrossAxisAlignment.center,
+  //               children: [
+  //                 InkWell(onTap: (){
+  //                   navigateAndClearStack(context, OrderDetailsScreen(orderItem));
+  //
+  //                 },
+  //                   child: Container(
+  //                       width: 100,height: 30,color: Colors.green,
+  //                       child: Center(child: Text(getTranslated(context, 'OrderDetails'),style: TextStyle(color: Colors.white),))),
+  //                 ),
+  //
+  //                 Icon(Icons.delete)
+  //               ],),
+  //
+  //             SizedBox(height: 10,),
+  //           ],
+  //         ),),
   //     ),
   //   );
   // }
+
 }

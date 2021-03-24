@@ -72,6 +72,7 @@
   "RequiredAmount": "المبلغ المطلوب",
   "PaymentMethods": "طريقة الدفع",
   "PayWhenReceiving": "الدفع عند الاستلام",
+  "promoCode": "الكوبون",
 
   "OrderStatus2": "حالة الطلب",
   "OrderWithDriver": "الطلب مع السائق",

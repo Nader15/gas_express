@@ -1,24 +1,33 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:gas_express/APiFunctions/Api.dart';
+import 'package:gas_express/ui/HomeScreens/home_page.dart';
+import 'package:gas_express/ui/Orders/OrdersModel.dart';
 import 'package:gas_express/ui/orders_list.dart';
 import 'package:gas_express/utils/colors_file.dart';
 import 'package:gas_express/utils/custom_widgets/custom_divider.dart';
 import 'package:gas_express/utils/custom_widgets/drawer.dart';
 import 'package:gas_express/utils/global_vars.dart';
 import 'package:gas_express/utils/navigator.dart';
+import 'package:localize_and_translate/localize_and_translate.dart';
 
 
-class OrderStatus extends StatefulWidget {
+class OrderDetails extends StatefulWidget {
+  OrderItem orderItem;
+
+  OrderDetails(this.orderItem);
   @override
-  _OrderStatusState createState() => _OrderStatusState();
+  _OrderDetailsState createState() => _OrderDetailsState();
 }
 
-class _OrderStatusState extends State<OrderStatus> {
+class _OrderDetailsState extends State<OrderDetails> {
   final GlobalKey<FormState> _key = GlobalKey<FormState>();
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
       drawer: drawerList(),
       appBar: AppBar(
         backgroundColor: primaryAppColor,
@@ -27,11 +36,11 @@ class _OrderStatusState extends State<OrderStatus> {
           style: TextStyle(fontWeight: FontWeight.w100),
         ),
         actions: [
-          IconButton(
-              icon: Icon(Icons.directions_car),
-              onPressed: () {
-                navigateAndKeepStack(context, OrdersList());
-              })
+          // IconButton(
+          //     icon: Icon(Icons.directions_car),
+          //     onPressed: () {
+          //       navigateAndKeepStack(context, OrdersList());
+          //     })
         ],
       ),
       body: Container(
@@ -71,7 +80,7 @@ class _OrderStatusState extends State<OrderStatus> {
                               ),
                               Center(
                                 child: Text(
-                                    getTranslated(context, "OrderWithDriver"),
+                                    widget.orderItem.orderstatus,
                                     style: TextStyle(
                                         fontWeight: FontWeight.w100,
                                         fontSize: 30,
@@ -97,7 +106,7 @@ class _OrderStatusState extends State<OrderStatus> {
                                       fontWeight: FontWeight.w100,
                                       fontSize: 20,
                                     )),
-                                Text("12012121",
+                                Text("${widget.orderItem.id}",
                                     style: TextStyle(
                                       fontSize: 20,
                                     )),
@@ -106,104 +115,86 @@ class _OrderStatusState extends State<OrderStatus> {
                             SizedBox(
                               height: 20,
                             ),
-                            Row(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Image.asset(
-                                  "assets/images/new_tube.png",
-                                  width: 30,
-                                ),
-                                Text(
-                                  "اسطوانة حديد 1 كجم",
-                                  style: TextStyle(
-                                      color: greenAppColor, fontSize: 20),
-                                ),
-                                Text(
-                                  "1",
-                                  style: TextStyle(
-                                      color: greenAppColor, fontSize: 20),
-                                ),
-                              ],
-                            ),
-                            CustomDivider(),
-                            Row(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Image.asset(
-                                  "assets/images/new_tube.png",
-                                  width: 30,
-                                ),
-                                Text(
-                                  "اسطوانة حديد 1 كجم",
-                                  style: TextStyle(
-                                      color: greenAppColor, fontSize: 20),
-                                ),
-                                Text(
-                                  "1",
-                                  style: TextStyle(
-                                      color: greenAppColor, fontSize: 20),
-                                ),
-                              ],
-                            ),
+                            ListView.builder(
+                                physics: NeverScrollableScrollPhysics(),
+                                shrinkWrap: true,
+                                itemCount: widget.orderItem.orderproductDetails.length,
+                                itemBuilder: (BuildContext context, int index) {
+                                  return Column(
+                                    children: [
+                                      OrderWidget(widget.orderItem.orderproductDetails[index]),
+                                      Divider()
+                                    ],
+                                  );
+                                }),
                             SizedBox(
                               height: 20,
                             ),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                InkWell(
-                                  onTap: () {},
-                                  child: Container(
-                                    padding: EdgeInsets.all(8),
-                                    decoration: BoxDecoration(
-                                        color: greenAppColor,
-                                        borderRadius: BorderRadius.circular(5)),
-                                    alignment: Alignment.center,
-                                    child: Text(
-                                        getTranslated(
-                                            context, "InvoiceDetails"),
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.w100,
-                                            fontSize: 12,
-                                            color: whiteColor)),
-                                  ),
-                                ),
+                                // InkWell(
+                                //   onTap: () {},
+                                //   child: Container(
+                                //     padding: EdgeInsets.all(8),
+                                //     decoration: BoxDecoration(
+                                //         color: greenAppColor,
+                                //         borderRadius: BorderRadius.circular(5)),
+                                //     alignment: Alignment.center,
+                                //     child: Text(
+                                //         getTranslated(
+                                //             context, "InvoiceDetails"),
+                                //         style: TextStyle(
+                                //             fontWeight: FontWeight.w100,
+                                //             fontSize: 12,
+                                //             color: whiteColor)),
+                                //   ),
+                                // ),
                                 Row(
                                   children: [
-                                    InkWell(
-                                      onTap: () {},
-                                      child: Container(
-                                        padding: EdgeInsets.all(7),
-                                        decoration: BoxDecoration(
-                                            borderRadius:
-                                                BorderRadius.circular(5),
-                                            border:
-                                                Border.all(color: Colors.blue)),
-                                        alignment: Alignment.center,
-                                        child: Text(
-                                            getTranslated(context, "EditOrder"),
-                                            style: TextStyle(
-                                                fontWeight: FontWeight.w100,
-                                                fontSize: 12,
-                                                color: Colors.blue)),
+                                    // InkWell(
+                                    //   onTap: () {},
+                                    //   child: Container(
+                                    //     padding: EdgeInsets.all(7),
+                                    //     decoration: BoxDecoration(
+                                    //         borderRadius:
+                                    //             BorderRadius.circular(5),
+                                    //         border:
+                                    //             Border.all(color: Colors.blue)),
+                                    //     alignment: Alignment.center,
+                                    //     child: Text(
+                                    //         getTranslated(context, "EditOrder"),
+                                    //         style: TextStyle(
+                                    //             fontWeight: FontWeight.w100,
+                                    //             fontSize: 12,
+                                    //             color: Colors.blue)),
+                                    //   ),
+                                    // ),
+                                    SizedBox(
+                                      width: 10,
+                                    ),
+                                    widget.orderItem.orderstatus =="new"?
+                                    InkWell(onTap: (){
+                                      Api(context, _scaffoldKey).cancelOrder(widget.orderItem.id).then((value) {
+
+                                        if(value){
+                                          navigateAndKeepStack(context, HomePage());
+
+                                        }
+                                      });
+                                    },
+                                      child: Icon(
+                                        Icons.delete_forever,
+                                        color: redColor,
                                       ),
-                                    ),
+                                    ):Container(),
                                     SizedBox(
                                       width: 10,
                                     ),
-                                    Icon(
-                                      Icons.delete_forever,
-                                      color: redColor,
-                                    ),
-                                    SizedBox(
-                                      width: 10,
-                                    ),
-                                    Icon(
-                                      Icons.alternate_email,
-                                      color: Colors.blue,
-                                    ),
+                                    // Icon(
+                                    //   Icons.alternate_email,
+                                    //   color: Colors.blue,
+                                    // ),
                                   ],
                                 ),
                               ],
@@ -221,12 +212,12 @@ class _OrderStatusState extends State<OrderStatus> {
                             SizedBox(
                               height: 10,
                             ),
-                            Container(
-                              height: 120,
-                              decoration: BoxDecoration(
-                                  color: greyPrimaryColor.withOpacity(.3),
-                                  borderRadius: BorderRadius.circular(5)),
-                            )
+                            // Container(
+                            //   height: 120,
+                            //   decoration: BoxDecoration(
+                            //       color: greyPrimaryColor.withOpacity(.3),
+                            //       borderRadius: BorderRadius.circular(5)),
+                            // )
                           ],
                         ),
                       ),
@@ -249,7 +240,7 @@ class _OrderStatusState extends State<OrderStatus> {
                             Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                Text("60",
+                                Text("${widget.orderItem.totalprice}",
                                     style: TextStyle(
                                         fontWeight: FontWeight.w100,
                                         fontSize: 50,
@@ -281,6 +272,18 @@ class _OrderStatusState extends State<OrderStatus> {
       ),
     );
   }
+  Widget OrderWidget(OrderproductDetails orderproductDetails){
+    return Container(
+      padding: EdgeInsets.only(left: 20,right: 20),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,crossAxisAlignment: CrossAxisAlignment.center,children: [
+        Expanded(child: Text(translator.currentLanguage=='ar'?orderproductDetails.productnameAr:orderproductDetails.productnameEn)),
+
+        Expanded(child: Text(orderproductDetails.quantity.toString())),
+        Expanded(child:Image.network(orderproductDetails.photo,height: 100,width: 20,)),
+      ],),);
+  }
+
 }
 
 TextStyle _titleTextStyle =

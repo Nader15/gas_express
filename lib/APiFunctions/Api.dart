@@ -11,6 +11,7 @@ import 'package:gas_express/ui/Notifications/NotificationModel.dart';
 import 'package:gas_express/ui/Orders/OrdersModel.dart';
 import 'package:gas_express/ui/StaticDataModel.dart';
  import 'package:gas_express/ui/UserAddresses/UserAddresses_Model.dart';
+import 'package:gas_express/ui/Wallet/PromoCodeModel.dart';
 import 'package:gas_express/utils/global_vars.dart';
 import 'package:gas_express/utils/toast.dart';
 
@@ -33,11 +34,14 @@ class Api {
   String notifications = "AdminMessages/?messageto=$BaseUderId";
   String forgetPassword = "ForgetPassword/";
   String verifyCode = "VerifyCode/";
+  String user_coupon_code = "user_coupon_code/";
+  String check_coupon = "check_coupon/";
   String customersAddresses = "CustomersAddresses/?customerid=$BaseUderId";
   String basket = "basket/";
   String orders = "Orders/?customerid=$BaseUderId";
+  String cancelOrders = "Orders/";
   String orderStatusDetails = "OrderStatusDetails";
-  String checkCoupon = "check_coupon";
+  String checkCoupon = "check_coupon/";
 
   Future loginFunc(
     String phone,
@@ -240,21 +244,26 @@ print("completeUrl::: ${completeUrl}");
     }
   }
 
-  Future cancelOrder(GlobalKey<ScaffoldState> _scaffoldKey, int Id) async {
+  Future cancelOrder( int Id) async {
     XsProgressHud.show(context);
 
-    final String completeUrl = baseUrl + orders;
-    var data = {"order_id": "12321"};
+    final String completeUrl = baseUrl + cancelOrders+"$Id/";
+    print("completeUrl:: ${completeUrl}");
+    var data = {"order_id": "${Id}","customerid":BaseUderId};
     var userToJson = json.encode(data);
-    final response = await http.post(
+    final response = await http.patch(
       completeUrl,
       headers: {
         'Content-Type': 'application/json',
         'Accept': 'application/json',
         HttpHeaders.authorizationHeader: BaseToken
       },
-      body: userToJson,
+      body:jsonEncode( {
+        "Orderstatus":"cancel"
+      }),
     );
+    print("dataContenstatusCode:: ${response.statusCode}");
+
     Map<String, dynamic> dataContent = json.decode(response.body);
 
     print("dataContent:: ${dataContent}");
@@ -300,12 +309,11 @@ print("completeUrl::: ${completeUrl}");
     }
   }
 
-  Future checkCouponApi(GlobalKey<ScaffoldState> _scaffoldKey, int Id) async {
+  Future checkCouponApi(Map data) async {
     XsProgressHud.show(context);
 
     final String completeUrl = baseUrl + checkCoupon;
-    var data = {"coupon": "12321"};
-    var userToJson = json.encode(data);
+     var userToJson = json.encode(data);
     final response = await http.post(
       completeUrl,
       headers: {
@@ -315,9 +323,12 @@ print("completeUrl::: ${completeUrl}");
       },
       body: userToJson,
     );
+    print("dataContentcheckCouponApi:: ${response.body}");
+    print("dataContentcheckCouponApi:: ${response.statusCode}");
+
+
     Map<String, dynamic> dataContent = json.decode(response.body);
 
-    print("dataContent:: ${dataContent}");
     XsProgressHud.hide();
     if (response.statusCode == 200) {
       print("body :" + json.decode(response.body).toString());
@@ -360,6 +371,34 @@ print("completeUrl::: ${completeUrl}");
     }
   }
 
+  Future getUserPromoCodeApi() async {
+    XsProgressHud.show(context);
+
+    final String completeUrl = baseUrl + user_coupon_code ;
+
+    final response = await http.get(
+      completeUrl,
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        HttpHeaders.authorizationHeader: BaseToken
+      },
+    );
+    Map<String, dynamic> dataContent = json.decode(response.body);
+
+    print("completeUrl:: ${completeUrl}");
+    print("dataContent:: ${dataContent}");
+    XsProgressHud.hide();
+    if (response.statusCode == 200) {
+      print("body :" + json.decode(response.body).toString());
+      return PromoCodeModel.fromJson(dataContent);
+    } else {
+      print("body :" + json.decode(response.body).toString());
+      FN_showToast(
+          '${json.decode(response.body)}', context, Colors.red, scaffoldKey);
+      return false;
+    }
+  }
   Future deleteCustomersAddressesApi(int addressID) async {
     XsProgressHud.show(context);
 
@@ -420,6 +459,68 @@ print("completeUrl::: ${completeUrl}");
     }
   }
 
+
+  Future addPromoCodeApi(
+      Map data) async {
+    XsProgressHud.show(context);
+
+    final String completeUrl = baseUrl + user_coupon_code ;
+
+    final response = await http.post(
+        completeUrl,
+        headers: {
+            HttpHeaders.authorizationHeader: BaseToken
+        },
+        body: data
+    );
+
+    print("dataContentaddPromoCodeApi:: ${data}");
+    print("dataContentaddPromoCodeApi:: ${response.body}");
+    print("dataContentaddPromoCodeApi:: ${response.statusCode}");
+    Map<String, dynamic> dataContent = json.decode(response.body);
+
+    XsProgressHud.hide();
+    if (response.statusCode == 201) {
+      print("body :" + json.decode(response.body).toString());
+      return true;
+    } else {
+      print("body :" + json.decode(response.body).toString());
+      FN_showToast(
+          '${json.decode(response.body)}', context, Colors.red, scaffoldKey);
+      return false;
+    }
+  }
+
+  Future checkPromoCodeApi(
+      Map data) async {
+    XsProgressHud.show(context);
+
+    final String completeUrl = baseUrl + check_coupon ;
+
+    final response = await http.post(
+        completeUrl,
+        headers: {
+            HttpHeaders.authorizationHeader: BaseToken
+        },
+        body: data
+    );
+
+    print("dataContentaddPromoCodeApi:: ${data}");
+    print("dataContentaddPromoCodeApi:: ${response.body}");
+    print("dataContentaddPromoCodeApi:: ${response.statusCode}");
+    Map<String, dynamic> dataContent = json.decode(response.body);
+
+    XsProgressHud.hide();
+    if (response.statusCode == 201) {
+      print("body :" + json.decode(response.body).toString());
+      return true;
+    } else {
+      print("body :" + json.decode(response.body).toString());
+      FN_showToast(
+          '${json.decode(response.body)}', context, Colors.red, scaffoldKey);
+      return false;
+    }
+  }
   Future uploadImageToApi(File fileName) async {
 
     print("fileName:: ${fileName.path}");

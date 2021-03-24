@@ -5,7 +5,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gas_express/ui/HomeScreens/home_page.dart';
 import 'package:gas_express/ui/Orders/OrdersScreen.dart';
 import 'package:gas_express/ui/UserAddresses/my_addresses.dart';
-import 'package:gas_express/ui/my_wallet.dart';
+import 'package:gas_express/ui/Wallet/my_wallet.dart';
 import 'package:gas_express/ui/Notifications/notifications.dart';
 import 'package:gas_express/utils/colors_file.dart';
 import 'package:gas_express/utils/global_vars.dart';

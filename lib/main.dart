@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/gestures.dart';
 import 'package:flutter_statusbarcolor/flutter_statusbarcolor.dart';
-import 'package:gas_express/ui/order_status.dart';
+import 'package:gas_express/ui/Orders/order_status.dart';
 import 'package:gas_express/ui/orders_list.dart';
 import 'package:gas_express/ui/splash.dart';
 import 'package:flutter/material.dart';
