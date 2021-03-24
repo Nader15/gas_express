@@ -248,8 +248,8 @@ print("completeUrl::: ${completeUrl}");
     XsProgressHud.show(context);
 
     final String completeUrl = baseUrl + cancelOrders+"$Id/";
-    print("completeUrl:: ${completeUrl}");
-    var data = {"order_id": "${Id}","customerid":BaseUderId};
+    print("completeUrlcancelOrder:: ${completeUrl}");
+    var data = {"orderstatus": "canceled"};
     var userToJson = json.encode(data);
     final response = await http.patch(
       completeUrl,
@@ -258,11 +258,9 @@ print("completeUrl::: ${completeUrl}");
         'Accept': 'application/json',
         HttpHeaders.authorizationHeader: BaseToken
       },
-      body:jsonEncode( {
-        "Orderstatus":"cancel"
-      }),
+      body:jsonEncode( data),
     );
-    print("dataContenstatusCode:: ${response.statusCode}");
+    print("dataContenstatusCodecancelOrder:: ${response.statusCode}");
 
     Map<String, dynamic> dataContent = json.decode(response.body);
 
@@ -327,7 +325,6 @@ print("completeUrl::: ${completeUrl}");
     print("dataContentcheckCouponApi:: ${response.statusCode}");
 
 
-    Map<String, dynamic> dataContent = json.decode(response.body);
 
     XsProgressHud.hide();
     if (response.statusCode == 200) {

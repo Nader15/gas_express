@@ -87,34 +87,62 @@ bool FawreyCheck=false;
                     Timeofreceipt == getTranslated(context, "Timeofreceipt")) {
                   FN_showToast(getTranslated(context, "pleaseSelectTime"),
                       context, Colors.red, _scaffoldKey);
-                } else {
+                } else if (  DaySelected==translator.translate('Day') ||
+                        FawreyCheck==false) {
+                  FN_showToast(getTranslated(context, "pleaseSelectDay"),
+                      context, Colors.red, _scaffoldKey);
+                }
+                else {
                   List itemsList = List();
                   cartList.forEach((element) {
                     itemsList
                         .add({"quantity": element.quantity, "id": element.id});
                   });
+                  Map data;
+                  if(promoCodeController.text.isEmpty){
+                    data    = {
+                      "items": itemsList,
+                      "date":                     FawreyCheck?  "${DateTime.now().toIso8601String().split("T")[0]}":DaySelected,
 
-                  Map data = {
-                    "items": itemsList,
-                    "date":                     FawreyCheck?  "${DateTime.now().toIso8601String().split("T")[0]}":DaySelected,
+                      "timeStarts": "${Timeofreceipt}",
+                      "timeEnds": "${delivaryTime}",
+                      // "timeEnds": "${delivaryTime}",
+                      "mobile": BasePhone ?? "12312233333",
+                      "addressid": selectedAddressId,
+                      "location": selectedAddressString,
+                      "expecteddeliverdatename":
+                      FawreyCheck?  "${DateTime.now().toIso8601String().split("T")[0]}":DaySelected,
 
-                    "timeStarts": "${Timeofreceipt}",
-                    "timeEnds": "${delivaryTime}",
-                    // "timeEnds": "${delivaryTime}",
-                    "mobile": BasePhone ?? "12312233333",
-                    "addressid": selectedAddressId,
-                    "location": selectedAddressString,
-                    "expecteddeliverdatename":
-                    FawreyCheck?  "${DateTime.now().toIso8601String().split("T")[0]}":DaySelected,
-                    "coupon_code": "${promoCodeController.text}"
+                      // "expecteddeliverdatename": "string"
+                    };
+                  }
+                  else {
+                    data    = {
+                      "items": itemsList,
+                      "date":                     FawreyCheck?  "${DateTime.now().toIso8601String().split("T")[0]}":DaySelected,
 
-                    // "expecteddeliverdatename": "string"
-                  };
+                      "timeStarts": "${Timeofreceipt}",
+                      "timeEnds": "${delivaryTime}",
+                      // "timeEnds": "${delivaryTime}",
+                      "mobile": BasePhone ?? "12312233333",
+                      "addressid": selectedAddressId,
+                      "location": selectedAddressString,
+                      "expecteddeliverdatename":
+                      FawreyCheck?  "${DateTime.now().toIso8601String().split("T")[0]}":DaySelected,
+                      "coupon_code": "${promoCodeController.text.isEmpty}"
+
+                      // "expecteddeliverdatename": "string"
+                    };
+                  }
+
 
                   print("data:::data ${data}");
                   Api(context, _scaffoldKey).addOrderApi(data).then((value) {
 
                     if(value){
+                      setState(() {
+                        cartList.clear();
+                      });
                       navigateAndClearStack(context, OrdersScreen());
 
                     }
@@ -492,7 +520,11 @@ bool FawreyCheck=false;
                 };
                 Api(context, _scaffoldKey).checkCouponApi(data).then((value) {
 
+if(value==false){
+setState(() {
+  promoCodeController.clear();
 
+});}
                     Navigator.of(context).pop();
                     // Navigator.of(context).pop();
 
