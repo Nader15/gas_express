@@ -9,6 +9,7 @@ import 'package:gas_express/ui/HomeScreens/new_products.dart';
 import 'package:gas_express/ui/HomeScreens/products.dart';
 import 'package:gas_express/ui/HomeScreens/recharge.dart';
 import 'package:gas_express/ui/Cart/cart.dart';
+import 'package:gas_express/ui/Orders/OrdersModel.dart';
 import 'package:gas_express/utils/colors_file.dart';
 import 'package:gas_express/utils/custom_widgets/drawer.dart';
 import 'package:gas_express/utils/global_vars.dart';
@@ -28,6 +29,8 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   final GlobalKey<FormState> _key = GlobalKey<FormState>();
   GlobalKey<ScaffoldState> _drawerKey = GlobalKey();
+  OrdersModel OrderModel;
+  List<OrderItem> ordersList = List();
   Timer _timer;
    List<BannerItem> bannerItemList = List();
   BannersModel bannersModel;
@@ -37,6 +40,26 @@ class _HomePageState extends State<HomePage> {
       bannersModel.results.forEach((element) {
         setState(() {
           bannerItemList.add(element);
+        });
+      });
+    });
+    gettingOrders();
+  }
+
+ 
+
+  gettingOrders() {
+    setState(() {
+      ordersList.clear();
+
+      Api(context, _drawerKey).ordersListApi().then((value) {
+        OrderModel = value;
+        OrderModel.results.forEach((element) {
+          setState(() {
+            ordersList.add(element);
+            BaseOrdersList.add(element);
+
+          });
         });
       });
     });
@@ -87,16 +110,14 @@ updateCart();
               preferredSize: Size.square(80),
               child: Container(
                 alignment: Alignment.bottomCenter,
-                height: 80,
-                color: whiteColor,
+                 color: whiteColor,
                 child: TabBar(
                   unselectedLabelColor: blackColor.withOpacity(0.5),
                   indicatorColor: Colors.transparent,
                   labelColor: primaryAppColor,
                   tabs: [
                     Container(
-                      height: 70,
-                      child: Tab(
+                       child: Tab(
                         text: getTranslated(context, "Recharge"),
                         icon: Image.asset(
                           "assets/images/rechrge_tube.png",
@@ -105,8 +126,7 @@ updateCart();
                       ),
                     ),
                     Container(
-                      height: 70,
-                      child: Tab(
+                       child: Tab(
                         icon: Image.asset(
                           "assets/images/new_tube.png",
                           width: 30,
@@ -115,8 +135,7 @@ updateCart();
                       ),
                     ),
                     Container(
-                      height: 70,
-                      child: Tab(
+                       child: Tab(
                         text: getTranslated(context, "Products"),
                         icon: Image.asset(
                           "assets/images/products.png",

@@ -214,7 +214,7 @@ class Api {
     }
   }
 
-  Future ordersListApi(GlobalKey<ScaffoldState> _scaffoldKey) async {
+  Future ordersListApi() async {
     XsProgressHud.show(context);
 
     final String completeUrl = baseUrl + orders;
@@ -227,7 +227,7 @@ class Api {
       },
     );
     Map<String, dynamic> dataContent = json.decode(response.body);
-
+print("completeUrl::: ${completeUrl}");
     XsProgressHud.hide();
     if (response.statusCode == 200) {
       print("body :" + json.decode(response.body).toString());

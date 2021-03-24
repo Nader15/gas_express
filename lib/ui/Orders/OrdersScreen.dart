@@ -40,7 +40,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
     setState(() {
       ordersList.clear();
 
-      Api(context, _scaffoldKey).ordersListApi(_scaffoldKey).then((value) {
+      Api(context, _scaffoldKey).ordersListApi().then((value) {
         OrderModel = value;
         OrderModel.results.forEach((element) {
           setState(() {
@@ -68,8 +68,8 @@ class _OrdersScreenState extends State<OrdersScreen> {
           ? StaticUI().NoDataFoundWidget(context)
           : Container(
               child: ListView.builder(
-                  physics: NeverScrollableScrollPhysics(),
-                  shrinkWrap: true,
+                  // physics: NeverScrollableScrollPhysics(),
+                  // shrinkWrap: true,
                   itemCount: ordersList.length,
                   itemBuilder: (BuildContext context, int index) {
                     return OrderWidget(ordersList[index]);

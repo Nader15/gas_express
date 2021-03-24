@@ -1,7 +1,7 @@
 class OrdersModel {
   int count;
-  dynamic next;
-  dynamic previous;
+  Null next;
+  Null previous;
   List<OrderItem> results;
 
   OrdersModel({this.count, this.next, this.previous, this.results});
@@ -33,8 +33,8 @@ class OrdersModel {
 class OrderItem {
   int id;
   String customername;
-  Customeraddressname customeraddressname;
-  Customerdetails customerdetails;
+  dynamic customeraddressname;
+  dynamic customerdetails;
   String addressname;
   List<OrderproductDetails> orderproductDetails;
   String expecteddeliverdate;
@@ -44,17 +44,17 @@ class OrderItem {
   String timeEnds;
   String orderdatetime;
   int orderprice;
-  dynamic deliveryprice;
+  Null deliveryprice;
   int taxes;
-  dynamic rate;
+  Null rate;
   int totalprice;
   String ordercomments;
   String orderstatus;
-  dynamic laststatusdatetime;
+  Null laststatusdatetime;
   String location;
   int discountValue;
   int customerid;
-  dynamic driverid;
+  Null driverid;
   int customeraddress;
   int couponCode;
 
@@ -93,7 +93,10 @@ class OrderItem {
         ? new Customeraddressname.fromJson(json['customeraddressname'])
         : null;
     customerdetails = json['customerdetails'] != null
-        ? new Customerdetails.fromJson(json['customerdetails'])
+        ?
+    json['customerdetails'].runtimeType.toString()=="String"?json['customerdetails']:
+
+    new Customerdetails.fromJson(json['customerdetails'])
         : null;
     addressname = json['addressname'];
     if (json['orderproductDetails'] != null) {
@@ -168,8 +171,8 @@ class Customeraddressname {
   int customerid;
   String name;
   String city;
-  dynamic section;
-  dynamic street;
+  Null section;
+  Null street;
   String buildingno;
   String floor;
   String flatno;
@@ -222,7 +225,7 @@ class Customeraddressname {
 
 class Customerdetails {
   int id;
-  Customeraddressname customeraddressname;
+  dynamic customeraddressname;
   String telephoneno;
   String lastLogin;
   bool isSuperuser;
@@ -242,8 +245,8 @@ class Customerdetails {
   String createAt;
   int balance;
   String username;
-  List<dynamic> groups;
-  List<dynamic> userPermissions;
+  List<Null> groups;
+  List<Null> userPermissions;
 
   Customerdetails(
       {this.id,
@@ -271,9 +274,12 @@ class Customerdetails {
         this.userPermissions});
 
   Customerdetails.fromJson(Map<String, dynamic> json) {
+
+    print("customeraddressname::: ${ json['customeraddressname']}");
+    print("customeraddressnameruntimeType::: ${ json['customeraddressname'].runtimeType}");
     id = json['id'];
     customeraddressname = json['customeraddressname'] != null
-        ? new Customeraddressname.fromJson(json['customeraddressname'])
+        ?json['customeraddressname'].runtimeType.toString()=="String"?json['customeraddressname']: new Customeraddressname.fromJson(json['customeraddressname'])
         : null;
     telephoneno = json['telephoneno'];
     lastLogin = json['last_login'];
@@ -343,63 +349,6 @@ class Customerdetails {
     return data;
   }
 }
-
-// class Customeraddressname {
-//   int id;
-//   int customerid;
-//   String name;
-//   String city;
-//   Null section;
-//   Null street;
-//   String buildingno;
-//   String floor;
-//   String flatno;
-//   String gPS;
-//   Null buildingphotoid;
-//
-//   Customeraddressname(
-//       {this.id,
-//         this.customerid,
-//         this.name,
-//         this.city,
-//         this.section,
-//         this.street,
-//         this.buildingno,
-//         this.floor,
-//         this.flatno,
-//         this.gPS,
-//         this.buildingphotoid});
-//
-//   Customeraddressname.fromJson(Map<String, dynamic> json) {
-//     id = json['id'];
-//     customerid = json['customerid'];
-//     name = json['name'];
-//     city = json['city'];
-//     section = json['section'];
-//     street = json['street'];
-//     buildingno = json['buildingno'];
-//     floor = json['floor'];
-//     flatno = json['flatno'];
-//     gPS = json['GPS'];
-//     buildingphotoid = json['buildingphotoid'];
-//   }
-//
-//   Map<String, dynamic> toJson() {
-//     final Map<String, dynamic> data = new Map<String, dynamic>();
-//     data['id'] = this.id;
-//     data['customerid'] = this.customerid;
-//     data['name'] = this.name;
-//     data['city'] = this.city;
-//     data['section'] = this.section;
-//     data['street'] = this.street;
-//     data['buildingno'] = this.buildingno;
-//     data['floor'] = this.floor;
-//     data['flatno'] = this.flatno;
-//     data['GPS'] = this.gPS;
-//     data['buildingphotoid'] = this.buildingphotoid;
-//     return data;
-//   }
-// }
 
 class OrderproductDetails {
   String photo;

@@ -86,7 +86,9 @@ Map data={
   "mobile": BasePhone??"12312233333",
   "addressid": selectedAddressId,
   "location": selectedAddressString,
-  "expecteddeliverdatename": "string"
+  "expecteddeliverdatename": "${DateTime.now().toIso8601String().split("T")[0]}",
+
+  // "expecteddeliverdatename": "string"
 };
 
 print("data:::data ${data}");

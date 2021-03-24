@@ -51,7 +51,7 @@ class _RechargeState extends State<Recharge> {
   Widget build(BuildContext context) {
     return Scaffold(
         key: _scaffoldKey,
-        bottomNavigationBar: Padding(
+        bottomNavigationBar: BaseOrdersList.length==0?Container():Padding(
           padding: const EdgeInsets.all(20.0),
           child: InkWell(
             onTap: (){
@@ -78,7 +78,7 @@ class _RechargeState extends State<Recharge> {
               children: [
 
                 CarouselSlider(
-                  options: CarouselOptions(height: 200.0),
+                  options: CarouselOptions(height: 200.0,autoPlay: true,),
                   items: widget.bannersList.map((i) {
                     return Builder(
                       builder: (BuildContext context) {
