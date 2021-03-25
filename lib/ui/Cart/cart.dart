@@ -79,6 +79,8 @@ bool FawreyCheck=false;
                     MaterialStateProperty.all<Color>(greenAppColor),
               ),
               onPressed: () {
+
+                print("DaySelected:: ${DaySelected}");
                 if (selectedAddressString.isEmpty) {
                   FN_showToast(getTranslated(context, "pleaseAddAddress"),
                       context, Colors.red, _scaffoldKey);
@@ -87,8 +89,10 @@ bool FawreyCheck=false;
                     Timeofreceipt == getTranslated(context, "Timeofreceipt")) {
                   FN_showToast(getTranslated(context, "pleaseSelectTime"),
                       context, Colors.red, _scaffoldKey);
-                } else if (  DaySelected!=translator.translate('Day') ||
+                } else if (  DaySelected==translator.translate('Day')&&
                         FawreyCheck==false) {
+                  print("DaySelected:enterded }");
+
                   FN_showToast(getTranslated(context, "pleaseSelectDay"),
                       context, Colors.red, _scaffoldKey);
                 }

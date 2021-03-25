@@ -301,6 +301,7 @@ else {
                                           color: greenAppColor, fontSize: 20),
                                     ),
                                     Text(
+                                      promoCodeList[index].discountPercentage==null? "${promoCodeList[index].discountValue} ${translator.translate('Currency')}":
                                       "${promoCodeList[index].discountPercentage}%",
                                       style: TextStyle(
                                           color: greenAppColor, fontSize: 20),
