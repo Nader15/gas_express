@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gas_express/APiFunctions/Api.dart';
 import 'package:gas_express/ui/Wallet/BallanceModel.dart';
+import 'package:gas_express/ui/Wallet/PointsModel.dart';
 import 'package:gas_express/ui/Wallet/PromoCodeModel.dart';
 import 'package:gas_express/utils/bottomSheet.dart';
 import 'package:gas_express/utils/colors_file.dart';
@@ -19,10 +20,11 @@ class _MyWalletState extends State<MyWallet> {
   final GlobalKey<FormState> _key = GlobalKey<FormState>();
   PromoCodeModel promoCodeModel;
   List<PromoCodeItem> promoCodeList=List();
+  List<PointItem> pointItemList=List();
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   TextEditingController promoCodeController = TextEditingController();
   BallanceModel ballanceModel;
-
+  PointsModel pointsModel;
   @override
   void initState() {
     // TODO: implement initState
@@ -62,6 +64,24 @@ class _MyWalletState extends State<MyWallet> {
 setState(() {
   ballanceModel = value;
 
+});
+gettingPoints();
+      });
+    });
+  }
+  gettingPoints() {
+    setState(() {
+
+      Api(context, _scaffoldKey)
+          .getUserCountApi()
+          .then((value) {
+setState(() {
+  pointsModel = value;
+pointsModel.data.forEach((element) {
+  setState(() {
+    pointItemList.add(element);
+  });
+});
 });
       });
     });
@@ -360,60 +380,69 @@ else {
                           ),
                         ),
                       ),
-                      // Card(
-                      //   elevation: 10,
-                      //   child: Padding(
-                      //     padding: const EdgeInsets.all(10.0),
-                      //     child: Column(
-                      //       crossAxisAlignment: CrossAxisAlignment.start,
-                      //       children: [
-                      //         Text(
-                      //           getTranslated(context, "FreeExchange"),
-                      //           style: TextStyle(
-                      //               fontSize: 20, fontWeight: FontWeight.w100),
-                      //         ),
-                      //         SizedBox(
-                      //           height: 20,
-                      //         ),
-                      //         Text(
-                      //           "أحصل علي تبديل مجاني للاسطوانة عند استبدال عدد 7 اسطوانات خلال عام واحد",
-                      //           style: TextStyle(fontWeight: FontWeight.w100),
-                      //         ),
-                      //         SizedBox(
-                      //           height: 10,
-                      //         ),
-                      //         Center(
-                      //           child: Row(
-                      //             crossAxisAlignment: CrossAxisAlignment.center,
-                      //             mainAxisAlignment: MainAxisAlignment.center,
-                      //             children: [
-                      //               Text(
-                      //                 "1/7",
-                      //                 style: TextStyle(
-                      //                     fontSize: 40,
-                      //                     color: greenAppColor,
-                      //                     fontWeight: FontWeight.bold),
-                      //               ),
-                      //               SizedBox(
-                      //                 width: 10,
-                      //               ),
-                      //               Text(
-                      //                 getTranslated(context, "Balance"),
-                      //                 style: TextStyle(
-                      //                     fontSize: 20,
-                      //                     color: greenAppColor,
-                      //                     fontWeight: FontWeight.bold),
-                      //               ),
-                      //             ],
-                      //           ),
-                      //         ),
-                      //         SizedBox(
-                      //           height: 10,
-                      //         ),
-                      //       ],
-                      //     ),
-                      //   ),
-                      // ),
+
+                      pointItemList.length==0?Container():     ListView.builder(
+                        physics: NeverScrollableScrollPhysics(),
+                        shrinkWrap: true,
+                        itemCount: pointItemList.length,
+                        itemBuilder: (context, index) {
+                          return   Card(
+                            elevation: 10,
+                            child: Padding(
+                              padding: const EdgeInsets.all(10.0),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    getTranslated(context, "FreeExchange"),
+                                    style: TextStyle(
+                                        fontSize: 20, fontWeight: FontWeight.w100),
+                                  ),
+                                  SizedBox(
+                                    height: 20,
+                                  ),
+                                  Text(
+                                    "أحصل علي تبديل مجاني للاسطوانة عند استبدال عدد ${pointItemList[index].countToReach} اسطوانات خلال ${(pointItemList[index].duration/30).round()} شهر ",
+                                    style: TextStyle(fontWeight: FontWeight.w100),
+                                  ),
+                                  SizedBox(
+                                    height: 10,
+                                  ),
+                                  Center(
+                                    child: Row(
+                                      crossAxisAlignment: CrossAxisAlignment.center,
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      children: [
+                                        Text(
+                                          "${pointItemList[index].userUsage}/${pointItemList[index].countToReach}",
+                                          style: TextStyle(
+                                              fontSize: 40,
+                                              color: greenAppColor,
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                        SizedBox(
+                                          width: 10,
+                                        ),
+                                        Text(
+                                          getTranslated(context, "Balance"),
+                                          style: TextStyle(
+                                              fontSize: 20,
+                                              color: greenAppColor,
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    height: 10,
+                                  ),
+                                ],
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+
                     ],
                   ),
                 )),

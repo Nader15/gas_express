@@ -1,7 +1,7 @@
 class OrdersModel {
   int count;
-  Null next;
-  Null previous;
+  dynamic next;
+  dynamic previous;
   List<OrderItem> results;
 
   OrdersModel({this.count, this.next, this.previous, this.results});
@@ -44,17 +44,17 @@ class OrderItem {
   String timeEnds;
   String orderdatetime;
   int orderprice;
-  Null deliveryprice;
+  dynamic deliveryprice;
   int taxes;
-  Null rate;
+  dynamic rate;
   int totalprice;
   String ordercomments;
   String orderstatus;
-  Null laststatusdatetime;
+  dynamic laststatusdatetime;
   String location;
   int discountValue;
   int customerid;
-  Null driverid;
+  dynamic driverid;
   int customeraddress;
   int couponCode;
 
@@ -171,8 +171,8 @@ class Customeraddressname {
   int customerid;
   String name;
   String city;
-  Null section;
-  Null street;
+  dynamic section;
+  dynamic street;
   String buildingno;
   String floor;
   String flatno;
@@ -245,8 +245,8 @@ class Customerdetails {
   String createAt;
   int balance;
   String username;
-  List<Null> groups;
-  List<Null> userPermissions;
+  List<dynamic> groups;
+  List<dynamic> userPermissions;
 
   Customerdetails(
       {this.id,

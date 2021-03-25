@@ -47,6 +47,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
             ordersList.add(element);
           });
         });
+        ordersList=ordersList.reversed.toList();
       });
     });
   }

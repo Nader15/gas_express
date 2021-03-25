@@ -12,6 +12,7 @@ import 'package:gas_express/ui/Orders/OrdersModel.dart';
 import 'package:gas_express/ui/StaticDataModel.dart';
  import 'package:gas_express/ui/UserAddresses/UserAddresses_Model.dart';
 import 'package:gas_express/ui/Wallet/BallanceModel.dart';
+import 'package:gas_express/ui/Wallet/PointsModel.dart';
 import 'package:gas_express/ui/Wallet/PromoCodeModel.dart';
 import 'package:gas_express/utils/global_vars.dart';
 import 'package:gas_express/utils/toast.dart';
@@ -38,6 +39,7 @@ class Api {
   String user_coupon_code = "user_coupon_code/";
   String myBalance = "my_balance/";
   String check_coupon = "check_coupon/";
+  String usageCount = "usage_count/";
   String customersAddresses = "CustomersAddresses/?customerid=$BaseUderId";
   String basket = "basket/";
   String orders = "Orders/?customerid=$BaseUderId";
@@ -238,9 +240,13 @@ class Api {
         HttpHeaders.authorizationHeader: BaseToken
       },
     );
-    print("completeUrl::: ${completeUrl}");
+    print("completeUrlordersListApi::: ${completeUrl}");
+    print("completeUrlordersListApi::: ${completeUrl}");
+    print("completestatusCode::: ${response.statusCode}");
 
     Map<String, dynamic> dataContent = json.decode(response.body);
+    print("completeUrlordersListApi::: ${dataContent}");
+
     XsProgressHud.hide();
     if (response.statusCode == 200) {
       return OrdersModel.fromJson(json.decode(utf8.decode(response.bodyBytes)));
@@ -402,6 +408,36 @@ class Api {
     if (response.statusCode == 200) {
       print("body :" + json.decode(response.body).toString());
       return PromoCodeModel.fromJson(json.decode(utf8.decode(response.bodyBytes)));
+
+      // return PromoCodeModel.fromJson(dataContent);
+    } else {
+      print("body :" + json.decode(response.body).toString());
+      FN_showToast(
+          '${json.decode(response.body)}', context, Colors.red, scaffoldKey);
+      return false;
+    }
+  }
+  Future getUserCountApi() async {
+    XsProgressHud.show(context);
+
+    final String completeUrl = baseUrl + usageCount ;
+
+    final response = await http.get(
+      completeUrl,
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        HttpHeaders.authorizationHeader: BaseToken
+      },
+    );
+    Map<String, dynamic> dataContent = json.decode(response.body);
+
+    print("completeUrl:: ${completeUrl}");
+    print("dataContent:: ${dataContent}");
+    XsProgressHud.hide();
+    if (response.statusCode == 200) {
+      print("body :" + json.decode(response.body).toString());
+      return PointsModel.fromJson(json.decode(utf8.decode(response.bodyBytes)));
 
       // return PromoCodeModel.fromJson(dataContent);
     } else {
