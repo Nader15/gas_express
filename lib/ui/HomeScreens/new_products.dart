@@ -52,48 +52,50 @@ class _NewProductsState extends State<NewProducts> {
   Widget build(BuildContext context) {
     return Scaffold(
         key: _scaffoldKey,
-        bottomNavigationBar: BaseOrdersList.length==0?Container(height: 2,):Padding(
-          padding: const EdgeInsets.all(20.0),
-          child: InkWell(
-            onTap: (){
-              navigateAndKeepStack(context, OrdersScreen());
+        // bottomNavigationBar: BaseOrdersList.length==0?Container(height: 2,):Padding(
+        //   padding: const EdgeInsets.all(20.0),
+        //   child: InkWell(
+        //     onTap: (){
+        //       navigateAndKeepStack(context, OrdersScreen());
+        //
+        //     },
+        //     child: Container(
+        //       height: 40,
+        //       decoration: BoxDecoration(
+        //           color: redColor, borderRadius: BorderRadius.circular(5)),
+        //       alignment: Alignment.center,
+        //       child: Text(getTranslated(context, "OrderStatus"),
+        //           style: TextStyle(
+        //               fontWeight: FontWeight.w100,
+        //               fontSize: 18,
+        //               color: whiteColor)),
+        //     ),
+        //   ),
+        // ),
+        bottomNavigationBar:StaticUI().bottomNavWiget(context),
 
-            },
-            child: Container(
-              height: 40,
-              decoration: BoxDecoration(
-                  color: redColor, borderRadius: BorderRadius.circular(5)),
-              alignment: Alignment.center,
-              child: Text(getTranslated(context, "OrderStatus"),
-                  style: TextStyle(
-                      fontWeight: FontWeight.w100,
-                      fontSize: 18,
-                      color: whiteColor)),
-            ),
-          ),
-        ),
         body: Padding(
           padding: const EdgeInsets.all(15.0),
           child: SingleChildScrollView(
             child: Column(
               children: [
 
-                CarouselSlider(
-                  options: CarouselOptions(height: 200.0,autoPlay: true,),
-                  items: widget.bannersList.map((i) {
-                    return Builder(
-                      builder: (BuildContext context) {
+            CarouselSlider(
+            options: CarouselOptions(height: 200.0,autoPlay: true,),
+            items:widget. bannersList.map((i) {
+              return Builder(
+                builder: (BuildContext context) {
 
-                         return Container(
-                            width: MediaQuery.of(context).size.width,
-                            margin: EdgeInsets.symmetric(horizontal: 5.0),
+                  return Container(
+                      width: MediaQuery.of(context).size.width,
+                      margin: EdgeInsets.symmetric(horizontal: 5.0),
 
-                            child: Image.network(i.image,fit: BoxFit.cover,)
-                        );
-                      },
-                    );
-                  }).toList(),
-                ),
+                      child: Image.network(i.image,fit: BoxFit.contain,)
+                  );
+                },
+              );
+            }).toList(),
+          ),
                 productsList.length==0?StaticUI().NoDataFoundWidget(context):      GridView.builder(
                   itemCount: productsList.length,
                   physics: NeverScrollableScrollPhysics(),
@@ -132,7 +134,7 @@ class _NewProductsState extends State<NewProducts> {
                               )
                                   : Image.network(
                                 productsList[index].photoUrl,
-                                height: 90,
+                                height: 80,
                               ),
                             ),
                             Column(

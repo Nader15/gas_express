@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gas_express/APiFunctions/Api.dart';
+import 'package:gas_express/ui/Wallet/BallanceModel.dart';
 import 'package:gas_express/ui/Wallet/PromoCodeModel.dart';
 import 'package:gas_express/utils/bottomSheet.dart';
 import 'package:gas_express/utils/colors_file.dart';
@@ -20,7 +21,7 @@ class _MyWalletState extends State<MyWallet> {
   List<PromoCodeItem> promoCodeList=List();
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   TextEditingController promoCodeController = TextEditingController();
-
+  BallanceModel ballanceModel;
 
   @override
   void initState() {
@@ -48,6 +49,20 @@ class _MyWalletState extends State<MyWallet> {
 
           });
         });
+        gettingBallance();
+      });
+    });
+  }
+  gettingBallance() {
+    setState(() {
+
+      Api(context, _scaffoldKey)
+          .getBallanceApi()
+          .then((value) {
+setState(() {
+  ballanceModel = value;
+
+});
       });
     });
   }
@@ -109,6 +124,10 @@ else {
       Navigator.of(context).pop();
       gettingData();
     }
+    else {
+      Navigator.of(context).pop();
+
+    }
   });
 }
             },
@@ -131,84 +150,84 @@ else {
                 child: SingleChildScrollView(
                   child: Column(
                     children: [
-                      // Card(
-                      //   elevation: 10,
-                      //   child: Padding(
-                      //     padding: const EdgeInsets.all(10.0),
-                      //     child: Column(
-                      //       crossAxisAlignment: CrossAxisAlignment.start,
-                      //       children: [
-                      //         Text(
-                      //           getTranslated(context, "YourBalance"),
-                      //           style: TextStyle(
-                      //               fontSize: 20, fontWeight: FontWeight.w100),
-                      //         ),
-                      //         SizedBox(
-                      //           width: 10,
-                      //         ),
-                      //         Center(
-                      //           child: Row(
-                      //             crossAxisAlignment: CrossAxisAlignment.center,
-                      //             mainAxisAlignment: MainAxisAlignment.center,
-                      //             children: [
-                      //               Text(
-                      //                 "30",
-                      //                 style: TextStyle(
-                      //                     fontSize: 40,
-                      //                     color: greenAppColor,
-                      //                     fontWeight: FontWeight.w100),
-                      //               ),
-                      //               SizedBox(
-                      //                 width: 10,
-                      //               ),
-                      //               Text(
-                      //                 getTranslated(context, "SR"),
-                      //                 style: TextStyle(
-                      //                     fontSize: 25,
-                      //                     color: greenAppColor,
-                      //                     fontWeight: FontWeight.w100),
-                      //               ),
-                      //             ],
-                      //           ),
-                      //         ),
-                      //         SizedBox(
-                      //           height: 10,
-                      //         ),
-                      //         FlatButton(
-                      //             onPressed: () {},
-                      //             child: Row(
-                      //               crossAxisAlignment: CrossAxisAlignment.start,
-                      //               mainAxisAlignment: MainAxisAlignment.start,
-                      //               children: [
-                      //                 Container(
-                      //                   height: 22,
-                      //                   width: 22,
-                      //                   alignment: Alignment.center,
-                      //                   decoration: BoxDecoration(
-                      //                       shape: BoxShape.circle,
-                      //                       border:
-                      //                           Border.all(color: greenAppColor)),
-                      //                   child: Icon(
-                      //                     Icons.add,
-                      //                     color: greenAppColor,
-                      //                     size: 20,
-                      //                   ),
-                      //                 ),
-                      //                 SizedBox(
-                      //                   width: 10,
-                      //                 ),
-                      //                 Text(
-                      //                   getTranslated(context, "AddCredit"),
-                      //                   style: TextStyle(
-                      //                       color: greenAppColor,
-                      //                       fontWeight: FontWeight.w100),
-                      //                 ),
-                      //               ],
-                      //             )),
-                      //       ],
-                      //     ),
-                      //   ),
-                      // ),
+                      Card(
+                        elevation: 10,
+                        child: Padding(
+                          padding: const EdgeInsets.all(10.0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                getTranslated(context, "YourBalance"),
+                                style: TextStyle(
+                                    fontSize: 20, fontWeight: FontWeight.w100),
+                              ),
+                              SizedBox(
+                                width: 10,
+                              ),
+                              Center(
+                                child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      ballanceModel==null?"":   "${ballanceModel.balance??""}",
+                                      style: TextStyle(
+                                          fontSize: 40,
+                                          color: greenAppColor,
+                                          fontWeight: FontWeight.w100),
+                                    ),
+                                    SizedBox(
+                                      width: 10,
+                                    ),
+                                    Text(
+                                      getTranslated(context, "SR"),
+                                      style: TextStyle(
+                                          fontSize: 25,
+                                          color: greenAppColor,
+                                          fontWeight: FontWeight.w100),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              SizedBox(
+                                height: 10,
+                              ),
+                              // FlatButton(
+                              //     onPressed: () {},
+                              //     child: Row(
+                              //       crossAxisAlignment: CrossAxisAlignment.start,
+                              //       mainAxisAlignment: MainAxisAlignment.start,
+                              //       children: [
+                              //         Container(
+                              //           height: 22,
+                              //           width: 22,
+                              //           alignment: Alignment.center,
+                              //           decoration: BoxDecoration(
+                              //               shape: BoxShape.circle,
+                              //               border:
+                              //                   Border.all(color: greenAppColor)),
+                              //           child: Icon(
+                              //             Icons.add,
+                              //             color: greenAppColor,
+                              //             size: 20,
+                              //           ),
+                              //         ),
+                              //         SizedBox(
+                              //           width: 10,
+                              //         ),
+                              //         Text(
+                              //           getTranslated(context, "AddCredit"),
+                              //           style: TextStyle(
+                              //               color: greenAppColor,
+                              //               fontWeight: FontWeight.w100),
+                              //         ),
+                              //       ],
+                              //     )),
+                            ],
+                          ),
+                        ),
+                      ),
                       Card(
                         elevation: 10,
                         child: Padding(
@@ -256,7 +275,8 @@ else {
                                           color: greenAppColor, fontSize: 20),
                                     ),
                                     Text(
-                                      "${promoCodeList[index].expiryDate.split("T")[0]}",
+                                    promoCodeList[index].expiryDate==null?"----":  promoCodeList[index].expiryDate.split("T")[0],
+                                      // "${promoCodeList[index].expiryDate.split("T")[0]}",
                                       style: TextStyle(
                                           color: greenAppColor, fontSize: 20),
                                     ),

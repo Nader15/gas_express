@@ -11,6 +11,7 @@ import 'package:gas_express/ui/Notifications/NotificationModel.dart';
 import 'package:gas_express/ui/Orders/OrdersModel.dart';
 import 'package:gas_express/ui/StaticDataModel.dart';
  import 'package:gas_express/ui/UserAddresses/UserAddresses_Model.dart';
+import 'package:gas_express/ui/Wallet/BallanceModel.dart';
 import 'package:gas_express/ui/Wallet/PromoCodeModel.dart';
 import 'package:gas_express/utils/global_vars.dart';
 import 'package:gas_express/utils/toast.dart';
@@ -35,6 +36,7 @@ class Api {
   String forgetPassword = "ForgetPassword/";
   String verifyCode = "VerifyCode/";
   String user_coupon_code = "user_coupon_code/";
+  String myBalance = "my_balance/";
   String check_coupon = "check_coupon/";
   String customersAddresses = "CustomersAddresses/?customerid=$BaseUderId";
   String basket = "basket/";
@@ -124,7 +126,9 @@ class Api {
     XsProgressHud.hide();
 
     if (response.statusCode == 200) {
-      return ProductsModel.fromJson(json.decode(response.body));
+      return ProductsModel.fromJson(json.decode(utf8.decode(response.bodyBytes)));
+
+      // return ProductsModel.fromJson(json.decode(response.body));
       // return EventDetailsModel.fromJson(json.decode(response.body));
 
     } else {
@@ -181,7 +185,9 @@ class Api {
     XsProgressHud.hide();
 
     if (response.statusCode == 200) {
-      return BannersModel.fromJson(json.decode(response.body));
+      return BannersModel.fromJson(json.decode(utf8.decode(response.bodyBytes)));
+
+      // return BannersModel.fromJson(json.decode(response.body));
       // return EventDetailsModel.fromJson(json.decode(response.body));
 
     } else {
@@ -209,7 +215,9 @@ class Api {
     XsProgressHud.hide();
 
     if (response.statusCode == 200) {
-      return NotificationModel.fromJson(json.decode(response.body));
+      return NotificationModel.fromJson(json.decode(utf8.decode(response.bodyBytes)));
+
+      // return NotificationModel.fromJson(json.decode(response.body));
       // return EventDetailsModel.fromJson(json.decode(response.body));
 
     } else {
@@ -230,12 +238,15 @@ class Api {
         HttpHeaders.authorizationHeader: BaseToken
       },
     );
+    print("completeUrl::: ${completeUrl}");
+
     Map<String, dynamic> dataContent = json.decode(response.body);
-print("completeUrl::: ${completeUrl}");
     XsProgressHud.hide();
     if (response.statusCode == 200) {
+      return OrdersModel.fromJson(json.decode(utf8.decode(response.bodyBytes)));
+
       print("body :" + json.decode(response.body).toString());
-      return OrdersModel.fromJson(dataContent);
+      // return OrdersModel.fromJson(dataContent);
     } else {
       print("body :" + json.decode(response.body).toString());
       FN_showToast(
@@ -359,7 +370,9 @@ print("completeUrl::: ${completeUrl}");
     XsProgressHud.hide();
     if (response.statusCode == 200) {
       print("body :" + json.decode(response.body).toString());
-      return UserAddresses.fromJson(dataContent);
+      return UserAddresses.fromJson(json.decode(utf8.decode(response.bodyBytes)));
+
+      // return UserAddresses.fromJson(dataContent);
     } else {
       print("body :" + json.decode(response.body).toString());
       FN_showToast(
@@ -388,7 +401,9 @@ print("completeUrl::: ${completeUrl}");
     XsProgressHud.hide();
     if (response.statusCode == 200) {
       print("body :" + json.decode(response.body).toString());
-      return PromoCodeModel.fromJson(dataContent);
+      return PromoCodeModel.fromJson(json.decode(utf8.decode(response.bodyBytes)));
+
+      // return PromoCodeModel.fromJson(dataContent);
     } else {
       print("body :" + json.decode(response.body).toString());
       FN_showToast(
@@ -456,6 +471,35 @@ print("completeUrl::: ${completeUrl}");
     }
   }
 
+  Future getBallanceApi() async {
+    XsProgressHud.show(context);
+
+    final String completeUrl = baseUrl + myBalance ;
+
+    final response = await http.get(
+        completeUrl,
+        headers: {
+          HttpHeaders.authorizationHeader: BaseToken
+        },
+     );
+
+     print("dataContentaddPromoCodeApi:: ${response.body}");
+    print("dataContentaddPromoCodeApi:: ${response.statusCode}");
+    Map<String, dynamic> dataContent = json.decode(response.body);
+
+    XsProgressHud.hide();
+    if (response.statusCode == 200) {
+      print("body :" + json.decode(response.body).toString());
+      return BallanceModel.fromJson(json.decode(utf8.decode(response.bodyBytes)));
+
+      // return true;
+    } else {
+      print("body :" + json.decode(response.body).toString());
+      FN_showToast(
+          '${json.decode(response.body)}', context, Colors.red, scaffoldKey);
+      return false;
+    }
+  }
 
   Future addPromoCodeApi(
       Map data) async {
@@ -562,10 +606,10 @@ print("completeUrl::: ${completeUrl}");
       body: userToJson,
     );
 
+    print("statusCodestatusCode:: ${data}");
     print("statusCodestatusCode:: ${response.statusCode}");
     print("statusCodestatusCode:: ${response.body}");
-    Map<String, dynamic> dataContent = json.decode(response.body);
-    XsProgressHud.hide();
+     XsProgressHud.hide();
     if (response.statusCode == 200) {
       print("body :" + json.decode(response.body).toString());
       return true;

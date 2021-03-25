@@ -435,7 +435,7 @@ bool FawreyCheck=false;
             SizedBox(
               height: 10,
             ),
-            Row(
+            promoCodeController.text.isEmpty?Container():    Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [

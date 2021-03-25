@@ -1,8 +1,12 @@
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:gas_express/ui/HomeScreens/BannersModel.dart';
 import 'package:gas_express/ui/HomeScreens/home_page.dart';
 import 'package:gas_express/ui/Cart/cart.dart';
+import 'package:gas_express/ui/Orders/OrdersScreen.dart';
+import 'package:gas_express/utils/colors_file.dart';
 import 'package:gas_express/utils/global_vars.dart';
 import 'package:gas_express/utils/navigator.dart';
 import 'package:gas_express/utils/size_config.dart';
@@ -227,6 +231,38 @@ class StaticUI {
             child: Center(child: Text(  getTranslated(context, "noDataFound")))));
   }
 
+
+bottomNavWiget(BuildContext context){
+    return Padding(
+      padding: const EdgeInsets.all(20.0),
+      child: InkWell(onTap: (){
+        if(cartList.length==0){
+          navigateAndKeepStack(context, OrdersScreen());
+
+        }
+        else {
+          navigateAndKeepStack(context, Cart());
+
+        }
+
+      },
+        child: Container(
+          height: 40,
+          decoration: BoxDecoration(
+              color: redColor, borderRadius: BorderRadius.circular(5)),
+          alignment: Alignment.center,
+          child: cartList.length!=0?Text(getTranslated(context, "continueBuying"),   style: TextStyle(
+              fontWeight: FontWeight.w100,
+              fontSize: 18,
+              color: whiteColor)):Text(getTranslated(context, "OrderStatus"),
+              style: TextStyle(
+                  fontWeight: FontWeight.w100,
+                  fontSize: 18,
+                  color: whiteColor)),
+        ),
+      ),
+    );
+}
   closeApp(BuildContext context) {
     showDialog(
         context: context,
