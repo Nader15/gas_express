@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:gas_express/APiFunctions/Api.dart';
 import 'package:gas_express/APiFunctions/sharedPref/SharedPrefClass.dart';
+import 'package:gas_express/ui/Cart/cart.dart';
  import 'package:gas_express/ui/Orders/OrdersModel.dart';
  import 'package:gas_express/ui/UserAddresses/my_addresses.dart';
 import 'package:gas_express/ui/Orders/order_status.dart';
@@ -129,7 +130,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
                 InkWell(
                   onTap: () {
 
-                    navigateAndClearStack(context, OrderDetails(orderItem));
+                    navigateAndKeepStack(context, OrderDetails(orderItem));
                     // navigateAndClearStack(context, OrderDetailsScreen(orderItem));
 
                   },
@@ -150,24 +151,26 @@ class _OrdersScreenState extends State<OrdersScreen> {
                 ),
                 Row(
                   children: [
-                    // InkWell(
-                    //   onTap: () {},
-                    //   child: Container(
-                    //     padding: EdgeInsets.all(7),
-                    //     decoration: BoxDecoration(
-                    //         borderRadius:
-                    //         BorderRadius.circular(5),
-                    //         border:
-                    //         Border.all(color: Colors.blue)),
-                    //     alignment: Alignment.center,
-                    //     child: Text(
-                    //         getTranslated(context, "EditOrder"),
-                    //         style: TextStyle(
-                    //             fontWeight: FontWeight.w100,
-                    //             fontSize: 13,
-                    //             color: Colors.blue)),
-                    //   ),
-                    // ),
+                    InkWell(
+                      onTap: () {
+                        navigateAndKeepStack(context, Cart());
+                      },
+                      child: Container(
+                        padding: EdgeInsets.all(7),
+                        decoration: BoxDecoration(
+                            borderRadius:
+                            BorderRadius.circular(5),
+                            border:
+                            Border.all(color: Colors.blue)),
+                        alignment: Alignment.center,
+                        child: Text(
+                            getTranslated(context, "EditOrder"),
+                            style: TextStyle(
+                                fontWeight: FontWeight.w100,
+                                fontSize: 13,
+                                color: Colors.blue)),
+                      ),
+                    ),
                     SizedBox(
                       width: 10,
                     ),
@@ -193,13 +196,13 @@ class _OrdersScreenState extends State<OrdersScreen> {
                     SizedBox(
                       width: 10,
                     ),
-                    // InkWell(
-                    //   onTap: () {},
-                    //   child: Icon(
-                    //     Icons.alternate_email,
-                    //     color: Colors.blue,
-                    //   ),
-                    // ),
+                    InkWell(
+                      onTap: () {},
+                      child: Icon(
+                        Icons.alternate_email,
+                        color: Colors.blue,
+                      ),
+                    ),
                   ],
                 ),
               ],

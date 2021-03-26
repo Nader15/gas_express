@@ -73,24 +73,37 @@ bool FawreyCheck=false;
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: cartList.length == 0
           ? Container()
-          : ElevatedButton(
-              style: ButtonStyle(
-                backgroundColor:
-                    MaterialStateProperty.all<Color>(greenAppColor),
-              ),
-              onPressed: () {
+          : Padding(
+        padding: const EdgeInsets.all(30.0),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Container(
+              height: 40,
+              width: MediaQuery.of(context).size.width/3.5,
+              decoration: BoxDecoration(
+                  color: redColor, borderRadius: BorderRadius.circular(5)),
+              alignment: Alignment.center,
+              child: Text(" ${total} " + getTranslated(context, "SR"),
+                  style: TextStyle(
+                      fontWeight: FontWeight.w100,
+                      fontSize: 18,
+                      color: whiteColor)),
+            ),
+            InkWell(
+              onTap: (){
 
                 print("DaySelected:: ${DaySelected}");
                 if (selectedAddressString.isEmpty) {
                   FN_showToast(getTranslated(context, "pleaseAddAddress"),
                       context, Colors.red, _scaffoldKey);
                 } else if (delivaryTime ==
-                        getTranslated(context, "DelivaryTime") ||
+                    getTranslated(context, "DelivaryTime") ||
                     Timeofreceipt == getTranslated(context, "Timeofreceipt")) {
                   FN_showToast(getTranslated(context, "pleaseSelectTime"),
                       context, Colors.red, _scaffoldKey);
                 } else if (  DaySelected==translator.translate('Day')&&
-                        FawreyCheck==false) {
+                    FawreyCheck==false) {
                   print("DaySelected:enterded }");
 
                   FN_showToast(getTranslated(context, "pleaseSelectDay"),
@@ -147,22 +160,28 @@ bool FawreyCheck=false;
                       setState(() {
                         cartList.clear();
                       });
-                      navigateAndClearStack(context, OrdersScreen());
+                      navigateAndKeepStack(context, OrdersScreen());
 
                     }
                   });
                 }
               },
               child: Container(
+                width: MediaQuery.of(context).size.width/2,
+                height: 40,
+                decoration: BoxDecoration(
+                    color: Colors.blue, borderRadius: BorderRadius.circular(5)),
                 alignment: Alignment.center,
-                width: MediaQuery.of(context).size.width,
-                height: 50,
-                child: Text(
-                  getTranslated(context, "confirm"),
-                  style: TextStyle(fontWeight: FontWeight.w400, fontSize: 20),
-                ),
+                child: Text(getTranslated(context, "confirm"),
+                    style: TextStyle(
+                        fontWeight: FontWeight.w100,
+                        fontSize: 18,
+                        color: whiteColor)),
               ),
             ),
+          ],
+        ),
+      ),
       drawer: drawerList(),
       appBar: AppBar(
         backgroundColor: primaryAppColor,

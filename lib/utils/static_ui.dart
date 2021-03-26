@@ -24,10 +24,10 @@ class StaticUI {
           Icons.shopping_cart,
           size: 20.0,
         ), onPressed: () {
-          if(cartList.length!=0){
+          // if(cartList.length!=0){
             navigateAndKeepStack(context, Cart());
 
-          }
+          // }
 
           // navigateAndKeepStack(context, TestProducts());
         }),
@@ -249,7 +249,7 @@ bottomNavWiget(BuildContext context){
         child: Container(
           height: 40,
           decoration: BoxDecoration(
-              color: redColor, borderRadius: BorderRadius.circular(5)),
+              color: cartList.length==0?redColor:greenAppColor, borderRadius: BorderRadius.circular(5)),
           alignment: Alignment.center,
           child: cartList.length!=0?Text(getTranslated(context, "continueBuying"),   style: TextStyle(
               fontWeight: FontWeight.w100,

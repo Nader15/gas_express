@@ -11,11 +11,11 @@ import 'package:gas_express/utils/global_vars.dart';
 import 'package:gas_express/utils/navigator.dart';
 import 'package:localize_and_translate/localize_and_translate.dart';
 
-
 class OrderDetails extends StatefulWidget {
   OrderItem orderItem;
 
   OrderDetails(this.orderItem);
+
   @override
   _OrderDetailsState createState() => _OrderDetailsState();
 }
@@ -79,8 +79,7 @@ class _OrderDetailsState extends State<OrderDetails> {
                                 height: 10,
                               ),
                               Center(
-                                child: Text(
-                                    widget.orderItem.orderstatus,
+                                child: Text(widget.orderItem.orderstatus,
                                     style: TextStyle(
                                         fontWeight: FontWeight.w100,
                                         fontSize: 30,
@@ -118,11 +117,13 @@ class _OrderDetailsState extends State<OrderDetails> {
                             ListView.builder(
                                 physics: NeverScrollableScrollPhysics(),
                                 shrinkWrap: true,
-                                itemCount: widget.orderItem.orderproductDetails.length,
+                                itemCount:
+                                    widget.orderItem.orderproductDetails.length,
                                 itemBuilder: (BuildContext context, int index) {
                                   return Column(
                                     children: [
-                                      OrderWidget(widget.orderItem.orderproductDetails[index]),
+                                      OrderWidget(widget.orderItem
+                                          .orderproductDetails[index]),
                                       Divider()
                                     ],
                                   );
@@ -173,21 +174,25 @@ class _OrderDetailsState extends State<OrderDetails> {
                                     SizedBox(
                                       width: 10,
                                     ),
-                                    widget.orderItem.orderstatus =="new"?
-                                    InkWell(onTap: (){
-                                      Api(context, _scaffoldKey).cancelOrder(widget.orderItem.id).then((value) {
-
-                                        if(value){
-                                          navigateAndKeepStack(context, HomePage());
-
-                                        }
-                                      });
-                                    },
-                                      child: Icon(
-                                        Icons.delete_forever,
-                                        color: redColor,
-                                      ),
-                                    ):Container(),
+                                    widget.orderItem.orderstatus == "new"
+                                        ? InkWell(
+                                            onTap: () {
+                                              Api(context, _scaffoldKey)
+                                                  .cancelOrder(
+                                                      widget.orderItem.id)
+                                                  .then((value) {
+                                                if (value) {
+                                                  navigateAndKeepStack(
+                                                      context, HomePage());
+                                                }
+                                              });
+                                            },
+                                            child: Icon(
+                                              Icons.delete_forever,
+                                              color: redColor,
+                                            ),
+                                          )
+                                        : Container(),
                                     SizedBox(
                                       width: 10,
                                     ),
@@ -212,12 +217,12 @@ class _OrderDetailsState extends State<OrderDetails> {
                             SizedBox(
                               height: 10,
                             ),
-                            // Container(
-                            //   height: 120,
-                            //   decoration: BoxDecoration(
-                            //       color: greyPrimaryColor.withOpacity(.3),
-                            //       borderRadius: BorderRadius.circular(5)),
-                            // )
+                            Container(
+                              height: 120,
+                              decoration: BoxDecoration(
+                                  color: greyPrimaryColor.withOpacity(.3),
+                                  borderRadius: BorderRadius.circular(5)),
+                            )
                           ],
                         ),
                       ),
@@ -272,18 +277,29 @@ class _OrderDetailsState extends State<OrderDetails> {
       ),
     );
   }
-  Widget OrderWidget(OrderproductDetails orderproductDetails){
+
+  Widget OrderWidget(OrderproductDetails orderproductDetails) {
     return Container(
-      padding: EdgeInsets.only(left: 20,right: 20),
+      padding: EdgeInsets.only(left: 20, right: 20),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,crossAxisAlignment: CrossAxisAlignment.center,children: [
-        Expanded(child: Text(translator.currentLanguage=='ar'?orderproductDetails.productnameAr:orderproductDetails.productnameEn)),
-
-        Expanded(child: Text(orderproductDetails.quantity.toString())),
-        Expanded(child:Image.network(orderproductDetails.photo,height: 100,width: 20,)),
-      ],),);
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Expanded(
+              child: Text(translator.currentLanguage == 'ar'
+                  ? orderproductDetails.productnameAr
+                  : orderproductDetails.productnameEn)),
+          Expanded(child: Text(orderproductDetails.quantity.toString())),
+          Expanded(
+              child: Image.network(
+            orderproductDetails.photo,
+            height: 100,
+            width: 40,
+          )),
+        ],
+      ),
+    );
   }
-
 }
 
 TextStyle _titleTextStyle =

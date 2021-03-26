@@ -57,101 +57,95 @@ class _ProductsState extends State<Products> {
     return Scaffold(
         key: _scaffoldKey,
         bottomNavigationBar:StaticUI().bottomNavWiget(context),
-        body: Padding(
-          padding: const EdgeInsets.all(15.0),
-          child: SingleChildScrollView(
-            child: Column(
+        body: SingleChildScrollView(
+          child: Column(
+            children: [
+          CarouselSlider(
+          options: CarouselOptions(height: 200.0,autoPlay: true),
+          items:widget. bannersList.map((i) {
+            return Builder(
+              builder: (BuildContext context) {
+                return Container(
+                    width: MediaQuery.of(context).size.width,
+                    margin: EdgeInsets.symmetric(horizontal: 5.0),
+
+                    child: Image.network(i.image,fit: BoxFit.contain,)
+                );
+              },
+            );
+          }).toList(),
+        ),                productsList.length==0?StaticUI().NoDataFoundWidget(context):       GridView.builder(
+                itemCount: productsList.length,
+                physics: NeverScrollableScrollPhysics(),
+                shrinkWrap: true,
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2,
+                  childAspectRatio: .6,
+                  mainAxisSpacing: 20,
+                  crossAxisSpacing: 20,
+                ),
+                itemBuilder: (context, index) {
+                  return Card(
+                    child: Container(
+                      padding: EdgeInsets.all(10),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Container(
+                            padding: EdgeInsets.all(5),
+                            decoration: BoxDecoration(
+                                border: Border.all(color: greenAppColor)),
+                            child: Text(
+                              " ${productsList[index].unitprice} " +
+                                  getTranslated(context, "Currency"),
+                              // "15.5 " + getTranslated(context, "Currency"),
+                              style: TextStyle(color: greenAppColor),
+                            ),
+                          ),
+                          Center(
+                            child: productsList[index].imageurl == null ||
+                                    productsList[index].imageurl.isEmpty
+                                ? Image.asset(
+                                    "assets/images/tube.png",
+                                    width: 90,
+                                  )
+                                : Image.network(
+                                     productsList[index].photoUrl,
+                                    height: 80,
+                                  ),
+                          ),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(translator.currentLanguage == 'ar'
+                                  ? productsList[index].productnameAr
+                                  : "${productsList[index].productnameEn}"),
+                              // Text("منظم غاز 50 مل بار"),
 
 
-              children: [
-            CarouselSlider(
-            options: CarouselOptions(height: 200.0,autoPlay: true,),
-            items:widget. bannersList.map((i) {
-              return Builder(
-                builder: (BuildContext context) {
+                              Container(
+                                  height: 40,
+                                  margin: EdgeInsets.only(top: 20),
+                                  child: AddButtonWidget(productsList[index]))
 
-                  return Container(
-                      width: MediaQuery.of(context).size.width,
-                      margin: EdgeInsets.symmetric(horizontal: 5.0),
-
-                      child: Image.network(i.image,fit: BoxFit.contain,)
+                              // Row(children: [
+                              //   Expanded(child: Container(color: Colors.green,width: 30,height: 30,child: Center(child: Text("-")),)),
+                              //
+                              //   Expanded(child: Container(width: 50,height: 50,child: Center(child: Text("2")),)),
+                              //   Expanded(child: Container(color: Colors.green,width: 30,height: 30,child: Center(child: Text("+")),)),
+                              //
+                              // ],),
+                            ],
+                          )
+                        ],
+                      ),
+                    ),
                   );
                 },
-              );
-            }).toList(),
-          ),                productsList.length==0?StaticUI().NoDataFoundWidget(context):       GridView.builder(
-                  itemCount: productsList.length,
-                  physics: NeverScrollableScrollPhysics(),
-                  shrinkWrap: true,
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2,
-                    childAspectRatio: .6,
-                    mainAxisSpacing: 20,
-                    crossAxisSpacing: 20,
-                  ),
-                  itemBuilder: (context, index) {
-                    return Card(
-                      child: Container(
-                        padding: EdgeInsets.all(10),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Container(
-                              padding: EdgeInsets.all(5),
-                              decoration: BoxDecoration(
-                                  border: Border.all(color: greenAppColor)),
-                              child: Text(
-                                " ${productsList[index].unitprice} " +
-                                    getTranslated(context, "Currency"),
-                                // "15.5 " + getTranslated(context, "Currency"),
-                                style: TextStyle(color: greenAppColor),
-                              ),
-                            ),
-                            Center(
-                              child: productsList[index].imageurl == null ||
-                                      productsList[index].imageurl.isEmpty
-                                  ? Image.asset(
-                                      "assets/images/tube.png",
-                                      width: 90,
-                                    )
-                                  : Image.network(
-                                       productsList[index].photoUrl,
-                                      height: 80,
-                                    ),
-                            ),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(translator.currentLanguage == 'ar'
-                                    ? productsList[index].productnameAr
-                                    : "${productsList[index].productnameEn}"),
-                                // Text("منظم غاز 50 مل بار"),
-
-
-                                Container(
-                                    height: 40,
-                                    margin: EdgeInsets.only(top: 20),
-                                    child: AddButtonWidget(productsList[index]))
-
-                                // Row(children: [
-                                //   Expanded(child: Container(color: Colors.green,width: 30,height: 30,child: Center(child: Text("-")),)),
-                                //
-                                //   Expanded(child: Container(width: 50,height: 50,child: Center(child: Text("2")),)),
-                                //   Expanded(child: Container(color: Colors.green,width: 30,height: 30,child: Center(child: Text("+")),)),
-                                //
-                                // ],),
-                              ],
-                            )
-                          ],
-                        ),
-                      ),
-                    );
-                  },
-                ),
-              ],
-            ),
+              ),
+            ],
           ),
         ));
   }
