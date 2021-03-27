@@ -73,112 +73,183 @@ sendAddAddressRequest(Map data,BuildContext context){
         context: context,
         builder: (BuildContext context1) => Dialog(
               child: Container(
-                height: MediaQuery.of(context).size.height / 1.5,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: <Widget>[
-                    Container(
-                      width: MediaQuery.of(context).size.width / 1.3,
-                      child: TextField(
-                        controller: _buildingNoController,
-                        textAlign: translator.currentLanguage == 'ar'
-                            ? TextAlign.right
-                            : TextAlign.left,
-                        keyboardType: TextInputType.number,
-                        decoration: InputDecoration(
-                          enabledBorder: UnderlineInputBorder(
-                              borderSide: BorderSide(color: grey)),
-                          focusedBorder: UnderlineInputBorder(
-                              borderSide: BorderSide(color: grey)),
-                          labelText: getTranslated(context, "buildingNo"),
-                          labelStyle: TextStyle(color: grey),
-                        ),
-                      ),
-                    ),
-                    Padding(padding: EdgeInsets.only(top: 20.0)),
-                    Container(
-                      width: MediaQuery.of(context).size.width / 1.3,
-                      child: TextField(
-                        controller: _flatNoController,
-                        textAlign: translator.currentLanguage == 'ar'
-                            ? TextAlign.right
-                            : TextAlign.left,
-                        keyboardType: TextInputType.number,
-                        decoration: InputDecoration(
-                          enabledBorder: UnderlineInputBorder(
-                              borderSide: BorderSide(color: grey)),
-                          focusedBorder: UnderlineInputBorder(
-                              borderSide: BorderSide(color: grey)),
-                          labelText: getTranslated(context, "flatNo"),
-                          // labelText: "رقم الشقه",
-                          labelStyle: TextStyle(color: grey),
-                        ),
-                      ),
-                    ),
-                    Padding(padding: EdgeInsets.only(top: 20.0)),
-                    Container(
-                      width: MediaQuery.of(context).size.width / 1.3,
-                      child: TextField(
-                        controller: _floorController,
-                        textAlign: translator.currentLanguage == 'ar'
-                            ? TextAlign.right
-                            : TextAlign.left,
-                        keyboardType: TextInputType.number,
-                        decoration: InputDecoration(
-                          enabledBorder: UnderlineInputBorder(
-                              borderSide: BorderSide(color: grey)),
-                          focusedBorder: UnderlineInputBorder(
-                              borderSide: BorderSide(color: grey)),
-                          labelText: getTranslated(context, "floorNo"),
-                          // labelText: "رقم الطابق",
-                          labelStyle: TextStyle(color: grey),
-                        ),
-                      ),
-                    ),
-                    Padding(padding: EdgeInsets.only(top: 20.0)),
-                    Container(
-                      width: MediaQuery.of(context).size.width / 2,
-                      child: ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            primary: primaryAppColor, // background
-                            onPrimary: Colors.white, // foreground
+                height: MediaQuery.of(context).size.height / 2.5,
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 30,right: 30),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: <Widget>[
+
+                      new Container(
+                        decoration: new BoxDecoration(
+                          shape: BoxShape.rectangle,
+                          border: new Border.all(
+                            color: Colors.black,
+                            width: 1.0,
                           ),
-                          onPressed: () {
-                            Map data={};
-                            if (_image == null) {
+                        ),
+                        child: new TextField(
+
+                          // textAlign: TextAlign.center,
+                          controller: _buildingNoController,
+
+                          decoration: new InputDecoration(
+                            contentPadding: EdgeInsets.only(left: 20,right: 20),
+                            hintText: translator.translate('buildingNo'),
+                            border: InputBorder.none,
+                          ),
+                        ),
+                      ),
+                      // Container(
+                      //   width: MediaQuery.of(context).size.width / 1.3,
+                      //   child: TextField(
+                      //     controller: _buildingNoController,
+                      //     textAlign: translator.currentLanguage == 'ar'
+                      //         ? TextAlign.right
+                      //         : TextAlign.left,
+                      //     keyboardType: TextInputType.number,
+                      //     decoration: InputDecoration(
+                      //       enabledBorder: UnderlineInputBorder(
+                      //           borderSide: BorderSide(color: grey)),
+                      //       focusedBorder: UnderlineInputBorder(
+                      //           borderSide: BorderSide(color: grey)),
+                      //       labelText: getTranslated(context, "buildingNo"),
+                      //       labelStyle: TextStyle(color: grey),
+                      //     ),
+                      //   ),
+                      // ),
+                      Padding(padding: EdgeInsets.only(top: 20.0)),
+                      new Container(
+                        decoration: new BoxDecoration(
+                          shape: BoxShape.rectangle,
+                          border: new Border.all(
+                            color: Colors.black,
+                            width: 1.0,
+                          ),
+                        ),
+                        child: new TextField(
+
+                          // textAlign: TextAlign.center,
+                          controller: _flatNoController,
+
+                          decoration: new InputDecoration(
+                            contentPadding: EdgeInsets.only(left: 20,right: 20),
+                            hintText: translator.translate('flatNo'),
+                            border: InputBorder.none,
+                          ),
+                        ),
+                      ),
+                      // Container(
+                      //   width: MediaQuery.of(context).size.width / 1.3,
+                      //   child: TextField(
+                      //     controller: _flatNoController,
+                      //     textAlign: translator.currentLanguage == 'ar'
+                      //         ? TextAlign.right
+                      //         : TextAlign.left,
+                      //     keyboardType: TextInputType.number,
+                      //     decoration: InputDecoration(
+                      //       enabledBorder: UnderlineInputBorder(
+                      //           borderSide: BorderSide(color: grey)),
+                      //       focusedBorder: UnderlineInputBorder(
+                      //           borderSide: BorderSide(color: grey)),
+                      //       labelText: getTranslated(context, "flatNo"),
+                      //       // labelText: "رقم الشقه",
+                      //       labelStyle: TextStyle(color: grey),
+                      //     ),
+                      //   ),
+                      // ),
+                      Padding(padding: EdgeInsets.only(top: 20.0)),
+
+                      new Container(
+                        decoration: new BoxDecoration(
+                          shape: BoxShape.rectangle,
+                          border: new Border.all(
+                            color: Colors.black,
+                            width: 1.0,
+                          ),
+                        ),
+                        child: new TextField(
+
+                          // textAlign: TextAlign.center,
+                          controller: _floorController,
+
+                          decoration: new InputDecoration(
+                            contentPadding: EdgeInsets.only(left: 20,right: 20),
+                            hintText: translator.translate('floorNo'),
+                            border: InputBorder.none,
+                          ),
+                        ),
+                      ),
+                      // Container(
+                      //   width: MediaQuery.of(context).size.width / 1.3,
+                      //   child: TextField(
+                      //     controller: _floorController,
+                      //     textAlign: translator.currentLanguage == 'ar'
+                      //         ? TextAlign.right
+                      //         : TextAlign.left,
+                      //     keyboardType: TextInputType.number,
+                      //     decoration: InputDecoration(
+                      //       enabledBorder: UnderlineInputBorder(
+                      //           borderSide: BorderSide(color: grey)),
+                      //       focusedBorder: UnderlineInputBorder(
+                      //           borderSide: BorderSide(color: grey)),
+                      //       labelText: getTranslated(context, "floorNo"),
+                      //       // labelText: "رقم الطابق",
+                      //       labelStyle: TextStyle(color: grey),
+                      //     ),
+                      //   ),
+                      // ),
+                      Padding(padding: EdgeInsets.only(top: 20.0)),
+                      InkWell(
+                        onTap: (){
+                          Map data={};
+                          if (_image == null) {
+                            data = {
+                              "name": "${UserAddress}",
+                              "buildingno": _buildingNoController.text,
+                              "floor": _floorController.text,
+                              "flatno": _flatNoController.text,
+                              "GPS": "${widget.userLat},${widget.userLong}",
+                              "customerid": BaseUderId
+                            };
+                            sendAddAddressRequest(data,context1);
+
+                          } else {
+
+                            Api(context1,_scaffoldKey).uploadImageToApi(_image).then((value) {
                               data = {
                                 "name": "${UserAddress}",
                                 "buildingno": _buildingNoController.text,
                                 "floor": _floorController.text,
                                 "flatno": _flatNoController.text,
                                 "GPS": "${widget.userLat},${widget.userLong}",
+                                "buildingphotoid": "$value",
                                 "customerid": BaseUderId
                               };
                               sendAddAddressRequest(data,context1);
+                            });
 
-                            } else {
+                          }
+                          print("datadata:: ${data}");
+                        },
+                        child: Container(
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(5),
+                              color:  primaryAppColor),
+                          width: MediaQuery.of(context).size.width / 1.2,
+                          height: 40,
+                          child: Center(
+                              child: Text(
+                                translator.translate('save'),
+                                textScaleFactor: 1,
+                                style: TextStyle(color: Colors.white),
+                              )),
+                        ),
+                      )
 
-                              Api(context1,_scaffoldKey).uploadImageToApi(_image).then((value) {
-                                data = {
-                                  "name": "${UserAddress}",
-                                  "buildingno": _buildingNoController.text,
-                                  "floor": _floorController.text,
-                                  "flatno": _flatNoController.text,
-                                  "GPS": "${widget.userLat},${widget.userLong}",
-                                  "buildingphotoid": "$value",
-                                  "customerid": BaseUderId
-                                };
-                                sendAddAddressRequest(data,context1);
-                              });
-
-                            }
-                            print("datadata:: ${data}");
-
-                          },
-                          child: Text("حفظ")),
-                    )
-                  ],
+                    ],
+                  ),
                 ),
               ),
             ));

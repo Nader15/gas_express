@@ -39,6 +39,7 @@
   "Day": "Day",
   "Time": "Time",
   "Today": "Same day",
+  "save": " Save ",
   "Tomorrow": "Duration one day",
   "AfterTomorrow": "Duration 2 days",
   "AfterAfterTomorrow": "Duration 3 days",

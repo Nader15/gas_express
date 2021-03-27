@@ -545,7 +545,7 @@ class _CartState extends State<Cart> {
                     SizedBox(
                       height: 20,
                     ),
-                    new Container(
+                      Container(
                       decoration: new BoxDecoration(
                         shape: BoxShape.rectangle,
                         border: new Border.all(
