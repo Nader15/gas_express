@@ -92,7 +92,7 @@ class _CartState extends State<Cart> {
                         color: redColor,
                         borderRadius: BorderRadius.circular(5)),
                     alignment: Alignment.center,
-                    child: Text(" ${total} " + getTranslated(context, "SR"),
+                    child: Text(" ${priceAfterPromoCode==null?total:priceAfterPromoCode} " + getTranslated(context, "SR"),
                         style: TextStyle(
                             fontWeight: FontWeight.w100,
                             fontSize: 18,
