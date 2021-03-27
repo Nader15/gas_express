@@ -45,4 +45,5 @@ Future getDataFromShared()async{
   print("token:: ${token}");
   print("selectedAddressId:: ${selectedAddressId}");
   print("selectedAddressString:: ${selectedAddressString}");
+  print("sBasePhone:: ${BasePhone}");
 }

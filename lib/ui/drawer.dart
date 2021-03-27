@@ -14,7 +14,6 @@ import 'package:localize_and_translate/localize_and_translate.dart';
 import 'package:share/share.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import 'Orders/History_orders_list.dart';
 
 class drawerList extends StatelessWidget {
   @override

@@ -255,10 +255,10 @@ class _CartState extends State<Cart> {
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Image.asset(
+            cartModel.image==null?   Image.asset(
               "assets/images/new_tube.png",
               width: 30,
-            ),
+            ):Image.network(cartModel.image,width: 30,height: 30,),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [

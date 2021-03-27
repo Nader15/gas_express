@@ -129,7 +129,9 @@ SizedBox(height: 30,),
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Container(
-                                width: MediaQuery.of(context).size.width / 1.6,
+                                width: MediaQuery.of(context).size.width / 1.45,
+                                padding: const EdgeInsets.only(left: 20,right: 20),
+
                                 child: Row(
                                   mainAxisAlignment:
                                   MainAxisAlignment.spaceBetween,
@@ -165,7 +167,10 @@ SizedBox(height: 30,),
                                   shrinkWrap: true,
                                   itemCount: HistoryOrdersList.length,
                                   itemBuilder: (BuildContext context, int index) {
-                                    return recentOrders(HistoryOrdersList[index].orderstatus=='canceled'?false:true,HistoryOrdersList[index]);
+                                    return Padding(
+                                      padding: const EdgeInsets.only(left: 20,right: 20),
+                                      child: recentOrders(HistoryOrdersList[index].orderstatus=='canceled'?false:true,HistoryOrdersList[index]),
+                                    );
                                   }),
 
                             ],
@@ -191,13 +196,13 @@ SizedBox(height: 30,),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text("12500",
+                  Text("${orderItem.id}",
                       style: TextStyle(
                         color: status == true ? greenAppColor : redColor,
                         fontWeight: FontWeight.w100,
                         fontSize: 15,
                       )),
-                  Text("1/2/2022",
+                  Text("${  orderItem.orderdatetime.toString().split("T")[0]}",
                       style: TextStyle(
                         color: status == true ? greenAppColor : redColor,
                         fontWeight: FontWeight.w100,
@@ -214,7 +219,7 @@ SizedBox(height: 30,),
                         fontSize: 15,
                       )),
                   // orderItem.discountValue==null?Text("${orderItem.totalprice}"):   Text("${((orderItem.totalprice)-(orderItem.discountValue.toString()=="null"?0:orderItem.discountValue)) }",
-                  Text("${ ((orderItem.totalprice??0)-( orderItem.discountValue??0)).isNegative}",
+                  Text("${ ((orderItem.totalprice??0)-( orderItem.discountValue??0))}",
                       style: TextStyle(
                         color: status == true ? greenAppColor : redColor,
                         fontWeight: FontWeight.w100,

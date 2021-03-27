@@ -90,15 +90,15 @@ class _NotificationsState extends State<Notifications> {
                               mainAxisAlignment: MainAxisAlignment.end,
                               children: [
 
-                                Container()
-                                // TextButton(
-                                //     onPressed: () {},
-                                //     child: Text(
-                                //       getTranslated(context, "Delete"),
-                                //       style: TextStyle(
-                                //           color: greenAppColor,
-                                //           fontWeight: FontWeight.w100),
-                                //     )),
+                                Container(),
+                                TextButton(
+                                    onPressed: () {},
+                                    child: Text(
+                                      getTranslated(context, "Delete"),
+                                      style: TextStyle(
+                                          color: greenAppColor,
+                                          fontWeight: FontWeight.w100),
+                                    )),
                               ],
                             ),
                           ],
