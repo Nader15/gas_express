@@ -38,6 +38,146 @@ class _MyWalletState extends State<MyWallet> {
       });
     });
   }
+  alertDialogPromoCodeWidget() {
+    String errorMessage = "";
+    return showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (
+            context,
+            ) {
+          return StatefulBuilder(
+            builder: (context, State) {
+              return AlertDialog(
+                elevation: 4.0,
+                shape: OutlineInputBorder(
+                    borderSide: BorderSide(
+                      color: Colors.grey.withOpacity(.5),
+                      width: 1,
+                    ),
+                    borderRadius: BorderRadius.circular(10)),
+                titlePadding: EdgeInsets.all(15.0),
+                title: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Container(
+                      child: Text(
+                        translator.translate('addPromoCode'),
+                        textScaleFactor: 1,
+                        style: TextStyle(color: Colors.black, fontSize: 14),
+                      ),
+                    ),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    Container(
+                      decoration: new BoxDecoration(
+                        shape: BoxShape.rectangle,
+                        border: new Border.all(
+                          color: Colors.black,
+                          width: 1.0,
+                        ),
+                      ),
+                      child: new TextField(
+
+                        // textAlign: TextAlign.center,
+                        controller: promoCodeController,
+                        onChanged: (value) {
+                          State(() {
+                            errorMessage = "";
+                            // promoCodeController.text = promoCodeController.text;
+                          });
+                        },
+                        decoration: new InputDecoration(
+                          contentPadding: EdgeInsets.only(left: 20,right: 20),
+                          hintText: translator.translate('promoCode'),
+                          border: InputBorder.none,
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Container(
+                        alignment: translator.currentLanguage == 'ar'
+                            ? Alignment.centerRight
+                            : Alignment.centerLeft,
+                        child: Text(
+                          errorMessage,
+                          style: TextStyle(color: Colors.red, fontSize: 12),
+                        )),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    InkWell(
+                        onTap: () {
+
+                          if(promoCodeController.text.isEmpty){
+                            Navigator.of(context).pop();
+                          }
+                          else {
+                            Map data ={
+                              "coupon_code":promoCodeController.text
+                            };
+                            Api(context, _scaffoldKey).addPromoCodeApi(data).then((value) {
+                              if(value){
+                                setState(() {
+                                  promoCodeList.clear();
+                                  promoCodeController.clear();
+                                });
+                                Navigator.of(context).pop();
+                                gettingData();
+                              }
+                              else {
+                                Navigator.of(context).pop();
+
+                              }
+                            });
+                          }
+                        },
+                        child: Container(
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(5),
+                              color: promoCodeController.text == null ||
+                                  promoCodeController.text.isEmpty
+                                  ? grey
+                                  : primaryAppColor),
+                          width: MediaQuery.of(context).size.width / 1.2,
+                          height: 40,
+                          child: Center(
+                              child: Text(
+                                translator.translate('addPromoCode'),
+                                textScaleFactor: 1,
+                                style: TextStyle(color: Colors.white),
+                              )),
+                        )),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    InkWell(
+                        onTap: () {
+                          setState(() {
+                            promoCodeController.clear();
+
+                          });
+                          Navigator.pop(context);
+                        },
+                        child: Text(
+                          translator.translate('Cancel'),
+                          textScaleFactor: 1,
+                          style: TextStyle(
+                              color: primaryAppColor,
+                              decoration: TextDecoration.underline,
+                              fontSize: 12),
+                        ))
+                  ],
+                ),
+              );
+            },
+          );
+        });
+  }
 
   gettingData() {
     setState(() {
@@ -340,15 +480,16 @@ else {
                                 // CustomDivider(),
                                 TextButton(
                                     onPressed: () {
-                                      showRoundedModalBottomSheet(
-                                          autoResize: true,
-                                          dismissOnTap: false,
-                                          context: context,
-                                          radius: 30.0,
-                                          // This is the default
-                                          color: Colors.white,
-                                          // Also default
-                                          builder: (context) => addPromoCode());
+                                      alertDialogPromoCodeWidget();
+                                      // showRoundedModalBottomSheet(
+                                      //     autoResize: true,
+                                      //     dismissOnTap: false,
+                                      //     context: context,
+                                      //     radius: 30.0,
+                                      //     // This is the default
+                                      //     color: Colors.white,
+                                      //     // Also default
+                                      //     builder: (context) => addPromoCode());
 
                                     },
                                     child: Row(
