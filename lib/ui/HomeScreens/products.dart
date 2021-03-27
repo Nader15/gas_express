@@ -60,21 +60,22 @@ class _ProductsState extends State<Products> {
         body: SingleChildScrollView(
           child: Column(
             children: [
-          CarouselSlider(
-          options: CarouselOptions(height: 200.0,autoPlay: true),
-          items:widget. bannersList.map((i) {
-            return Builder(
-              builder: (BuildContext context) {
-                return Container(
-                    width: MediaQuery.of(context).size.width,
-                    margin: EdgeInsets.symmetric(horizontal: 5.0),
+              CarouselSlider(
+                options: CarouselOptions(height: 200.0,autoPlay: true,aspectRatio: .9),
+                items:widget. bannersList.map((i) {
+                  return Builder(
+                    builder: (BuildContext context) {
 
-                    child: Image.network(i.image,fit: BoxFit.contain,)
-                );
-              },
-            );
-          }).toList(),
-        ),                productsList.length==0?StaticUI().NoDataFoundWidget(context):       GridView.builder(
+                      return Container(
+                          width: MediaQuery.of(context).size.width,
+                          margin: EdgeInsets.symmetric(horizontal: 5.0),
+
+                          child: Image.network(i.image,fit: BoxFit.fill,)
+                      );
+                    },
+                  );
+                }).toList(),
+              ),               productsList.length==0?StaticUI().NoDataFoundWidget(context):       GridView.builder(
                 itemCount: productsList.length,
                 physics: NeverScrollableScrollPhysics(),
                 shrinkWrap: true,

@@ -81,7 +81,7 @@ class _NewProductsState extends State<NewProducts> {
               children: [
 
             CarouselSlider(
-            options: CarouselOptions(height: 200.0,autoPlay: true,),
+            options: CarouselOptions(height: 200.0,autoPlay: true,aspectRatio: .9),
             items:widget. bannersList.map((i) {
               return Builder(
                 builder: (BuildContext context) {
@@ -90,7 +90,7 @@ class _NewProductsState extends State<NewProducts> {
                       width: MediaQuery.of(context).size.width,
                       margin: EdgeInsets.symmetric(horizontal: 5.0),
 
-                      child: Image.network(i.image,fit: BoxFit.contain,)
+                      child: Image.network(i.image,fit: BoxFit.fill,)
                   );
                 },
               );

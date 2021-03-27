@@ -48,7 +48,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
             ordersList.add(element);
           });
         });
-        ordersList=ordersList.reversed.toList();
+        // ordersList=ordersList.reversed.toList();
       });
     });
   }
@@ -69,13 +69,24 @@ class _OrdersScreenState extends State<OrdersScreen> {
       body: ordersList.length == 0
           ? StaticUI().NoDataFoundWidget(context)
           : Container(
-              child: ListView.builder(
-                  // physics: NeverScrollableScrollPhysics(),
-                  // shrinkWrap: true,
-                  itemCount: ordersList.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    return ItemWidget(ordersList[index]);
-                  }),
+              child: RefreshIndicator(
+                onRefresh: () {
+                  return Future.delayed(Duration.zero, () {
+                    setState(() {
+                      ordersList = List();
+
+                      gettingData();
+                    });
+                  });
+                },
+                child: ListView.builder(
+                    // physics: NeverScrollableScrollPhysics(),
+                    // shrinkWrap: true,
+                    itemCount: ordersList.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      return ItemWidget(ordersList[index]);
+                    }),
+              ),
             ),
     );
   }

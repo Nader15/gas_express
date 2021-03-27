@@ -207,22 +207,22 @@ class _OrderDetailsState extends State<OrderDetails> {
                             SizedBox(
                               height: 10,
                             ),
-                            Text(
-                              getTranslated(context, "DeliveryLocation"),
-                              style: TextStyle(
-                                  fontWeight: FontWeight.w100,
-                                  fontSize: 18,
-                                  color: greenAppColor),
-                            ),
-                            SizedBox(
-                              height: 10,
-                            ),
-                            Container(
-                              height: 120,
-                              decoration: BoxDecoration(
-                                  color: greyPrimaryColor.withOpacity(.3),
-                                  borderRadius: BorderRadius.circular(5)),
-                            )
+                            // Text(
+                            //   getTranslated(context, "DeliveryLocation"),
+                            //   style: TextStyle(
+                            //       fontWeight: FontWeight.w100,
+                            //       fontSize: 18,
+                            //       color: greenAppColor),
+                            // ),
+                            // SizedBox(
+                            //   height: 10,
+                            // ),
+                            // Container(
+                            //   height: 120,
+                            //   decoration: BoxDecoration(
+                            //       color: greyPrimaryColor.withOpacity(.3),
+                            //       borderRadius: BorderRadius.circular(5)),
+                            // )
                           ],
                         ),
                       ),
@@ -245,7 +245,7 @@ class _OrderDetailsState extends State<OrderDetails> {
                             Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                Text("${widget.orderItem.totalprice}",
+                                Text("${(widget.orderItem.totalprice??0)-(widget.orderItem.discountValue??0)}",
                                     style: TextStyle(
                                         fontWeight: FontWeight.w100,
                                         fontSize: 50,
