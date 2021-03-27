@@ -120,7 +120,7 @@ class OrderItem {
     orderstatus = json['orderstatus'];
     laststatusdatetime = json['laststatusdatetime'];
     location = json['location'];
-    discountValue = json['discount_value'];
+    discountValue = json['discount_value']??0;
     customerid = json['customerid'];
     driverid = json['driverid'];
     customeraddress = json['customeraddress'];

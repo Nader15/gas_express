@@ -70,16 +70,17 @@ class drawerList extends StatelessWidget {
               onTap: () {
                 navigateAndKeepStack(context, OrdersScreen());
               },
-            ),      ListTile(
-              leading: Icon(Icons.reorder_sharp,color: blackColor.withOpacity(0.6),),
-              title: Text(
-                getTranslated(context, 'ordersHistory'),
-                style: _textStyle,
-              ),
-              onTap: () {
-                navigateAndKeepStack(context, HistoryOrdersList());
-              },
             ),
+            // ListTile(
+            //   leading: Icon(Icons.reorder_sharp,color: blackColor.withOpacity(0.6),),
+            //   title: Text(
+            //     getTranslated(context, 'ordersHistory'),
+            //     style: _textStyle,
+            //   ),
+            //   onTap: () {
+            //     navigateAndKeepStack(context, HistoryOrdersList());
+            //   },
+            // ),
             ListTile(
               leading: SvgPicture.asset(
                 "assets/images/wallet.svg",

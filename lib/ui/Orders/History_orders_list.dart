@@ -20,27 +20,27 @@ class _HistoryOrdersListState extends State<HistoryOrdersList> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   OrdersModel OrderModel;
-  List<OrderItem> ordersList = List();
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     Future.delayed(Duration(milliseconds: 0), () {
       setState(() {
-        gettingData();
+        gettingHistoryData();
       });
     });
   }
+  List<OrderItem> HistoryOrdersList = List();
 
-  gettingData() {
+  gettingHistoryData() {
     setState(() {
-      ordersList.clear();
+      HistoryOrdersList.clear();
 
       Api(context, _scaffoldKey).ordersHistoryListApi().then((value) {
         OrderModel = value;
         OrderModel.results.forEach((element) {
           setState(() {
-            ordersList.add(element);
+            HistoryOrdersList.add(element);
           });
         });
         // ordersList=ordersList.reversed.toList();
@@ -61,16 +61,16 @@ class _HistoryOrdersListState extends State<HistoryOrdersList> {
         ),
         actions: [StaticUI().cartWidget(context)],
       ),
-      body: ordersList.length == 0
+      body: HistoryOrdersList.length == 0
           ? StaticUI().NoDataFoundWidget(context)
           : Container(
         child: RefreshIndicator(
           onRefresh: () {
             return Future.delayed(Duration.zero, () {
               setState(() {
-                ordersList = List();
+                HistoryOrdersList = List();
 
-                gettingData();
+                gettingHistoryData();
               });
             });
           },
@@ -133,9 +133,9 @@ class _HistoryOrdersListState extends State<HistoryOrdersList> {
                 ListView.builder(
                   physics: NeverScrollableScrollPhysics(),
                   shrinkWrap: true,
-                    itemCount: ordersList.length,
+                    itemCount: HistoryOrdersList.length,
                     itemBuilder: (BuildContext context, int index) {
-                      return recentOrders(true,ordersList[index]);
+                      return recentOrders(true,HistoryOrdersList[index]);
                     }),
               ],
             ),

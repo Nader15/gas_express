@@ -14,6 +14,7 @@ import 'package:gas_express/utils/global_vars.dart';
 import 'package:gas_express/utils/navigator.dart';
 import 'package:gas_express/utils/static_ui.dart';
 import 'package:gas_express/utils/toast.dart';
+import 'package:localize_and_translate/localize_and_translate.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class OrdersScreen extends StatefulWidget {
@@ -26,6 +27,23 @@ class _OrdersScreenState extends State<OrdersScreen> {
 
   OrdersModel OrderModel;
   List<OrderItem> currentOrdersList = List();
+  List<OrderItem> HistoryOrdersList = List();
+
+  gettingHistoryData() {
+    setState(() {
+      HistoryOrdersList.clear();
+
+      Api(context, _scaffoldKey).ordersHistoryListApi().then((value) {
+        OrderModel = value;
+        OrderModel.results.forEach((element) {
+          setState(() {
+            HistoryOrdersList.add(element);
+          });
+        });
+        // ordersList=ordersList.reversed.toList();
+      });
+    });
+  }
   @override
   void initState() {
     // TODO: implement initState
@@ -50,6 +68,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
         });
         // ordersList=ordersList.reversed.toList();
       });
+      gettingHistoryData();
     });
   }
 
@@ -79,15 +98,150 @@ class _OrdersScreenState extends State<OrdersScreen> {
                     });
                   });
                 },
-                child: ListView.builder(
-                    // physics: NeverScrollableScrollPhysics(),
-                    // shrinkWrap: true,
-                    itemCount: currentOrdersList.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      return ItemWidget(currentOrdersList[index]);
-                    }),
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      ListView.builder(
+                          physics: NeverScrollableScrollPhysics(),
+                          shrinkWrap: true,
+                          itemCount: currentOrdersList.length,
+                          itemBuilder: (BuildContext context, int index) {
+                            return ItemWidget(currentOrdersList[index]);
+                          }),
+SizedBox(height: 30,),
+                      Container(
+                        padding: EdgeInsets.only(left: 10,right: 10),
+                        alignment:translator.currentLanguage=='ar'? Alignment.centerRight:Alignment.centerLeft,
+                        child: Text(getTranslated(context, "PreviousOrders"),
+                            style: TextStyle(
+                              fontWeight: FontWeight.w100,
+                              fontSize: 20,
+                            )),
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      Card(
+                        elevation: 10,
+                        child: Padding(
+                          padding: const EdgeInsets.all(10.0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Container(
+                                width: MediaQuery.of(context).size.width / 1.6,
+                                child: Row(
+                                  mainAxisAlignment:
+                                  MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(getTranslated(context, "Number"),
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.w100,
+                                          fontSize: 15,
+                                        )),
+                                    Text(getTranslated(context, "Date"),
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.w100,
+                                          fontSize: 15,
+                                        )),
+                                    Text(getTranslated(context, "Status"),
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.w100,
+                                          fontSize: 15,
+                                        )),
+                                    Text(getTranslated(context, "Value"),
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.w100,
+                                          fontSize: 15,
+                                        )),
+                                  ],
+                                ),
+                              ),
+                              SizedBox(
+                                height: 20,
+                              ),
+                              ListView.builder(
+                                  physics: NeverScrollableScrollPhysics(),
+                                  shrinkWrap: true,
+                                  itemCount: HistoryOrdersList.length,
+                                  itemBuilder: (BuildContext context, int index) {
+                                    return recentOrders(HistoryOrdersList[index].orderstatus=='canceled'?false:true,HistoryOrdersList[index]);
+                                  }),
+
+                            ],
+                          ),
+                        ),
+                      ),
+
+                    ],
+                  ),
+                ),
               ),
             ),
+    );
+  }
+  Widget recentOrders(bool status,OrderItem orderItem) {
+    return Column(
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Container(
+              width: MediaQuery.of(context).size.width / 1.7,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text("12500",
+                      style: TextStyle(
+                        color: status == true ? greenAppColor : redColor,
+                        fontWeight: FontWeight.w100,
+                        fontSize: 15,
+                      )),
+                  Text("1/2/2022",
+                      style: TextStyle(
+                        color: status == true ? greenAppColor : redColor,
+                        fontWeight: FontWeight.w100,
+                        fontSize: 15,
+                      )),
+                  Text(
+                      // status == true
+                      //     ?
+                      orderItem.orderstatus,
+                          // : getTranslated(context, "Canceled"),
+                      style: TextStyle(
+                        color: status == true ? greenAppColor : redColor,
+                        fontWeight: FontWeight.w100,
+                        fontSize: 15,
+                      )),
+                  // orderItem.discountValue==null?Text("${orderItem.totalprice}"):   Text("${((orderItem.totalprice)-(orderItem.discountValue.toString()=="null"?0:orderItem.discountValue)) }",
+                  Text("${ ((orderItem.totalprice??0)-( orderItem.discountValue??0)).isNegative}",
+                      style: TextStyle(
+                        color: status == true ? greenAppColor : redColor,
+                        fontWeight: FontWeight.w100,
+                        fontSize: 15,
+                      )),
+                ],
+              ),
+            ),
+            InkWell(onTap: (){
+              navigateAndKeepStack(context, OrderDetails(orderItem));
+
+            },
+              child: Container(
+                padding: EdgeInsets.all(5),
+                decoration: BoxDecoration(
+                  color: status == true ? greenAppColor : redColor,
+                ),
+                child: Text(
+                  getTranslated(context, "Details"),
+                  style: TextStyle(color: whiteColor),
+                ),
+              ),
+            )
+          ],
+        ),
+        CustomDivider(),
+      ],
     );
   }
   Widget ItemWidget(OrderItem orderItem){
@@ -185,7 +339,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
                     SizedBox(
                       width: 10,
                     ),
-               orderItem.orderstatus != "done"||    orderItem.orderstatus != "canceled"?
+               orderItem.orderstatus != "done"&&    orderItem.orderstatus != "canceled"?
                     InkWell(
                       onTap: () {
                         Api(context, _scaffoldKey).cancelOrder(orderItem.id).then((value) {
@@ -227,53 +381,6 @@ class _OrdersScreenState extends State<OrdersScreen> {
       ),
     );
   }
-  // Widget OrderWidget(OrderItem orderItem){
-  //   return Padding(
-  //     padding: EdgeInsets.only(left: 20,right: 20),
-  //     child: Card(
-  //       child: Container(
-  //         child: Column(
-  //           children: [
-  //             Row(
-  //             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-  //             crossAxisAlignment: CrossAxisAlignment.center,
-  //             children: [
-  //
-  //             Text(getTranslated(context, 'orderNo'),style: TextStyle(color: Colors.red),),Text("${orderItem.id}",style: TextStyle(color: Colors.green),),
-  //       ],),
-  //
-  //             SizedBox(height: 10,),
-  //
-  //             Row(
-  //               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-  //               crossAxisAlignment: CrossAxisAlignment.center,
-  //               children: [                  Text(getTranslated(context, 'orderState'),style: TextStyle(color: Colors.green,),),
-  //
-  //                 Text("${orderItem.orderstatus}",style: TextStyle(color: Colors.red,fontSize: 20),),
-  //               ],),
-  //
-  //             SizedBox(height: 10,),
-  //             Row(
-  //               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-  //               crossAxisAlignment: CrossAxisAlignment.center,
-  //               children: [
-  //                 InkWell(onTap: (){
-  //                   navigateAndClearStack(context, OrderDetailsScreen(orderItem));
-  //
-  //                 },
-  //                   child: Container(
-  //                       width: 100,height: 30,color: Colors.green,
-  //                       child: Center(child: Text(getTranslated(context, 'OrderDetails'),style: TextStyle(color: Colors.white),))),
-  //                 ),
-  //
-  //                 Icon(Icons.delete)
-  //               ],),
-  //
-  //             SizedBox(height: 10,),
-  //           ],
-  //         ),),
-  //     ),
-  //   );
-  // }
+
 
 }
