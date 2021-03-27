@@ -1,5 +1,6 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:gas_express/APiFunctions/Api.dart';
 import 'package:gas_express/ui/HomeScreens/AddButtonWidget.dart';
 import 'package:gas_express/ui/HomeScreens/BannersModel.dart';
@@ -11,6 +12,8 @@ import 'package:gas_express/utils/navigator.dart';
 import 'package:gas_express/utils/static_ui.dart';
 
 import 'package:localize_and_translate/localize_and_translate.dart';
+import 'package:location/location.dart';
+import 'package:xs_progress_hud/xs_progress_hud.dart';
 
 class Recharge extends StatefulWidget {
   List<BannerItem> bannersList;
@@ -25,18 +28,79 @@ class _RechargeState extends State<Recharge> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   ProductsModel productsModel;
   List<ProductItem> productsList = List();
+  Location location = new Location();
 
+  bool _serviceEnabled;
+  PermissionStatus _permissionGranted;
+  LocationData _locationData;
   @override
   void initState() {
     // TODO: implement initState
 
     super.initState();
     Future.delayed(Duration(milliseconds: 0), () {
+      // checkLocation();
       getProducts();
     });
     super.initState();
   }
 
+  checkLocation()async{
+
+    _serviceEnabled = await location.serviceEnabled();
+    if (!_serviceEnabled) {
+      _serviceEnabled = await location.requestService();
+      if (!_serviceEnabled) {
+        return;
+      }
+    }
+
+    _permissionGranted = await location.hasPermission();
+    if (_permissionGranted == PermissionStatus.denied) {
+      _permissionGranted = await location.requestPermission();
+      if (_permissionGranted != PermissionStatus.granted) {
+        print("faaaalseee");
+        SystemChannels.platform.invokeMethod('SystemNavigator.pop');
+
+      }
+      else {
+        XsProgressHud.show(context);
+        Location().getLocation().then((value) async {
+
+          print("checkLocationnn ${value}");
+          XsProgressHud.hide();
+
+          Api(context, _scaffoldKey).checkLocationApi("${value.latitude},${value.longitude}").then((value) {
+            if(value){
+              getProducts();
+
+            }
+          });
+          // navigateAndKeepStack(context, AddAddress(value.latitude,value.longitude));
+        });
+
+      }
+    }
+    else  {
+      print("wfwfgggggfdfdd");
+      XsProgressHud.show(context);
+      Location().getLocation().then((value) async {
+
+        print("checkLocationnn ${value}");
+        XsProgressHud.hide();
+
+        Api(context, _scaffoldKey).checkLocationApi("${value.latitude},${value.longitude}").then((value) {
+          if(value){
+            getProducts();
+
+          }
+        });
+        // navigateAndKeepStack(context, AddAddress(value.latitude,value.longitude));
+      });
+    }
+
+
+  }
   getProducts() {
     Api(context, _scaffoldKey).getProducts(filterName: "refill").then((value) {
       productsModel = value;

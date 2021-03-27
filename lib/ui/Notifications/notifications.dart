@@ -31,6 +31,7 @@ class _NotificationsState extends State<Notifications> {
   }
 
   getNotifications() {
+    notificationsList=List();
     Api(context, _scaffoldKey).getNotifications().then((value) {
       notificationModel = value;
       notificationModel.results.forEach((element) {
@@ -59,79 +60,93 @@ class _NotificationsState extends State<Notifications> {
       body: Container(
         padding: EdgeInsets.all(20),
         child:    Container(
-          child: notificationsList.length==0?StaticUI().NoDataFoundWidget(context):ListView.builder(
-              // physics: NeverScrollableScrollPhysics(),
-              // shrinkWrap: true,
-              itemCount: notificationsList.length,
-              itemBuilder: (BuildContext context, int index) {
-                return  Column(
-                  children: [
-                    Card(
-                      elevation: 10,
-                      child: Padding(
-                        padding: const EdgeInsets.all(10.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              notificationsList[index].messagetitle,
-                              // getTranslated(context, "AlertTitle"),
-                              style: TextStyle(
-                                  fontSize: 20, fontWeight: FontWeight.w100),
-                            ),
-                            SizedBox(
-                              height: 20,
-                            ),
-                            Text(
-                              notificationsList[index].messagedetails,
-                              style: TextStyle(fontWeight: FontWeight.w100),
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              children: [
+          child: notificationsList.length==0?StaticUI().NoDataFoundWidget(context):
 
-                                Container(),
-                                TextButton(
-                                    onPressed: () {},
-                                    child: Text(
-                                      getTranslated(context, "Delete"),
-                                      style: TextStyle(
-                                          color: greenAppColor,
-                                          fontWeight: FontWeight.w100),
-                                    )),
+          Column(
+            children: [
+              ListView.builder(
+                  physics: NeverScrollableScrollPhysics(),
+                  shrinkWrap: true,
+                  itemCount: notificationsList.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    return  Column(
+                      children: [
+                        Card(
+                          elevation: 10,
+                          child: Padding(
+                            padding: const EdgeInsets.all(10.0),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  notificationsList[index].messagetitle,
+                                  // getTranslated(context, "AlertTitle"),
+                                  style: TextStyle(
+                                      fontSize: 20, fontWeight: FontWeight.w100),
+                                ),
+                                SizedBox(
+                                  height: 20,
+                                ),
+                                Text(
+                                  notificationsList[index].messagedetails,
+                                  style: TextStyle(fontWeight: FontWeight.w100),
+                                ),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  children: [
+
+                                    Container(),
+                                    TextButton(
+                                        onPressed: () {
+                                          Api(context,_scaffoldKey).deleteMessageApi(notificationsList[index].id, false).then((value) {
+                                            setState(() {
+                                              notificationsList.removeAt(index);
+                                            });
+                                          });
+                                        },
+                                        child: Text(
+                                          getTranslated(context, "Delete"),
+                                          style: TextStyle(
+                                              color: greenAppColor,
+                                              fontWeight: FontWeight.w100),
+                                        )),
+                                  ],
+                                ),
                               ],
                             ),
-                          ],
+                          ),
                         ),
-                      ),
-                    ),
 
-                    SizedBox(
-                      height: 10,
-                    ),
-                    // Row(
-                    //   children: [
-                    //     FlatButton(
-                    //         onPressed: () {},
-                    //         child: Text(
-                    //           getTranslated(context, "DeleteAll"),
-                    //           style: TextStyle(
-                    //               color: greenAppColor,
-                    //               fontWeight: FontWeight.w100),
-                    //         )),
-                    //     FlatButton(
-                    //         onPressed: () {},
-                    //         child: Text(
-                    //           getTranslated(context, "DeleteSelected"),
-                    //           style: TextStyle(
-                    //               color: greenAppColor,
-                    //               fontWeight: FontWeight.w100),
-                    //         )),
-                    //   ],
-                    // )
-                  ],
-                );
-              }),
+                        SizedBox(
+                          height: 10,
+                        ),
+
+                      ],
+                    );
+                  }),
+
+              Row(
+                children: [
+                  TextButton(
+                      onPressed: () {
+                        Api(context,_scaffoldKey).deleteMessageApi(0, false).then((value) {
+                          setState(() {
+getNotifications();
+                          });
+                        });
+
+                      },
+                      child: Text(
+                        getTranslated(context, "DeleteAll"),
+                        style: TextStyle(
+                            color: greenAppColor,
+                            fontWeight: FontWeight.w100),
+                      )),
+
+                ],
+              )
+            ],
+          ),
         ),
 
       ),

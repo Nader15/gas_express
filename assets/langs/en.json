@@ -38,6 +38,8 @@
   "Default": "Default",
   "Day": "Day",
   "Time": "Time",
+  "ok": "Ok",
+  "serviceNotAvailbe": "Sorry, delivery service is not available in your current location",
   "ordersHistory": "Orders history",
   "Today": "Same day",
   "save": " Save ",

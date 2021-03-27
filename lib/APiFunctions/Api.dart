@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:gas_express/APiFunctions/sharedPref/SharedPrefClass.dart';
 import 'package:gas_express/ui/Cart/CartModel.dart';
 import 'package:gas_express/ui/Cart/SuccessPromoCodeModel.dart';
@@ -15,6 +16,7 @@ import 'package:gas_express/ui/StaticDataModel.dart';
 import 'package:gas_express/ui/Wallet/BallanceModel.dart';
 import 'package:gas_express/ui/Wallet/PointsModel.dart';
 import 'package:gas_express/ui/Wallet/PromoCodeModel.dart';
+import 'package:gas_express/utils/colors_file.dart';
 import 'package:gas_express/utils/global_vars.dart';
 import 'package:gas_express/utils/toast.dart';
 
@@ -41,6 +43,8 @@ class Api {
   String myBalance = "my_balance/";
   String check_coupon = "check_coupon/";
   String usageCount = "usage_count/";
+  String deleteMessage = "archive_messages/";
+  String checkZone = "/zone_check/";
   String customersAddresses = "CustomersAddresses/?customerid=$BaseUderId";
   String basket = "basket/";
   String orders = "Orders/?customerid=$BaseUderId&orderstatus=with-delivery-agent";
@@ -110,6 +114,147 @@ class Api {
     } else {
       FN_showToast('Send Code Failed', context, Colors.red, scaffoldKey);
       return false;
+    }
+  }
+
+
+  Future deleteMessageApi(
+    int id,bool deleteAll
+  ) async {
+    XsProgressHud.show(context);
+
+    final String completeUrl = baseUrl + deleteMessage;
+
+    var response = await http.post(
+      completeUrl,  headers: {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      HttpHeaders.authorizationHeader: BaseToken
+    },
+      body: jsonEncode({
+        "messages": [
+          {
+            "id": id
+          }
+        ],
+        "archive_all": true
+      },)
+    );
+    print("PhoneBody ${response.body}");
+     print("PhoneBody ${response.statusCode}");
+    XsProgressHud.hide();
+    if (response.statusCode == 200) {
+      if (!response.body.contains("error")) {
+
+
+        return true;
+        // if(response.statusCode == 200){
+
+      } else {
+        FN_showToast('${json.decode(response.body)['error']}', context,
+            Colors.red, scaffoldKey);
+        return false;
+      }
+    } else {
+      FN_showToast('Send Code Failed', context, Colors.red, scaffoldKey);
+      return false;
+    }
+  }
+
+
+  Future checkLocationApi(
+    String location
+  ) async {
+    XsProgressHud.show(context);
+
+    final String completeUrl = baseUrl + checkZone;
+
+    var response = await http.post(
+      completeUrl,  headers: {
+      // 'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      HttpHeaders.authorizationHeader: BaseToken
+    },
+      body: {
+
+
+          "gps": location
+             },
+    );
+    print("checkLocationApiBody ${response.body}");
+     print("checkLocationApiBody ${response.statusCode}");
+    XsProgressHud.hide();
+    if (response.statusCode == 200) {
+
+    } else {
+      FN_showToast('', context, Colors.red, scaffoldKey);
+
+      return showDialog(
+          context: context,
+          barrierDismissible: false,
+          builder: (
+              context,
+              ) {
+            return StatefulBuilder(
+              builder: (context, State) {
+                return AlertDialog(
+                  elevation: 4.0,
+                  shape: OutlineInputBorder(
+                      borderSide: BorderSide(
+                        color: Colors.grey.withOpacity(.5),
+                        width: 1,
+                      ),
+                      borderRadius: BorderRadius.circular(10)),
+                  titlePadding: EdgeInsets.all(15.0),
+                  title: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      SizedBox(
+                        height: 50,
+                      ),
+                      Container(
+                        child: Text(
+                          translator.translate('serviceNotAvailbe'),
+                          textScaleFactor: 1,
+                          style: TextStyle(color: Colors.black, fontSize: 14),
+                        ),
+                      ),
+
+
+
+                      SizedBox(
+                        height: 50,
+                      ),
+                      InkWell(
+                          onTap: () {
+                            SystemChannels.platform.invokeMethod('SystemNavigator.pop');
+
+                          },
+                          child: Container(
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(5),
+                                color:  primaryAppColor),
+                            width: MediaQuery.of(context).size.width / 1.2,
+                            height: 40,
+                            child: Center(
+                                child: Text(
+                                  translator.translate('ok'),
+                                  textScaleFactor: 1,
+                                  style: TextStyle(color: Colors.white),
+                                )),
+                          )),
+                      SizedBox(
+                        height: 20,
+                      ),
+
+                    ],
+                  ),
+                );
+              },
+            );
+          });
+      // return false;
     }
   }
 

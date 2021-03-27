@@ -662,51 +662,118 @@ setState(() {
           );
         });
   }
-
   selectDaySheet() {
-    return Container(
-      height: MediaQuery.of(context).size.height / 3,
-      child: Column(
-        children: [
-          SizedBox(
-            height: 10,
-          ),
-          Container(
-            height: 1,
-            color: Colors.grey,
-            width: MediaQuery.of(context).size.width / 2,
-          ),
-          SizedBox(
-            height: 10,
-          ),
-          Container(
-            height: MediaQuery.of(context).size.height / 4,
-            child: ListView.builder(
-                itemCount: DaysList.length,
-                itemBuilder: (BuildContext context, int index) {
-                  return InkWell(
-                    onTap: () {
-                      setState(() {
-                        DaySelected = DaysList[index];
-                        Navigator.of(context).pop();
-                      });
-                    },
+     return showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (
+          context,
+        ) {
+          return StatefulBuilder(
+            builder: (context, State) {
+              return Container(
+                height: MediaQuery.of(context).size.height / 3,
+width: MediaQuery.of(context).size.width,
+                child: AlertDialog(
+                  elevation: 4.0,
+                  shape: OutlineInputBorder(
+                      borderSide: BorderSide(
+                        color: Colors.grey.withOpacity(.5),
+                        width: 1,
+                      ),
+                      borderRadius: BorderRadius.circular(10)),
+                  titlePadding: EdgeInsets.all(15.0),
+                  title: Container(
+                    height: MediaQuery.of(context).size.height / 3,
+                    width: MediaQuery.of(context).size.width,
                     child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        Container(
-                          child: Text(
-                              "${DaysListStrings[index]} ${DaysList[index]}"),
-                        ),
-                        Divider()
+                        Container(width: MediaQuery.of(context).size.width,
+
+                          height: MediaQuery.of(context).size.height / 4,
+                          child: ListView.builder(
+                              itemCount: DaysList.length,
+                              itemBuilder: (BuildContext context, int index) {
+                                return Container(
+                                  height: 60,
+                                  width: MediaQuery.of(context).size.width,
+
+                                  child: InkWell(
+                                    onTap: () {
+                                      setState(() {
+                                        DaySelected = DaysList[index];
+                                        Navigator.of(context).pop();
+                                      });
+                                    },
+                                    child: Column(
+                                      children: [
+                                        Container(
+                                          child: Text(
+                                              "${DaysListStrings[index]} ${DaysList[index]}"),
+                                        ),
+                                        Divider()
+                                      ],
+                                    ),
+                                  ),
+                                );
+                              }),
+                        )
                       ],
                     ),
-                  );
-                }),
-          )
-        ],
-      ),
-    );
+                  ),
+                ),
+              );
+            },
+          );
+        });
   }
+
+  // selectDaySheet() {
+  //   return Container(
+  //     height: MediaQuery.of(context).size.height / 3,
+  //     child: Column(
+  //       children: [
+  //         SizedBox(
+  //           height: 10,
+  //         ),
+  //         Container(
+  //           height: 1,
+  //           color: Colors.grey,
+  //           width: MediaQuery.of(context).size.width / 2,
+  //         ),
+  //         SizedBox(
+  //           height: 10,
+  //         ),
+  //         Container(
+  //           height: MediaQuery.of(context).size.height / 4,
+  //           child: ListView.builder(
+  //               itemCount: DaysList.length,
+  //               itemBuilder: (BuildContext context, int index) {
+  //                 return InkWell(
+  //                   onTap: () {
+  //                     setState(() {
+  //                       DaySelected = DaysList[index];
+  //                       Navigator.of(context).pop();
+  //                     });
+  //                   },
+  //                   child: Column(
+  //                     children: [
+  //                       Container(
+  //                         child: Text(
+  //                             "${DaysListStrings[index]} ${DaysList[index]}"),
+  //                       ),
+  //                       Divider()
+  //                     ],
+  //                   ),
+  //                 );
+  //               }),
+  //         )
+  //       ],
+  //     ),
+  //   );
+  // }
 
   Widget delivery() {
     return Card(
@@ -747,15 +814,16 @@ setState(() {
                     InkWell(
                       onTap: () {
                         if (FawreyCheck == false) {
-                          showRoundedModalBottomSheet(
-                              autoResize: true,
-                              dismissOnTap: false,
-                              context: context,
-                              radius: 30.0,
-                              // This is the default
-                              color: Colors.white,
-                              // Also default
-                              builder: (context) => selectDaySheet());
+                          selectDaySheet();
+                          // showRoundedModalBottomSheet(
+                          //     autoResize: true,
+                          //     dismissOnTap: false,
+                          //     context: context,
+                          //     radius: 30.0,
+                          //     // This is the default
+                          //     color: Colors.white,
+                          //     // Also default
+                          //     builder: (context) => selectDaySheet());
                         }
                       },
                       child: SizedBox(
