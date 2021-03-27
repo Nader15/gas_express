@@ -10,6 +10,7 @@ import 'package:gas_express/utils/custom_widgets/drawer.dart';
 import 'package:gas_express/utils/global_vars.dart';
 import 'package:gas_express/utils/static_ui.dart';
 import 'package:localize_and_translate/localize_and_translate.dart';
+import 'package:xs_progress_hud/xs_progress_hud.dart';
 
 class MyWallet extends StatefulWidget {
   @override
@@ -31,6 +32,8 @@ class _MyWalletState extends State<MyWallet> {
     super.initState();
     Future.delayed(Duration(milliseconds: 0), () {
       setState(() {
+        XsProgressHud.show(context);
+
         gettingData();
       });
     });
@@ -83,6 +86,7 @@ pointsModel.data.forEach((element) {
   });
 });
 });
+XsProgressHud.hide();
       });
     });
   }
@@ -403,7 +407,7 @@ else {
                                     height: 20,
                                   ),
                                   Text(
-                                    "أحصل علي تبديل مجاني للاسطوانة عند استبدال عدد ${pointItemList[index].countToReach} اسطوانات خلال ${(pointItemList[index].duration/30).round()} شهر ",
+                                    "${translator.translate('message1')} ${pointItemList[index].countToReach} ${translator.translate('message2')} ${(pointItemList[index].duration/30).round()} ${translator.translate('message3')} ",
                                     style: TextStyle(fontWeight: FontWeight.w100),
                                   ),
                                   SizedBox(

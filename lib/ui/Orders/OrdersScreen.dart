@@ -151,26 +151,26 @@ class _OrdersScreenState extends State<OrdersScreen> {
                 ),
                 Row(
                   children: [
-                    InkWell(
-                      onTap: () {
-                        navigateAndKeepStack(context, Cart());
-                      },
-                      child: Container(
-                        padding: EdgeInsets.all(7),
-                        decoration: BoxDecoration(
-                            borderRadius:
-                            BorderRadius.circular(5),
-                            border:
-                            Border.all(color: Colors.blue)),
-                        alignment: Alignment.center,
-                        child: Text(
-                            getTranslated(context, "EditOrder"),
-                            style: TextStyle(
-                                fontWeight: FontWeight.w100,
-                                fontSize: 13,
-                                color: Colors.blue)),
-                      ),
-                    ),
+                    // InkWell(
+                    //   onTap: () {
+                    //     navigateAndKeepStack(context, Cart());
+                    //   },
+                    //   child: Container(
+                    //     padding: EdgeInsets.all(7),
+                    //     decoration: BoxDecoration(
+                    //         borderRadius:
+                    //         BorderRadius.circular(5),
+                    //         border:
+                    //         Border.all(color: Colors.blue)),
+                    //     alignment: Alignment.center,
+                    //     child: Text(
+                    //         getTranslated(context, "EditOrder"),
+                    //         style: TextStyle(
+                    //             fontWeight: FontWeight.w100,
+                    //             fontSize: 13,
+                    //             color: Colors.blue)),
+                    //   ),
+                    // ),
                     SizedBox(
                       width: 10,
                     ),
@@ -196,13 +196,13 @@ class _OrdersScreenState extends State<OrdersScreen> {
                     SizedBox(
                       width: 10,
                     ),
-                    InkWell(
-                      onTap: () {},
-                      child: Icon(
-                        Icons.alternate_email,
-                        color: Colors.blue,
-                      ),
-                    ),
+                    // InkWell(
+                    //   onTap: () {},
+                    //   child: Icon(
+                    //     Icons.alternate_email,
+                    //     color: Colors.blue,
+                    //   ),
+                    // ),
                   ],
                 ),
               ],

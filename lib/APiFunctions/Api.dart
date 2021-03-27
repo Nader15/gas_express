@@ -392,7 +392,6 @@ class Api {
   }
 
   Future getUserPromoCodeApi() async {
-    XsProgressHud.show(context);
 
     final String completeUrl = baseUrl + user_coupon_code ;
 
@@ -408,8 +407,7 @@ class Api {
 
     print("completeUrl:: ${completeUrl}");
     print("dataContent:: ${dataContent}");
-    XsProgressHud.hide();
-    if (response.statusCode == 200) {
+     if (response.statusCode == 200) {
       print("body :" + json.decode(response.body).toString());
       return PromoCodeModel.fromJson(json.decode(utf8.decode(response.bodyBytes)));
 
@@ -422,7 +420,6 @@ class Api {
     }
   }
   Future getUserCountApi() async {
-    XsProgressHud.show(context);
 
     final String completeUrl = baseUrl + usageCount ;
 
@@ -438,8 +435,7 @@ class Api {
 
     print("completeUrl:: ${completeUrl}");
     print("dataContent:: ${dataContent}");
-    XsProgressHud.hide();
-    if (response.statusCode == 200) {
+     if (response.statusCode == 200) {
       print("body :" + json.decode(response.body).toString());
       return PointsModel.fromJson(json.decode(utf8.decode(response.bodyBytes)));
 
@@ -512,7 +508,6 @@ class Api {
   }
 
   Future getBallanceApi() async {
-    XsProgressHud.show(context);
 
     final String completeUrl = baseUrl + myBalance ;
 
@@ -527,8 +522,7 @@ class Api {
     print("dataContentaddPromoCodeApi:: ${response.statusCode}");
     Map<String, dynamic> dataContent = json.decode(response.body);
 
-    XsProgressHud.hide();
-    if (response.statusCode == 200) {
+     if (response.statusCode == 200) {
       print("body :" + json.decode(response.body).toString());
       return BallanceModel.fromJson(json.decode(utf8.decode(response.bodyBytes)));
 
@@ -646,6 +640,8 @@ class Api {
       body: userToJson,
     );
 
+    print("statusCodestatusCode:: ${completeUrl}");
+    print("statusCodestatusCode:: ${BaseToken}");
     print("statusCodestatusCode:: ${data}");
     print("statusCodestatusCode:: ${response.statusCode}");
     print("statusCodestatusCode:: ${response.body}");

@@ -43,7 +43,9 @@
   "Tomorrow": "Duration one day",
   "AfterTomorrow": "Duration 2 days",
   "AfterAfterTomorrow": "Duration 3 days",
-
+  "message1": " I get free cylinder replacement when I replace a kit ",
+  "message2": " Cylinders through ",
+  "message3": " month ",
 
   "YourBalance": "Your Balance",
   "SR": "SR",
