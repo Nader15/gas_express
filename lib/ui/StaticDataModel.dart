@@ -34,8 +34,9 @@ class StaticDataItem {
   int id;
   String name;
   String value;
+  bool show=true;
 
-  StaticDataItem({this.id, this.name, this.value});
+  StaticDataItem({this.id, this.name, this.value,this.show});
 
   StaticDataItem.fromJson(Map<String, dynamic> json) {
     id = json['id'];

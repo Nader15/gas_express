@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gas_express/ui/Orders/order_status.dart';
 import 'package:gas_express/utils/colors_file.dart';
-import 'package:gas_express/utils/custom_widgets/drawer.dart';
+import 'package:gas_express/ui/drawer.dart';
 import 'package:gas_express/utils/global_vars.dart';
 import 'package:gas_express/utils/navigator.dart';
 import 'package:gas_express/utils/static_ui.dart';

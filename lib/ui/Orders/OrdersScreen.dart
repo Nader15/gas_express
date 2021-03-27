@@ -9,7 +9,7 @@ import 'package:gas_express/ui/Cart/cart.dart';
 import 'package:gas_express/ui/Orders/order_status.dart';
 import 'package:gas_express/utils/colors_file.dart';
 import 'package:gas_express/utils/custom_widgets/custom_divider.dart';
-import 'package:gas_express/utils/custom_widgets/drawer.dart';
+import 'package:gas_express/ui/drawer.dart';
 import 'package:gas_express/utils/global_vars.dart';
 import 'package:gas_express/utils/navigator.dart';
 import 'package:gas_express/utils/static_ui.dart';
@@ -25,27 +25,27 @@ class _OrdersScreenState extends State<OrdersScreen> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   OrdersModel OrderModel;
-  List<OrderItem> ordersList = List();
+  List<OrderItem> currentOrdersList = List();
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     Future.delayed(Duration(milliseconds: 0), () {
       setState(() {
-        gettingData();
+        gettingCurrentOrders();
       });
     });
   }
 
-  gettingData() {
+  gettingCurrentOrders() {
     setState(() {
-      ordersList.clear();
+      currentOrdersList.clear();
 
       Api(context, _scaffoldKey).ordersListApi().then((value) {
         OrderModel = value;
         OrderModel.results.forEach((element) {
           setState(() {
-            ordersList.add(element);
+            currentOrdersList.add(element);
           });
         });
         // ordersList=ordersList.reversed.toList();
@@ -66,25 +66,25 @@ class _OrdersScreenState extends State<OrdersScreen> {
         ),
         actions: [StaticUI().cartWidget(context)],
       ),
-      body: ordersList.length == 0
+      body: currentOrdersList.length == 0
           ? StaticUI().NoDataFoundWidget(context)
           : Container(
               child: RefreshIndicator(
                 onRefresh: () {
                   return Future.delayed(Duration.zero, () {
                     setState(() {
-                      ordersList = List();
+                      currentOrdersList = List();
 
-                      gettingData();
+                      gettingCurrentOrders();
                     });
                   });
                 },
                 child: ListView.builder(
                     // physics: NeverScrollableScrollPhysics(),
                     // shrinkWrap: true,
-                    itemCount: ordersList.length,
+                    itemCount: currentOrdersList.length,
                     itemBuilder: (BuildContext context, int index) {
-                      return ItemWidget(ordersList[index]);
+                      return ItemWidget(currentOrdersList[index]);
                     }),
               ),
             ),
@@ -185,15 +185,15 @@ class _OrdersScreenState extends State<OrdersScreen> {
                     SizedBox(
                       width: 10,
                     ),
-                    orderItem.orderstatus =="new"?
+               orderItem.orderstatus != "done"||    orderItem.orderstatus != "canceled"?
                     InkWell(
                       onTap: () {
                         Api(context, _scaffoldKey).cancelOrder(orderItem.id).then((value) {
 
                           if(value){
 
-                            ordersList.clear();
-                            gettingData();
+                            currentOrdersList.clear();
+                            gettingCurrentOrders();
 
                           }
                         });
@@ -207,13 +207,17 @@ class _OrdersScreenState extends State<OrdersScreen> {
                     SizedBox(
                       width: 10,
                     ),
-                    // InkWell(
-                    //   onTap: () {},
-                    //   child: Icon(
-                    //     Icons.alternate_email,
-                    //     color: Colors.blue,
-                    //   ),
-                    // ),
+                    InkWell(
+                      onTap: () {
+                        launch("tel:" + "${BaseStaticDataList[1].value}");
+
+
+                      },
+                      child: Icon(
+                        Icons.alternate_email,
+                        color: Colors.blue,
+                      ),
+                    ),
                   ],
                 ),
               ],

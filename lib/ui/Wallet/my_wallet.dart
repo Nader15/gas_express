@@ -6,7 +6,7 @@ import 'package:gas_express/ui/Wallet/PromoCodeModel.dart';
 import 'package:gas_express/utils/bottomSheet.dart';
 import 'package:gas_express/utils/colors_file.dart';
 import 'package:gas_express/utils/custom_widgets/custom_divider.dart';
-import 'package:gas_express/utils/custom_widgets/drawer.dart';
+import 'package:gas_express/ui/drawer.dart';
 import 'package:gas_express/utils/global_vars.dart';
 import 'package:gas_express/utils/static_ui.dart';
 import 'package:localize_and_translate/localize_and_translate.dart';

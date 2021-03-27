@@ -80,22 +80,50 @@ class _NewProductsState extends State<NewProducts> {
             child: Column(
               children: [
 
-            CarouselSlider(
-            options: CarouselOptions(height: 200.0,autoPlay: true,aspectRatio: .9),
-            items:widget. bannersList.map((i) {
-              return Builder(
-                builder: (BuildContext context) {
-
-                  return Container(
-                      width: MediaQuery.of(context).size.width,
-                      margin: EdgeInsets.symmetric(horizontal: 5.0),
-
-                      child: Image.network(i.image,fit: BoxFit.fill,)
-                  );
-                },
-              );
-            }).toList(),
-          ),
+                CarouselSlider(
+                  options: CarouselOptions(
+                    height: 200.0,
+                    autoPlay: true,
+                    aspectRatio: 16 / 9,
+                    enlargeCenterPage: true,
+                    viewportFraction: 16 / 9,
+                  ),
+                  items: widget.bannersList.map((i) {
+                    return Builder(
+                      builder: (BuildContext context) {
+                        return Container(
+                            width: MediaQuery.of(context).size.width,
+                            margin: EdgeInsets.symmetric(horizontal: 5.0),
+                            child: Image.network(
+                              i.image,
+                              fit: BoxFit.fill,
+                            ));
+                      },
+                    );
+                  }).toList(),
+                ),
+                SizedBox(height: 5,),
+                BaseStaticDataList[5].show==false||BaseStaticDataList[5].value.isEmpty?Container():   Container(
+                  color: primaryAppColor,
+                  child: ListTile(
+                    leading: InkWell(
+                      onTap: (){
+                        setState(() {
+                          BaseStaticDataList[5].show=!BaseStaticDataList[5].show;
+                        });
+                      },
+                      child: Icon(
+                        Icons.clear,
+                        color: Colors.white,
+                      ),
+                    ),
+                    title: Text(
+                      "${translator.currentLanguage == 'ar' ? BaseStaticDataList[5].value : BaseStaticDataList[4].value}",
+                      style: TextStyle(color: Colors.white),
+                    ),
+                  ),
+                ),
+                SizedBox(height: 5,),
                 productsList.length==0?StaticUI().NoDataFoundWidget(context):      GridView.builder(
                   itemCount: productsList.length,
                   physics: NeverScrollableScrollPhysics(),

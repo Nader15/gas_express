@@ -43,11 +43,42 @@ class Api {
   String usageCount = "usage_count/";
   String customersAddresses = "CustomersAddresses/?customerid=$BaseUderId";
   String basket = "basket/";
-  String orders = "Orders/?customerid=$BaseUderId";
+  String orders = "Orders/?customerid=$BaseUderId&orderstatus=with-delivery-agent";
+  String ordersHistory = "Orders/?customerid=$BaseUderId&orderstatus!=with-delivery-agent";
   String cancelOrders = "Orders/";
   String orderStatusDetails = "OrderStatusDetails";
   String checkCoupon = "check_coupon/";
+  Future ordersHistoryListApi() async {
+    XsProgressHud.show(context);
 
+    final String completeUrl = baseUrl + ordersHistory;
+    final response = await http.get(
+      completeUrl,
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        HttpHeaders.authorizationHeader: BaseToken
+      },
+    );
+    print("DriverlordersListApi::: ${completeUrl}");
+    print("DriverlordersListApi::: ${response.statusCode}");
+
+    Map<String, dynamic> dataContent = json.decode(response.body);
+    print("DriverlordersListApi::: ${dataContent}");
+
+    XsProgressHud.hide();
+    if (response.statusCode == 200) {
+      return OrdersModel.fromJson(json.decode(utf8.decode(response.bodyBytes)));
+
+      print("body :" + json.decode(response.body).toString());
+      // return OrdersModel.fromJson(dataContent);
+    } else {
+      print("body :" + json.decode(response.body).toString());
+      FN_showToast(
+          '${json.decode(response.body)}', context, Colors.red, scaffoldKey);
+      return false;
+    }
+  }
   Future loginFunc(
     String phone,
   ) async {

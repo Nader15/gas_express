@@ -1,15 +1,19 @@
+import 'dart:async';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gas_express/APiFunctions/Api.dart';
 import 'package:gas_express/ui/HomeScreens/home_page.dart';
 import 'package:gas_express/ui/Orders/OrdersModel.dart';
-import 'package:gas_express/ui/orders_list.dart';
+import 'package:gas_express/ui/Orders/History_orders_list.dart';
 import 'package:gas_express/utils/colors_file.dart';
 import 'package:gas_express/utils/custom_widgets/custom_divider.dart';
-import 'package:gas_express/utils/custom_widgets/drawer.dart';
+import 'package:gas_express/ui/drawer.dart';
 import 'package:gas_express/utils/global_vars.dart';
 import 'package:gas_express/utils/navigator.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:localize_and_translate/localize_and_translate.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class OrderDetails extends StatefulWidget {
   OrderItem orderItem;
@@ -23,6 +27,7 @@ class OrderDetails extends StatefulWidget {
 class _OrderDetailsState extends State<OrderDetails> {
   final GlobalKey<FormState> _key = GlobalKey<FormState>();
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+  Completer<GoogleMapController> _controller = Completer();
 
   @override
   Widget build(BuildContext context) {
@@ -174,7 +179,9 @@ class _OrderDetailsState extends State<OrderDetails> {
                                     SizedBox(
                                       width: 10,
                                     ),
-                                    widget.orderItem.orderstatus == "new"
+                                    widget.orderItem.orderstatus != "done" ||
+                                            widget.orderItem.orderstatus !=
+                                                "canceled"
                                         ? InkWell(
                                             onTap: () {
                                               Api(context, _scaffoldKey)
@@ -196,33 +203,83 @@ class _OrderDetailsState extends State<OrderDetails> {
                                     SizedBox(
                                       width: 10,
                                     ),
-                                    // Icon(
-                                    //   Icons.alternate_email,
-                                    //   color: Colors.blue,
-                                    // ),
+                                    InkWell(
+                                      onTap: () {
+                                        launch("tel:" +
+                                            "${BaseStaticDataList[1].value}");
+                                      },
+                                      child: Icon(
+                                        Icons.alternate_email,
+                                        color: Colors.blue,
+                                      ),
+                                    ),
                                   ],
                                 ),
                               ],
                             ),
                             SizedBox(
+                              height: 20,
+                            ),
+                            Text(
+                              getTranslated(context, "DeliveryLocation"),
+                              style: TextStyle(
+                                  fontWeight: FontWeight.w100,
+                                  fontSize: 18,
+                                  color: greenAppColor),
+                            ),
+                            SizedBox(
                               height: 10,
                             ),
-                            // Text(
-                            //   getTranslated(context, "DeliveryLocation"),
-                            //   style: TextStyle(
-                            //       fontWeight: FontWeight.w100,
-                            //       fontSize: 18,
-                            //       color: greenAppColor),
-                            // ),
-                            // SizedBox(
-                            //   height: 10,
-                            // ),
-                            // Container(
-                            //   height: 120,
-                            //   decoration: BoxDecoration(
-                            //       color: greyPrimaryColor.withOpacity(.3),
-                            //       borderRadius: BorderRadius.circular(5)),
-                            // )
+                            Container(
+                              height: 150,
+                              decoration: BoxDecoration(
+                                  color: greyPrimaryColor.withOpacity(.3),
+                                  borderRadius: BorderRadius.circular(5)),
+                              child: GoogleMap(
+                                myLocationButtonEnabled: true,
+                                myLocationEnabled: true,
+                                compassEnabled: true,
+                                mapType: MapType.normal,
+                                initialCameraPosition: CameraPosition(
+                                  target: LatLng(
+                                      double.parse(widget
+                                          .orderItem.customeraddressname.gPS
+                                          .toString()
+                                          .split(",")[0]),
+                                      double.parse(widget
+                                          .orderItem.customeraddressname.gPS
+                                          .toString()
+                                          .split(",")[1])),
+                                  zoom: 4.8,
+                                ),
+                                onMapCreated: (GoogleMapController controller) {
+                                  _controller.complete(controller);
+                                },
+
+
+
+                                markers: Set<Marker>.of(
+                                  <Marker>[
+                                    Marker(
+                                        draggable: true,
+                                        markerId: MarkerId("1"),
+                                        position:  LatLng(
+                                            double.parse(widget
+                                                .orderItem.customeraddressname.gPS
+                                                .toString()
+                                                .split(",")[0]),
+                                            double.parse(widget
+                                                .orderItem.customeraddressname.gPS
+                                                .toString()
+                                                .split(",")[1])),
+                                        //    icon: BitmapDescriptor.fromAsset("assets/marker.png"),
+                                        infoWindow: const InfoWindow(
+                                          title: "Ana",
+                                        ))
+                                  ],
+                                ),
+                              ),
+                            )
                           ],
                         ),
                       ),
@@ -245,7 +302,8 @@ class _OrderDetailsState extends State<OrderDetails> {
                             Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                Text("${(widget.orderItem.totalprice??0)-(widget.orderItem.discountValue??0)}",
+                                Text(
+                                    "${(widget.orderItem.totalprice ?? 0) - (widget.orderItem.discountValue ?? 0)}",
                                     style: TextStyle(
                                         fontWeight: FontWeight.w100,
                                         fontSize: 50,

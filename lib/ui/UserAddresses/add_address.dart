@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:gas_express/APiFunctions/Api.dart';
 import 'package:gas_express/APiFunctions/sharedPref/SharedPrefClass.dart';
 import 'package:gas_express/utils/colors_file.dart';
-import 'package:gas_express/utils/custom_widgets/drawer.dart';
+import 'package:gas_express/ui/drawer.dart';
 import 'package:gas_express/utils/global_vars.dart';
 import 'package:geocoder/geocoder.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';

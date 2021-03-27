@@ -6,7 +6,7 @@ import 'package:gas_express/APiFunctions/sharedPref/SharedPrefClass.dart';
 import 'package:gas_express/ui/UserAddresses/UserAddresses_Model.dart';
 import 'package:gas_express/ui/UserAddresses/add_address.dart';
 import 'package:gas_express/utils/colors_file.dart';
-import 'package:gas_express/utils/custom_widgets/drawer.dart';
+import 'package:gas_express/ui/drawer.dart';
 import 'package:gas_express/utils/global_vars.dart';
 import 'package:gas_express/utils/navigator.dart';
 import 'package:gas_express/utils/static_ui.dart';

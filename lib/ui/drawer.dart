@@ -14,6 +14,8 @@ import 'package:localize_and_translate/localize_and_translate.dart';
 import 'package:share/share.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import 'Orders/History_orders_list.dart';
+
 class drawerList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -68,6 +70,15 @@ class drawerList extends StatelessWidget {
               onTap: () {
                 navigateAndKeepStack(context, OrdersScreen());
               },
+            ),      ListTile(
+              leading: Icon(Icons.reorder_sharp,color: blackColor.withOpacity(0.6),),
+              title: Text(
+                getTranslated(context, 'ordersHistory'),
+                style: _textStyle,
+              ),
+              onTap: () {
+                navigateAndKeepStack(context, HistoryOrdersList());
+              },
             ),
             ListTile(
               leading: SvgPicture.asset(
@@ -96,17 +107,17 @@ class drawerList extends StatelessWidget {
               },
             ),
             Divider(),
-            ListTile(
-              leading: SvgPicture.asset(
-                "assets/images/settings.svg",
-                color: blackColor.withOpacity(0.6),
-              ),
-              title: Text(
-                getTranslated(context, 'Settings'),
-                style: _textStyle,
-              ),
-              onTap: () {},
-            ),
+            // ListTile(
+            //   leading: SvgPicture.asset(
+            //     "assets/images/settings.svg",
+            //     color: blackColor.withOpacity(0.6),
+            //   ),
+            //   title: Text(
+            //     getTranslated(context, 'Settings'),
+            //     style: _textStyle,
+            //   ),
+            //   onTap: () {},
+            // ),
             ListTile(
               leading: SvgPicture.asset(
                 "assets/images/call.svg",
@@ -176,17 +187,10 @@ else {
               ),
               onTap: () {},
             ),
-            Divider(),
 
 
-            ListTile(
 
-              title: Text(
-               translator.currentLanguage=='ar'?BaseStaticDataList[5].value: BaseStaticDataList[4].value,
-                style: _textStyle,
-              ),
 
-            ),
           ],
         ),
       ),

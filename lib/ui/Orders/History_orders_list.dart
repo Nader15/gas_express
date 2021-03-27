@@ -1,37 +1,146 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:gas_express/APiFunctions/Api.dart';
+import 'package:gas_express/ui/Orders/OrdersModel.dart';
 import 'package:gas_express/utils/colors_file.dart';
 import 'package:gas_express/utils/custom_widgets/custom_divider.dart';
-import 'package:gas_express/utils/custom_widgets/drawer.dart';
+import 'package:gas_express/ui/drawer.dart';
 import 'package:gas_express/utils/global_vars.dart';
 import 'package:gas_express/utils/static_ui.dart';
 import 'package:localize_and_translate/localize_and_translate.dart';
 
-class OrdersList extends StatefulWidget {
+class HistoryOrdersList extends StatefulWidget {
   @override
-  _OrdersListState createState() => _OrdersListState();
+  _HistoryOrdersListState createState() => _HistoryOrdersListState();
 }
 
-class _OrdersListState extends State<OrdersList> {
+class _HistoryOrdersListState extends State<HistoryOrdersList> {
   final GlobalKey<FormState> _key = GlobalKey<FormState>();
+
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+
+  OrdersModel OrderModel;
+  List<OrderItem> ordersList = List();
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    Future.delayed(Duration(milliseconds: 0), () {
+      setState(() {
+        gettingData();
+      });
+    });
+  }
+
+  gettingData() {
+    setState(() {
+      ordersList.clear();
+
+      Api(context, _scaffoldKey).ordersHistoryListApi().then((value) {
+        OrderModel = value;
+        OrderModel.results.forEach((element) {
+          setState(() {
+            ordersList.add(element);
+          });
+        });
+        // ordersList=ordersList.reversed.toList();
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
       drawer: drawerList(),
       appBar: AppBar(
         backgroundColor: primaryAppColor,
         title: Text(
-          getTranslated(context, "Orders"),
+          getTranslated(context, "orders"),
           style: TextStyle(fontWeight: FontWeight.w100),
         ),
-        actions: [
-          StaticUI().cartWidget(context)
-        ],
+        actions: [StaticUI().cartWidget(context)],
       ),
-      body: Container(
-        padding: EdgeInsets.all(20),
-        child: _mainForm(context),
+      body: ordersList.length == 0
+          ? StaticUI().NoDataFoundWidget(context)
+          : Container(
+        child: RefreshIndicator(
+          onRefresh: () {
+            return Future.delayed(Duration.zero, () {
+              setState(() {
+                ordersList = List();
+
+                gettingData();
+              });
+            });
+          },
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                Text(getTranslated(context, "PreviousOrders"),
+                    style: TextStyle(
+                      fontWeight: FontWeight.w100,
+                      fontSize: 20,
+                    )),
+                SizedBox(
+                  height: 10,
+                ),
+                Card(
+                  elevation: 10,
+                  child: Padding(
+                    padding: const EdgeInsets.all(10.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Container(
+                          width: MediaQuery.of(context).size.width / 1.6,
+                          child: Row(
+                            mainAxisAlignment:
+                            MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(getTranslated(context, "Number"),
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.w100,
+                                    fontSize: 15,
+                                  )),
+                              Text(getTranslated(context, "Date"),
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.w100,
+                                    fontSize: 15,
+                                  )),
+                              Text(getTranslated(context, "Status"),
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.w100,
+                                    fontSize: 15,
+                                  )),
+                              Text(getTranslated(context, "Value"),
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.w100,
+                                    fontSize: 15,
+                                  )),
+                            ],
+                          ),
+                        ),
+                        SizedBox(
+                          height: 20,
+                        ),
+
+
+                      ],
+                    ),
+                  ),
+                ),
+                ListView.builder(
+                  physics: NeverScrollableScrollPhysics(),
+                  shrinkWrap: true,
+                    itemCount: ordersList.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      return recentOrders(true,ordersList[index]);
+                    }),
+              ],
+            ),
+          ),
+        ),
       ),
     );
   }
@@ -169,66 +278,7 @@ class _OrdersListState extends State<OrdersList> {
                     SizedBox(
                       height: 10,
                     ),
-                    Text(getTranslated(context, "PreviousOrders"),
-                        style: TextStyle(
-                          fontWeight: FontWeight.w100,
-                          fontSize: 20,
-                        )),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    Card(
-                      elevation: 10,
-                      child: Padding(
-                        padding: const EdgeInsets.all(10.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Container(
-                              width: MediaQuery.of(context).size.width / 1.6,
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text(getTranslated(context, "Number"),
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.w100,
-                                        fontSize: 15,
-                                      )),
-                                  Text(getTranslated(context, "Date"),
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.w100,
-                                        fontSize: 15,
-                                      )),
-                                  Text(getTranslated(context, "Status"),
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.w100,
-                                        fontSize: 15,
-                                      )),
-                                  Text(getTranslated(context, "Value"),
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.w100,
-                                        fontSize: 15,
-                                      )),
-                                ],
-                              ),
-                            ),
-                            SizedBox(
-                              height: 30,
-                            ),
-                            recentOrders(true),
-                            recentOrders(true),
-                            recentOrders(false),
-                            recentOrders(true),
-                            recentOrders(true),
-                            recentOrders(true),
-                            SizedBox(
-                              height: 20,
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
+
                   ],
                 )),
             SizedBox(
@@ -240,7 +290,7 @@ class _OrdersListState extends State<OrdersList> {
     );
   }
 
-  Widget recentOrders(bool status) {
+  Widget recentOrders(bool status,OrderItem orderItem) {
     return Column(
       children: [
         Row(
