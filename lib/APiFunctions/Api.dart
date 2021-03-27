@@ -4,6 +4,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:gas_express/APiFunctions/sharedPref/SharedPrefClass.dart';
 import 'package:gas_express/ui/Cart/CartModel.dart';
+import 'package:gas_express/ui/Cart/SuccessPromoCodeModel.dart';
 import 'package:gas_express/ui/HomeScreens/BannersModel.dart';
 import 'package:gas_express/ui/HomeScreens/ProductsModel.dart';
 import 'package:gas_express/ui/LoginScreens/UserModel.dart';
@@ -329,6 +330,8 @@ class Api {
 
     final String completeUrl = baseUrl + checkCoupon;
      var userToJson = json.encode(data);
+
+     print("userToJson::: ${userToJson}");
     final response = await http.post(
       completeUrl,
       headers: {
@@ -346,11 +349,12 @@ class Api {
     XsProgressHud.hide();
     if (response.statusCode == 200) {
       print("body :" + json.decode(response.body).toString());
-      return true;
+      return PromoCodeModelSuccess.fromJson(json.decode(utf8.decode(response.bodyBytes)));
+      // return true;
     } else {
       print("body :" + json.decode(response.body).toString());
-      FN_showToast(
-          '${json.decode(response.body)}', context, Colors.red, scaffoldKey);
+      // FN_showToast(
+      //     '${json.decode(response.body)}', context, Colors.red, scaffoldKey);
       return false;
     }
   }

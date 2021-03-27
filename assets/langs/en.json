@@ -15,8 +15,11 @@
   "floorNo": "Floor No",
   "confirm": "Confirm",
   "promoCode": "Promo code",
+  "inValidPromoCode": "In Vaild Promo code",
   "continueBuying": "Continue buying",
   "pleaseSelectDay": "Please select day",
+  "from": " From ",
+  "to": " To ",
 
   "TheProducts": "Products",
   "Recharge": "Recharge",
@@ -45,6 +48,7 @@
   "SR": "SR",
   "AddCredit": "Add Credit",
   "DiscountCodes": "Discount Codes",
+  "Discount": " Price afte discount ",
   "ExpiryDate": "Expiry Date",
   "Value": "Value",
   "AddCodeOrCoupon": "Add Code / Coupon",
@@ -66,7 +70,7 @@
   "Timeofreceipt": "Time of receipt",
   "pleaseSelectTime": "Please select time",
   "DelivaryTime": "Delivary Time",
-  "Fawrey": "immediately",
+  "Fawrey": "instant",
   "cart": "Cart",
   "Location": "Location",
   "orders": "Orders",
@@ -95,6 +99,9 @@
   "Details": "Details",
   "Received": "Received",
   "Canceled": "Canceled",
+  "Cancel": "Cancel",
+  "apply": "Apply",
+  "addPromoCode": "Add promo code",
 
   "Login": "Login"
 }

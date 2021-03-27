@@ -11,9 +11,15 @@
   "changeLanguage": "تغيير اللغة",
   "pleaseAddAddress": "من فضلك اضف العنوان",
   "confirm": "تنفيذ الطلب",
+  "apply": " تنفيذ الخصم ",
+  "addPromoCode": " اضف كود الخصم ",
+  "inValidPromoCode": "  كود الخصم غير صحيح ",
   "buildingNo": "رقم المبنى",
   "flatNo": "رقم الشقة",
   "floorNo": "رقم الطابق",
+  "Discount": "السعر بعد الخصم",
+  "from": " من ",
+  "to": " الى ",
 
   "TheProducts": "المنتجات",
   "Recharge": "اعادة تعبئة",
@@ -30,6 +36,7 @@
   "Delete": "حذف",
   "AddAddress": "اضافة عنوان",
   "Default": "الافتراضي",
+  "Cancel": "الغاء",
 
   "YourBalance": "الرصيد",
   "SR": "ريال",
