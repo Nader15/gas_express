@@ -32,6 +32,7 @@ class _AddAddressState extends State<AddAddress> {
   TextEditingController _flatNoController = TextEditingController();
   TextEditingController _floorController = TextEditingController();
   TextEditingController _buildingNoController = TextEditingController();
+  TextEditingController _addressNameController = TextEditingController();
   var location = new Location();
 
   Completer<GoogleMapController> _controller = Completer();
@@ -73,13 +74,35 @@ sendAddAddressRequest(Map data,BuildContext context){
         context: context,
         builder: (BuildContext context1) => Dialog(
               child: Container(
-                height: MediaQuery.of(context).size.height / 2.5,
+                height: MediaQuery.of(context).size.height / 2,
                 child: Padding(
                   padding: const EdgeInsets.only(left: 30,right: 30),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: <Widget>[
+
+                      new Container(
+                        decoration: new BoxDecoration(
+                          shape: BoxShape.rectangle,
+                          border: new Border.all(
+                            color: Colors.black,
+                            width: 1.0,
+                          ),
+                        ),
+                        child: new TextField(
+
+                          // textAlign: TextAlign.center,
+                          controller: _addressNameController,
+maxLength: 20,
+                          decoration: new InputDecoration(
+                            contentPadding: EdgeInsets.only(left: 20,right: 20),
+                            hintText: translator.translate('addressName'),
+                            border: InputBorder.none,
+                          ),
+                        ),
+                      ),
+                      Padding(padding: EdgeInsets.only(top: 20.0)),
 
                       new Container(
                         decoration: new BoxDecoration(
@@ -181,32 +204,16 @@ sendAddAddressRequest(Map data,BuildContext context){
                           ),
                         ),
                       ),
-                      // Container(
-                      //   width: MediaQuery.of(context).size.width / 1.3,
-                      //   child: TextField(
-                      //     controller: _floorController,
-                      //     textAlign: translator.currentLanguage == 'ar'
-                      //         ? TextAlign.right
-                      //         : TextAlign.left,
-                      //     keyboardType: TextInputType.number,
-                      //     decoration: InputDecoration(
-                      //       enabledBorder: UnderlineInputBorder(
-                      //           borderSide: BorderSide(color: grey)),
-                      //       focusedBorder: UnderlineInputBorder(
-                      //           borderSide: BorderSide(color: grey)),
-                      //       labelText: getTranslated(context, "floorNo"),
-                      //       // labelText: "رقم الطابق",
-                      //       labelStyle: TextStyle(color: grey),
-                      //     ),
-                      //   ),
-                      // ),
+
                       Padding(padding: EdgeInsets.only(top: 20.0)),
                       InkWell(
                         onTap: (){
                           Map data={};
                           if (_image == null) {
                             data = {
-                              "name": "${UserAddress}",
+                              "name": "${_addressNameController.text}",
+                              "description": "${UserAddress}",
+
                               "buildingno": _buildingNoController.text,
                               "floor": _floorController.text,
                               "flatno": _flatNoController.text,
@@ -219,7 +226,8 @@ sendAddAddressRequest(Map data,BuildContext context){
 
                             Api(context1,_scaffoldKey).uploadImageToApi(_image).then((value) {
                               data = {
-                                "name": "${UserAddress}",
+                                "name": "${_addressNameController.text}",
+                                "description": "${UserAddress}",
                                 "buildingno": _buildingNoController.text,
                                 "floor": _floorController.text,
                                 "flatno": _flatNoController.text,

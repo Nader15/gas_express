@@ -169,41 +169,41 @@ class _MyAddressesState extends State<MyAddresses> {
                   Row(
                     children: [
                       Text(
-                        addressItem.name.split(' ')[0],
+                        addressItem.name,
                         style:
-                            TextStyle(fontSize: 20, fontWeight: FontWeight.w100),
+                        TextStyle(fontSize: 20, fontWeight: FontWeight.w100),
                       ),
                       SizedBox(
                         width: 10,
                       ),
                       addressItem.isDefault == true
                           ? Text(
-                              "(${getTranslated(context, "Default")})",
-                              style: _titleTextStyle,
-                            )
+                        "(${getTranslated(context, "Default")})",
+                        style: _titleTextStyle,
+                      )
                           : Container(),
                     ],
                   ),
                   addressItem.isDefault == false
                       ? TextButton(
-                          onPressed: () {
-                            addressList.forEach((element) {
-                              setState(() {
-                                element.isDefault = false;
-                              });
-                            });
-                            setState(() {
-                                selectedAddressId=addressItem.id;
-                                 selectedAddressString=addressItem.name;
-                                setAddressToShared(selectedAddressString,selectedAddressId);
-                              addressItem.isDefault = !addressItem.isDefault;
-                            });
-                          },
-                          child: Text(
-                            getTranslated(context, "MakeDefault"),
-                            style: _titleTextStyle,
-                          ),
-                        )
+                    onPressed: () {
+                      addressList.forEach((element) {
+                        setState(() {
+                          element.isDefault = false;
+                        });
+                      });
+                      setState(() {
+                        selectedAddressId=addressItem.id;
+                        selectedAddressString=addressItem.name;
+                        setAddressToShared(selectedAddressString,selectedAddressId);
+                        addressItem.isDefault = !addressItem.isDefault;
+                      });
+                    },
+                    child: Text(
+                      getTranslated(context, "MakeDefault"),
+                      style: _titleTextStyle,
+                    ),
+                  )
                       : Container()
                 ],
               ),
@@ -211,8 +211,8 @@ class _MyAddressesState extends State<MyAddresses> {
                 height: 10,
               ),
               Text(
-                addressItem.name,
-                style: TextStyle(fontWeight: FontWeight.w400, fontSize: 15),
+                addressItem.description??"",
+                style: TextStyle(fontWeight: FontWeight.w400, fontSize: 13),
               ),
               SizedBox(
                 height: 10,
@@ -256,6 +256,7 @@ class _MyAddressesState extends State<MyAddresses> {
 }
 
 TextStyle _bttnTextStyle =
-    TextStyle(color: greenAppColor, fontSize: 15, fontWeight: FontWeight.w100);
+TextStyle(color: greenAppColor, fontSize: 15, fontWeight: FontWeight.w100);
 TextStyle _titleTextStyle =
-    TextStyle(color: greenAppColor, fontSize: 15, fontWeight: FontWeight.w100);
+TextStyle(color: greenAppColor, fontSize: 15, fontWeight: FontWeight.w100);
+

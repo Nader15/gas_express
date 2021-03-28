@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gas_express/APiFunctions/Api.dart';
 import 'package:gas_express/ui/HomeScreens/home_page.dart';
+import 'package:gas_express/ui/Orders/InvoiceDetails.dart';
 import 'package:gas_express/ui/Orders/OrdersModel.dart';
  import 'package:gas_express/utils/colors_file.dart';
 import 'package:gas_express/utils/custom_widgets/custom_divider.dart';
@@ -138,23 +139,29 @@ class _OrderDetailsState extends State<OrderDetails> {
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                // InkWell(
-                                //   onTap: () {},
-                                //   child: Container(
-                                //     padding: EdgeInsets.all(8),
-                                //     decoration: BoxDecoration(
-                                //         color: greenAppColor,
-                                //         borderRadius: BorderRadius.circular(5)),
-                                //     alignment: Alignment.center,
-                                //     child: Text(
-                                //         getTranslated(
-                                //             context, "InvoiceDetails"),
-                                //         style: TextStyle(
-                                //             fontWeight: FontWeight.w100,
-                                //             fontSize: 12,
-                                //             color: whiteColor)),
-                                //   ),
-                                // ),
+                                InkWell(
+                                  onTap: () {
+
+                                    navigateAndKeepStack(
+                                        context, InvoiceDetails(widget.orderItem));
+
+
+                                  },
+                                  child: Container(
+                                    padding: EdgeInsets.all(8),
+                                    decoration: BoxDecoration(
+                                        color: greenAppColor,
+                                        borderRadius: BorderRadius.circular(5)),
+                                    alignment: Alignment.center,
+                                    child: Text(
+                                        getTranslated(
+                                            context, "InvoiceDetails"),
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.w100,
+                                            fontSize: 12,
+                                            color: whiteColor)),
+                                  ),
+                                ),
                                 Row(
                                   children: [
                                     // InkWell(
@@ -183,15 +190,103 @@ class _OrderDetailsState extends State<OrderDetails> {
                                                 "canceled"
                                         ? InkWell(
                                             onTap: () {
-                                              Api(context, _scaffoldKey)
-                                                  .cancelOrder(
-                                                      widget.orderItem.id)
-                                                  .then((value) {
-                                                if (value) {
-                                                  navigateAndKeepStack(
-                                                      context, HomePage());
-                                                }
-                                              });
+
+                                              showDialog(
+                                                  context: context,
+                                                  barrierDismissible: false,
+                                                  builder: (
+                                                      context,
+                                                      ) {
+                                                    return StatefulBuilder(
+                                                      builder: (context, State) {
+                                                        return AlertDialog(
+                                                          elevation: 4.0,
+                                                          shape: OutlineInputBorder(
+                                                              borderSide: BorderSide(
+                                                                color: Colors.grey.withOpacity(.5),
+                                                                width: 1,
+                                                              ),
+                                                              borderRadius: BorderRadius.circular(10)),
+                                                          titlePadding: EdgeInsets.all(15.0),
+                                                          title: Column(
+                                                            mainAxisAlignment: MainAxisAlignment.center,
+                                                            crossAxisAlignment: CrossAxisAlignment.center,
+                                                            children: [
+                                                              SizedBox(
+                                                                height: 50,
+                                                              ),
+                                                              Container(
+                                                                child: Text(
+                                                                  translator.translate('areyouSureToCancelOrder'),
+                                                                  textScaleFactor: 1,
+                                                                  style: TextStyle(color: Colors.black, fontSize: 17),
+                                                                ),
+                                                              ),
+
+
+
+                                                              SizedBox(
+                                                                height: 50,
+                                                              ),
+                                                              Row(
+                                                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                                children: [
+                                                                  InkWell(
+                                                                      onTap: () {
+                                                                        Api(context, _scaffoldKey)
+                                                                            .cancelOrder(
+                                                                            widget.orderItem.id)
+                                                                            .then((value) {
+                                                                          if (value) {
+                                                                            navigateAndKeepStack(
+                                                                                context, HomePage());
+                                                                          }
+                                                                        });
+                                                                      },
+                                                                      child: Container(
+                                                                        decoration: BoxDecoration(
+                                                                            borderRadius: BorderRadius.circular(5),
+                                                                            color:  Colors.red),
+                                                                        width: MediaQuery.of(context).size.width / 3,
+                                                                        height: 40,
+                                                                        child: Center(
+                                                                            child: Text(
+                                                                              translator.translate('yes'),
+                                                                              textScaleFactor: 1,
+                                                                              style: TextStyle(color: Colors.white),
+                                                                            )),
+                                                                      )),
+                                                                  InkWell(
+                                                                      onTap: () {
+                                                                        Navigator.of(context).pop();
+                                                                      },
+                                                                      child: Container(
+                                                                        decoration: BoxDecoration(
+                                                                            borderRadius: BorderRadius.circular(5),
+                                                                            color:  Colors.green),
+                                                                        width: MediaQuery.of(context).size.width / 3,
+                                                                        height: 40,
+                                                                        child: Center(
+                                                                            child: Text(
+                                                                              translator.translate('no'),
+                                                                              textScaleFactor: 1,
+                                                                              style: TextStyle(color: Colors.white),
+                                                                            )),
+                                                                      )),
+                                                                ],
+                                                              ),
+                                                              SizedBox(
+                                                                height: 20,
+                                                              ),
+
+                                                            ],
+                                                          ),
+                                                        );
+                                                      },
+                                                    );
+                                                  });
+
+
                                             },
                                             child: Icon(
                                               Icons.delete_forever,

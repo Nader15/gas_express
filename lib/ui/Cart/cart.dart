@@ -872,12 +872,12 @@ width: MediaQuery.of(context).size.width,
                         });
                       },
                       child: SizedBox(
-                        width: MediaQuery.of(context).size.width / 3.5,
+                        width: MediaQuery.of(context).size.width / 4,
                         height: 30,
                         child: Container(
                             decoration: BoxDecoration(
                                 border: Border.all(color: Colors.grey)),
-                            child: Center(child: Text(Timeofreceipt))),
+                            child: Center(child: Text(Timeofreceipt,style: TextStyle(fontSize: 12),))),
                       ),
                     ),
                     SizedBox(
@@ -903,12 +903,12 @@ width: MediaQuery.of(context).size.width,
                         });
                       },
                       child: SizedBox(
-                        width: MediaQuery.of(context).size.width / 3.5,
+                        width: MediaQuery.of(context).size.width / 4,
                         height: 30,
                         child: Container(
                             decoration: BoxDecoration(
                                 border: Border.all(color: Colors.grey)),
-                            child: Center(child: Text(delivaryTime))),
+                            child: Center(child: Text(delivaryTime,style: TextStyle(fontSize: 12)))),
                       ),
                     ),
                   ],

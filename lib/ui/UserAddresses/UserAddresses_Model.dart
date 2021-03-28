@@ -34,6 +34,7 @@ class AddressItem {
   bool isDefault=false;
   int id;
   String name;
+  String description;
   String city;
   dynamic section;
   dynamic street;
@@ -49,6 +50,7 @@ class AddressItem {
         this.isDefault,
         this.id,
         this.name,
+        this.description,
         this.city,
         this.section,
         this.street,
@@ -62,6 +64,7 @@ class AddressItem {
   AddressItem.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     name = json['name'];
+    description = json['description'];
     city = json['city'];
     section = json['section'];
     street = json['street'];

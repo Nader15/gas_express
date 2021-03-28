@@ -6,7 +6,7 @@ import 'package:gas_express/APiFunctions/sharedPref/SharedPrefClass.dart';
 import 'package:gas_express/ui/Cart/cart.dart';
  import 'package:gas_express/ui/Orders/OrdersModel.dart';
  import 'package:gas_express/ui/UserAddresses/my_addresses.dart';
-import 'package:gas_express/ui/Orders/order_status.dart';
+import 'package:gas_express/ui/Orders/order_Details.dart';
 import 'package:gas_express/utils/colors_file.dart';
 import 'package:gas_express/utils/custom_widgets/custom_divider.dart';
 import 'package:gas_express/ui/drawer.dart';
@@ -85,9 +85,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
         ),
         actions: [StaticUI().cartWidget(context)],
       ),
-      body: currentOrdersList.length == 0
-          ? StaticUI().NoDataFoundWidget(context)
-          : Container(
+      body:  Container(
               child: RefreshIndicator(
                 onRefresh: () {
                   return Future.delayed(Duration.zero, () {
@@ -101,7 +99,9 @@ class _OrdersScreenState extends State<OrdersScreen> {
                 child: SingleChildScrollView(
                   child: Column(
                     children: [
-                      ListView.builder(
+                      currentOrdersList.length == 0
+                          ? StaticUI().NoDataFoundWidget(context)
+                          :     ListView.builder(
                           physics: NeverScrollableScrollPhysics(),
                           shrinkWrap: true,
                           itemCount: currentOrdersList.length,
@@ -162,7 +162,9 @@ SizedBox(height: 30,),
                               SizedBox(
                                 height: 20,
                               ),
-                              ListView.builder(
+                              HistoryOrdersList.length == 0
+                                  ? Container()
+                                  :       ListView.builder(
                                   physics: NeverScrollableScrollPhysics(),
                                   shrinkWrap: true,
                                   itemCount: HistoryOrdersList.length,
@@ -216,7 +218,7 @@ SizedBox(height: 30,),
                       style: TextStyle(
                         color: status == true ? greenAppColor : redColor,
                         fontWeight: FontWeight.w100,
-                        fontSize: 15,
+                        fontSize:  orderItem.orderstatus.length>7?12:15,
                       )),
                   // orderItem.discountValue==null?Text("${orderItem.totalprice}"):   Text("${((orderItem.totalprice)-(orderItem.discountValue.toString()=="null"?0:orderItem.discountValue)) }",
                   Text("${ ((orderItem.totalprice??0)-( orderItem.discountValue??0))}",
@@ -347,15 +349,103 @@ SizedBox(height: 30,),
                orderItem.orderstatus != "done"&&    orderItem.orderstatus != "canceled"?
                     InkWell(
                       onTap: () {
-                        Api(context, _scaffoldKey).cancelOrder(orderItem.id).then((value) {
 
-                          if(value){
+                        showDialog(
+                            context: context,
+                            barrierDismissible: false,
+                            builder: (
+                                context,
+                                ) {
+                              return StatefulBuilder(
+                                builder: (context, State) {
+                                  return AlertDialog(
+                                    elevation: 4.0,
+                                    shape: OutlineInputBorder(
+                                        borderSide: BorderSide(
+                                          color: Colors.grey.withOpacity(.5),
+                                          width: 1,
+                                        ),
+                                        borderRadius: BorderRadius.circular(10)),
+                                    titlePadding: EdgeInsets.all(15.0),
+                                    title: Column(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      crossAxisAlignment: CrossAxisAlignment.center,
+                                      children: [
+                                        SizedBox(
+                                          height: 50,
+                                        ),
+                                        Container(
+                                          child: Text(
+                                            translator.translate('areyouSureToCancelOrder'),
+                                            textScaleFactor: 1,
+                                            style: TextStyle(color: Colors.black, fontSize: 17),
+                                          ),
+                                        ),
 
-                            currentOrdersList.clear();
-                            gettingCurrentOrders();
 
-                          }
-                        });
+
+                                        SizedBox(
+                                          height: 50,
+                                        ),
+                                        Row(
+                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            InkWell(
+                                                onTap: () {
+                                                  Api(context, _scaffoldKey).cancelOrder(orderItem.id).then((value) {
+
+                                                    if(value){
+                                                      Navigator.of(context).pop();
+
+                                                      currentOrdersList.clear();
+                                                      gettingCurrentOrders();
+
+                                                    }
+                                                  });
+                                                },
+                                                child: Container(
+                                                  decoration: BoxDecoration(
+                                                      borderRadius: BorderRadius.circular(5),
+                                                      color:  Colors.red),
+                                                  width: MediaQuery.of(context).size.width / 3,
+                                                  height: 40,
+                                                  child: Center(
+                                                      child: Text(
+                                                        translator.translate('yes'),
+                                                        textScaleFactor: 1,
+                                                        style: TextStyle(color: Colors.white),
+                                                      )),
+                                                )),
+                                            InkWell(
+                                                onTap: () {
+                                             Navigator.of(context).pop();
+                                                },
+                                                child: Container(
+                                                  decoration: BoxDecoration(
+                                                      borderRadius: BorderRadius.circular(5),
+                                                      color:  Colors.green),
+                                                  width: MediaQuery.of(context).size.width / 3,
+                                                  height: 40,
+                                                  child: Center(
+                                                      child: Text(
+                                                        translator.translate('no'),
+                                                        textScaleFactor: 1,
+                                                        style: TextStyle(color: Colors.white),
+                                                      )),
+                                                )),
+                                          ],
+                                        ),
+                                        SizedBox(
+                                          height: 20,
+                                        ),
+
+                                      ],
+                                    ),
+                                  );
+                                },
+                              );
+                            });
+
 
                       },
                       child: Icon(

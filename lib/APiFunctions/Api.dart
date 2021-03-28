@@ -47,8 +47,11 @@ class Api {
   String checkZone = "/zone_check/";
   String customersAddresses = "CustomersAddresses/?customerid=$BaseUderId";
   String basket = "basket/";
-  String orders = "Orders/?customerid=$BaseUderId&orderstatus=with-delivery-agent";
-  String ordersHistory = "Orders/?customerid=$BaseUderId&orderstatus!=with-delivery-agent";
+  // String orders = "Orders/?customerid=$BaseUderId&orderstatus=with-delivery-agent";
+  // String ordersHistory = "Orders/?customerid=$BaseUderId&orderstatus!=with-delivery-agent";
+
+  String orders = "Orders/?customerid=$BaseUderId&orderstatus=with-delivery-agent&ordering=-id";
+  String ordersHistory = "Orders/?customerid=$BaseUderId&orderstatus__ne=with-delivery-agent&ordering=-id";
   String cancelOrders = "Orders/";
   String orderStatusDetails = "OrderStatusDetails";
   String checkCoupon = "check_coupon/";
