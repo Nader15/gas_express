@@ -32,7 +32,10 @@ class _ProductsState extends State<Products> {
 
     super.initState();
     Future.delayed(Duration(milliseconds: 0), () {
-      getProducts();
+      if(baseProductsList.length==0){
+        getProducts();
+
+      }
     });
     super.initState();
   }
@@ -43,6 +46,7 @@ class _ProductsState extends State<Products> {
       productsModel.results.forEach((element) {
         setState(() {
           productsList.add(element);
+          baseProductsList.add(element);
         });
       });
 
@@ -103,10 +107,10 @@ class _ProductsState extends State<Products> {
               ),
               SizedBox(height: 5,),
 
-              productsList.length == 0
+              baseProductsList.length == 0
                   ? StaticUI().NoDataFoundWidget(context)
                   : GridView.builder(
-                      itemCount: productsList.length,
+                      itemCount: baseProductsList.length,
                       physics: NeverScrollableScrollPhysics(),
                       shrinkWrap: true,
                       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
@@ -128,21 +132,21 @@ class _ProductsState extends State<Products> {
                                   decoration: BoxDecoration(
                                       border: Border.all(color: greenAppColor)),
                                   child: Text(
-                                    " ${productsList[index].unitprice} " +
+                                    " ${baseProductsList[index].unitprice} " +
                                         getTranslated(context, "Currency"),
                                     // "15.5 " + getTranslated(context, "Currency"),
                                     style: TextStyle(color: greenAppColor),
                                   ),
                                 ),
                                 Center(
-                                  child: productsList[index].imageurl == null ||
-                                          productsList[index].imageurl.isEmpty
+                                  child: baseProductsList[index].imageurl == null ||
+                                      baseProductsList[index].imageurl.isEmpty
                                       ? Image.asset(
                                           "assets/images/tube.png",
                                           width: 90,
                                         )
                                       : Image.network(
-                                          productsList[index].photoUrl,
+                                    baseProductsList[index].photoUrl,
                                           height: 80,
                                         ),
                                 ),
@@ -152,15 +156,15 @@ class _ProductsState extends State<Products> {
                                       MainAxisAlignment.spaceBetween,
                                   children: [
                                     Text(translator.currentLanguage == 'ar'
-                                        ? productsList[index].productnameAr
-                                        : "${productsList[index].productnameEn}"),
+                                        ? baseProductsList[index].productnameAr
+                                        : "${baseProductsList[index].productnameEn}"),
                                     // Text("منظم غاز 50 مل بار"),
 
                                     Container(
                                         height: 40,
                                         margin: EdgeInsets.only(top: 20),
                                         child: AddButtonWidget(
-                                            productsList[index]))
+                                            baseProductsList[index]))
 
                                     // Row(children: [
                                     //   Expanded(child: Container(color: Colors.green,width: 30,height: 30,child: Center(child: Text("-")),)),

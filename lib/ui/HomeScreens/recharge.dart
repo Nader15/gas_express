@@ -27,7 +27,7 @@ class Recharge extends StatefulWidget {
 class _RechargeState extends State<Recharge> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   ProductsModel productsModel;
-  List<ProductItem> productsList = List();
+  List<ProductItem> reshargeProductsList = List();
   Location location = new Location();
 
   bool _serviceEnabled;
@@ -39,7 +39,11 @@ class _RechargeState extends State<Recharge> {
 
     super.initState();
     Future.delayed(Duration(milliseconds: 0), () {
-      checkLocation();
+      // checkLocation();
+      if(baseReshargeProductsList.length==0){
+        getProducts();
+
+      }
       // getProducts();
     });
     super.initState();
@@ -72,7 +76,11 @@ class _RechargeState extends State<Recharge> {
 
           Api(context, _scaffoldKey).checkLocationApi("${value.latitude},${value.longitude}").then((value) {
             if(value){
-              getProducts();
+              if(baseReshargeProductsList.length==0){
+                getProducts();
+
+              }
+              // getProducts();
 
             }
           });
@@ -106,7 +114,9 @@ class _RechargeState extends State<Recharge> {
       productsModel = value;
       productsModel.results.forEach((element) {
         setState(() {
-          productsList.add(element);
+
+           reshargeProductsList.add(element);
+          baseReshargeProductsList.add(element);
         });
       });
     });
@@ -185,8 +195,8 @@ class _RechargeState extends State<Recharge> {
               ),
               SizedBox(height: 5,),
 
-              productsList.length==0?StaticUI().NoDataFoundWidget(context):    GridView.builder(
-                itemCount: productsList.length,
+              baseReshargeProductsList.length==0?StaticUI().NoDataFoundWidget(context):    GridView.builder(
+                itemCount: baseReshargeProductsList.length,
                 physics: NeverScrollableScrollPhysics(),
                 shrinkWrap: true,
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
@@ -208,21 +218,21 @@ class _RechargeState extends State<Recharge> {
                             decoration: BoxDecoration(
                                 border: Border.all(color: greenAppColor)),
                             child: Text(
-                              " ${productsList[index].unitprice} " +
+                              " ${baseReshargeProductsList[index].unitprice} " +
                                   getTranslated(context, "Currency"),
                               // "15.5 " + getTranslated(context, "Currency"),
                               style: TextStyle(color: greenAppColor),
                             ),
                           ),
                           Center(
-                            child: productsList[index].imageurl == null ||
-                                productsList[index].imageurl.isEmpty
+                            child: baseReshargeProductsList[index].imageurl == null ||
+                                baseReshargeProductsList[index].imageurl.isEmpty
                                 ? Image.asset(
                               "assets/images/tube.png",
                               width: 90,
                             )
                                 : Image.network(
-                              productsList[index].photoUrl,
+                              baseReshargeProductsList[index].photoUrl,
                               height: 80,
                             ),
                           ),
@@ -231,8 +241,8 @@ class _RechargeState extends State<Recharge> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(translator.currentLanguage == 'ar'
-                                  ? productsList[index].productnameAr
-                                  : "${productsList[index].productnameEn}"),
+                                  ? baseReshargeProductsList[index].productnameAr
+                                  : "${baseReshargeProductsList[index].productnameEn}"),
                               // Text("منظم غاز 50 مل بار"),
                               // ElevatedButton(
                               //   style: ButtonStyle(
@@ -255,7 +265,7 @@ class _RechargeState extends State<Recharge> {
                               Container(
                                   height: 40,
                                   margin: EdgeInsets.only(top: 20),
-                                  child: AddButtonWidget(productsList[index]))
+                                  child: AddButtonWidget(baseReshargeProductsList[index]))
                             ],
                           )
                         ],

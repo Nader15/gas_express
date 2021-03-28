@@ -25,7 +25,7 @@ class _NewProductsState extends State<NewProducts> {
 
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   ProductsModel productsModel;
-  List<ProductItem> productsList = List();
+  List<ProductItem> newProductsList = List();
 
   @override
   void initState() {
@@ -33,7 +33,10 @@ class _NewProductsState extends State<NewProducts> {
 
     super.initState();
     Future.delayed(Duration(milliseconds: 0), () {
-      getProducts();
+      if(baseNewProductsList.length==0){
+        getProducts();
+
+      }
     });
     super.initState();
   }
@@ -43,7 +46,9 @@ class _NewProductsState extends State<NewProducts> {
       productsModel = value;
       productsModel.results.forEach((element) {
         setState(() {
-          productsList.add(element);
+          newProductsList.add(element);
+          baseNewProductsList.add(element);
+
         });
       });
     });
@@ -122,8 +127,8 @@ class _NewProductsState extends State<NewProducts> {
                 ),
               ),
               SizedBox(height: 5,),
-              productsList.length==0?StaticUI().NoDataFoundWidget(context):      GridView.builder(
-                itemCount: productsList.length,
+              baseNewProductsList.length==0?StaticUI().NoDataFoundWidget(context):      GridView.builder(
+                itemCount: baseNewProductsList.length,
                 physics: NeverScrollableScrollPhysics(),
                 shrinkWrap: true,
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
@@ -145,21 +150,21 @@ class _NewProductsState extends State<NewProducts> {
                             decoration: BoxDecoration(
                                 border: Border.all(color: greenAppColor)),
                             child: Text(
-                              " ${productsList[index].unitprice} " +
+                              " ${baseNewProductsList[index].unitprice} " +
                                   getTranslated(context, "Currency"),
                               // "15.5 " + getTranslated(context, "Currency"),
                               style: TextStyle(color: greenAppColor),
                             ),
                           ),
                           Center(
-                            child: productsList[index].imageurl == null ||
-                                productsList[index].imageurl.isEmpty
+                            child: baseNewProductsList[index].imageurl == null ||
+                                baseNewProductsList[index].imageurl.isEmpty
                                 ? Image.asset(
                               "assets/images/tube.png",
                               width: 90,
                             )
                                 : Image.network(
-                              productsList[index].photoUrl,
+                              baseNewProductsList[index].photoUrl,
                               height: 80,
                             ),
                           ),
@@ -168,8 +173,8 @@ class _NewProductsState extends State<NewProducts> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(translator.currentLanguage == 'ar'
-                                  ? productsList[index].productnameAr
-                                  : "${productsList[index].productnameEn}"),
+                                  ? baseNewProductsList[index].productnameAr
+                                  : "${baseNewProductsList[index].productnameEn}"),
                               // Text("منظم غاز 50 مل بار"),
                               // TextButton(
                               //   // style: ButtonStyle(
@@ -192,7 +197,7 @@ class _NewProductsState extends State<NewProducts> {
                               Container(
                                   height: 40,
                                   margin: EdgeInsets.only(top: 20),
-                                  child: AddButtonWidget(productsList[index]))
+                                  child: AddButtonWidget(baseNewProductsList[index]))
                             ],
                           )
                         ],
