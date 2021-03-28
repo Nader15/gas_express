@@ -172,11 +172,12 @@ class _InvoiceDetailsState extends State<InvoiceDetails> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      getTranslated(context, "promoCode"),
+                      getTranslated(context, "discountValue"),
                       style: TextStyle(fontSize: 20),
                     ),
                     Text(
-                      " ${widget.orderItem.couponCode } "  ,
+                      " ${widget.orderItem.discountValue.toString() +
+                          getTranslated(context, "SR")} "  ,
                       style: TextStyle(fontSize: 20),
                     ),
                   ],
