@@ -78,8 +78,8 @@
   "Total": "الاجمالي",
   "AvailableBalance": "رصيد متاح",
   "Appointment": "الموعد",
-  "Timeofreceipt": "وقت الاستلام",
-  "DelivaryTime": "وقت التسليم",
+  "Timeofreceipt": "ساعة",
+  "DelivaryTime": "ساعة",
   "continueBuying": " متابعة عملية الشراء ",
 
   "pleaseSelectTime": "من فضلك اختر التوقيت ",

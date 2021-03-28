@@ -25,14 +25,28 @@ class drawerList extends StatelessWidget {
         child: ListView(
           padding: EdgeInsets.zero,
           children: [
-            DrawerHeader(
-              child: Container(
-                height: 100,
-                child: CircleAvatar(
-                  backgroundColor: whiteColor,
+            SizedBox(height: 30,),
+            Padding(
+              padding: const EdgeInsets.only(left: 80,right: 80),
+              child: ClipOval(
+                child: Image.asset(
+                  'assets/images/menu_logo.png',
+                  fit: BoxFit.cover,
+                  height: 140,width: 50,
                 ),
               ),
             ),
+
+            // DrawerHeader(
+            //   child: Container(
+            //     height: 100,
+            //     width: 100,
+            //     child: CircleAvatar(
+            //       backgroundColor: whiteColor,
+            //       child: ClipRRect(child: Image.asset("assets/images/menu_logo.png"),borderRadius: BorderRadius.circular(50),),
+            //     ),
+            //   ),
+            // ),
             ListTile(
               leading: SvgPicture.asset(
                 "assets/images/home.svg",

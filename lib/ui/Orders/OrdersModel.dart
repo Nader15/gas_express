@@ -56,7 +56,7 @@ class OrderItem {
   int customerid;
   dynamic driverid;
   int customeraddress;
-  int couponCode;
+  dynamic couponCode;
 
   OrderItem(
       {this.id,

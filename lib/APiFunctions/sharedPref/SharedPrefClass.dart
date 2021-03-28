@@ -38,7 +38,7 @@ Future getDataFromShared()async{
   BaseToken=  prefs.getString(token);
   BaseUderId=  prefs.getInt(userId);
   BasePhone=  prefs.getString(userPhone);
-  selectedAddressString=  prefs.getString(userAddressData);
+  selectedAddressString=  prefs.getString(userAddressData)??"";
   selectedAddressId=  prefs.getInt(userAddressId);
   print("BaseToken:: ${BaseToken}");
   print("BaseUderId:: ${BaseUderId}");

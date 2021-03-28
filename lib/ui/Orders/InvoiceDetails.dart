@@ -163,18 +163,42 @@ class _InvoiceDetailsState extends State<InvoiceDetails> {
             SizedBox(
               height: 10,
             ),
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            widget.orderItem.discountValue==null||  widget.orderItem.discountValue==0?Container():
+
+            Column(
               children: [
-                Text(
-                  getTranslated(context, "Discount"),
-                  style: TextStyle(fontSize: 20),
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      getTranslated(context, "promoCode"),
+                      style: TextStyle(fontSize: 20),
+                    ),
+                    Text(
+                      " ${widget.orderItem.couponCode } "  ,
+                      style: TextStyle(fontSize: 20),
+                    ),
+                  ],
                 ),
-                Text(
-                  " ${(widget.orderItem.totalprice ?? 0) - (widget.orderItem.discountValue ?? 0)} " +
-                      getTranslated(context, "SR"),
-                  style: TextStyle(fontSize: 20),
+                SizedBox(
+                  height: 5,
+                ),
+
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      getTranslated(context, "Discount"),
+                      style: TextStyle(fontSize: 20),
+                    ),
+                    Text(
+                      " ${(widget.orderItem.totalprice ?? 0) - (widget.orderItem.discountValue ?? 0)} " +
+                          getTranslated(context, "SR"),
+                      style: TextStyle(fontSize: 20),
+                    ),
+                  ],
                 ),
               ],
             ),
