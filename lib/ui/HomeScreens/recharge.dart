@@ -39,8 +39,8 @@ class _RechargeState extends State<Recharge> {
 
     super.initState();
     Future.delayed(Duration(milliseconds: 0), () {
-      // checkLocation();
-      getProducts();
+      checkLocation();
+      // getProducts();
     });
     super.initState();
   }

@@ -235,9 +235,12 @@ class _MyAddressesState extends State<MyAddresses> {
                       Api(context, _scaffoldKey)
                           .deleteCustomersAddressesApi(addressItem.id)
                           .then((value) {
-                        setState(() {
-                          addressList.remove(addressItem);
-                        });
+                            if(value){
+                              setState(() {
+                                addressList.remove(addressItem);
+                              });
+                            }
+
                       });
                     },
                     child: Text(

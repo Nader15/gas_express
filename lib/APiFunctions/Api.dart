@@ -44,8 +44,9 @@ class Api {
   String check_coupon = "check_coupon/";
   String usageCount = "usage_count/";
   String deleteMessage = "archive_messages/";
-  String checkZone = "/zone_check/";
+  String checkZone = "zone_check/";
   String customersAddresses = "CustomersAddresses/?customerid=$BaseUderId";
+  String customersAddressesDelete = "http://18.188.206.243:8001/api/CustomersAddresses/";
   String basket = "basket/";
   // String orders = "Orders/?customerid=$BaseUderId&orderstatus=with-delivery-agent";
   // String ordersHistory = "Orders/?customerid=$BaseUderId&orderstatus!=with-delivery-agent";
@@ -174,21 +175,24 @@ class Api {
 
     var response = await http.post(
       completeUrl,  headers: {
-      // 'Content-Type': 'application/json',
+      'Content-Type': 'application/json',
       'Accept': 'application/json',
       HttpHeaders.authorizationHeader: BaseToken
     },
-      body: {
+      body: jsonEncode({
 
 
-          "gps": location
-             },
+        "gps": location
+      }),
     );
+    print("checkLocationApiBody ${completeUrl}");
+    print("checkLocationApiBody ${location}");
+    print("checkLocationApiBody ${BaseToken}");
     print("checkLocationApiBody ${response.body}");
      print("checkLocationApiBody ${response.statusCode}");
     XsProgressHud.hide();
     if (response.statusCode == 200) {
-
+return true;
     } else {
       FN_showToast('', context, Colors.red, scaffoldKey);
 
@@ -629,7 +633,7 @@ class Api {
   Future deleteCustomersAddressesApi(int addressID) async {
     XsProgressHud.show(context);
 
-    final String completeUrl = baseUrl + customersAddresses+addressID.toString()+"/" ;
+    final String completeUrl = baseUrl + customersAddressesDelete+addressID.toString()+"/" ;
 
     final response = await http.delete(
       completeUrl,
