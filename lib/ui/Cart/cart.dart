@@ -2,6 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gas_express/APiFunctions/Api.dart';
 import 'package:gas_express/APiFunctions/sharedPref/SharedPrefClass.dart';
+import 'package:gas_express/provider/cartProvider.dart';
+import 'package:gas_express/provider/cartUI.dart';
 import 'package:gas_express/ui/Cart/CartModel.dart';
 import 'package:gas_express/ui/Orders/OrdersScreen.dart';
 import 'package:gas_express/ui/UserAddresses/my_addresses.dart';
@@ -14,6 +16,7 @@ import 'package:gas_express/utils/navigator.dart';
 import 'package:gas_express/utils/static_ui.dart';
 import 'package:gas_express/utils/toast.dart';
 import 'package:localize_and_translate/localize_and_translate.dart';
+import 'package:provider/provider.dart';
 
 import 'SuccessPromoCodeModel.dart';
 
@@ -25,7 +28,7 @@ class Cart extends StatefulWidget {
 class _CartState extends State<Cart> {
   final GlobalKey<FormState> _key = GlobalKey<FormState>();
   dynamic total = 0;
-  dynamic priceAfterPromoCode ;
+  dynamic priceAfterPromoCode;
   int productNo = 0;
 
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
@@ -92,7 +95,9 @@ class _CartState extends State<Cart> {
                         color: redColor,
                         borderRadius: BorderRadius.circular(5)),
                     alignment: Alignment.center,
-                    child: Text(" ${priceAfterPromoCode==null?total:priceAfterPromoCode} " + getTranslated(context, "SR"),
+                    child: Text(
+                        " ${priceAfterPromoCode == null ? total : priceAfterPromoCode} " +
+                            getTranslated(context, "SR"),
                         style: TextStyle(
                             fontWeight: FontWeight.w100,
                             fontSize: 18,
@@ -123,7 +128,8 @@ class _CartState extends State<Cart> {
                               {"quantity": element.quantity, "id": element.id});
                         });
                         Map data;
-                        if (promoCodeController.text==null||promoCodeController.text.isEmpty) {
+                        if (promoCodeController.text == null ||
+                            promoCodeController.text.isEmpty) {
                           data = {
                             "items": itemsList,
                             "date": FawreyCheck
@@ -201,7 +207,10 @@ class _CartState extends State<Cart> {
           getTranslated(context, "cart"),
           style: TextStyle(fontWeight: FontWeight.w100),
         ),
-        actions: [StaticUI().cartWidget(context)],
+        actions: [
+          // StaticUI().cartWidget(context)
+          CartUI()
+        ],
       ),
       body: Container(
         padding: EdgeInsets.all(10),
@@ -249,16 +258,23 @@ class _CartState extends State<Cart> {
   }
 
   Widget order(CartModel cartModel) {
+    final cartData = Provider.of<CartProvider>(context);
     return Column(
       children: [
         Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            cartModel.image==null?   Image.asset(
-              "assets/images/new_tube.png",
-              width: 30,
-            ):Image.network(cartModel.image,width: 30,height: 30,),
+            cartModel.image == null
+                ? Image.asset(
+                    "assets/images/new_tube.png",
+                    width: 30,
+                  )
+                : Image.network(
+                    cartModel.image,
+                    width: 30,
+                    height: 30,
+                  ),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -299,6 +315,7 @@ class _CartState extends State<Cart> {
                               onTap: () {
                                 if (cartModel.quantity == 0) {
                                   setState(() {
+                                    cartData.getDecreaseCounter();
                                     cartList.remove(cartModel);
                                     gettotoalCost();
                                   });
@@ -323,6 +340,7 @@ class _CartState extends State<Cart> {
                     InkWell(
                       onTap: () {
                         setState(() {
+                          cartData.getDecreaseCounter();
                           cartList.remove(cartModel);
                         });
                       },
@@ -432,26 +450,30 @@ class _CartState extends State<Cart> {
             SizedBox(
               height: 10,
             ),
-            priceAfterPromoCode==null? Container():   Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  getTranslated(context, "Discount"),
-                  style: TextStyle(fontSize: 20),
-                ),
-                Text(
-                  " ${priceAfterPromoCode} " + getTranslated(context, "SR"),
-                  style: TextStyle(fontSize: 20),
-                ),
-              ],
+            priceAfterPromoCode == null
+                ? Container()
+                : Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        getTranslated(context, "Discount"),
+                        style: TextStyle(fontSize: 20),
+                      ),
+                      Text(
+                        " ${priceAfterPromoCode} " +
+                            getTranslated(context, "SR"),
+                        style: TextStyle(fontSize: 20),
+                      ),
+                    ],
+                  ),
+            SizedBox(
+              height: 5,
             ),
-            SizedBox(height: 5,),
             Divider(),
             InkWell(
               onTap: () {
                 alertDialogPromoCodeWidget();
-          
               },
               child: Row(
                 children: [
@@ -493,7 +515,7 @@ class _CartState extends State<Cart> {
                         onTap: () {
                           setState(() {
                             promoCodeController.clear();
-                            priceAfterPromoCode=null;
+                            priceAfterPromoCode = null;
                           });
                         },
                         child: Icon(
@@ -504,13 +526,11 @@ class _CartState extends State<Cart> {
                     ],
                   ),
             CustomDivider(),
-
           ],
         ),
       ),
     );
   }
-
 
   alertDialogPromoCodeWidget() {
     String errorMessage = "";
@@ -545,7 +565,7 @@ class _CartState extends State<Cart> {
                     SizedBox(
                       height: 20,
                     ),
-                      Container(
+                    Container(
                       decoration: new BoxDecoration(
                         shape: BoxShape.rectangle,
                         border: new Border.all(
@@ -554,7 +574,6 @@ class _CartState extends State<Cart> {
                         ),
                       ),
                       child: new TextField(
-
                         // textAlign: TextAlign.center,
                         controller: promoCodeController,
                         onChanged: (value) {
@@ -564,7 +583,7 @@ class _CartState extends State<Cart> {
                           });
                         },
                         decoration: new InputDecoration(
-                          contentPadding: EdgeInsets.only(left: 20,right: 20),
+                          contentPadding: EdgeInsets.only(left: 20, right: 20),
                           hintText: translator.translate('promoCode'),
                           border: InputBorder.none,
                         ),
@@ -596,22 +615,24 @@ class _CartState extends State<Cart> {
                                 .then((value) {
                               print("valuevalue ${value}");
                               if (value is PromoCodeModelSuccess) {
-                                promoCodeModelSuccess=value;
+                                promoCodeModelSuccess = value;
                                 setState(() {
-                                  if(promoCodeModelSuccess.discountValue!=null){
-                                    priceAfterPromoCode=total-promoCodeModelSuccess.discountValue;
+                                  if (promoCodeModelSuccess.discountValue !=
+                                      null) {
+                                    priceAfterPromoCode = total -
+                                        promoCodeModelSuccess.discountValue;
+                                  } else {
+                                    priceAfterPromoCode = total -
+                                        ((total / 100) *
+                                            promoCodeModelSuccess
+                                                .discountPercentage);
                                   }
-                                  else {
-                                    priceAfterPromoCode=total-((total/100)*promoCodeModelSuccess.discountPercentage);
-
-                                  }
-                                  print("totaltotaltotal  ${priceAfterPromoCode}");
-
+                                  print(
+                                      "totaltotaltotal  ${priceAfterPromoCode}");
                                 });
                                 Navigator.of(context).pop();
                               } else {
                                 State(() {
-
                                   errorMessage =
                                       translator.translate('inValidPromoCode');
                                 });
@@ -641,10 +662,9 @@ class _CartState extends State<Cart> {
                     ),
                     InkWell(
                         onTap: () {
-setState(() {
-  promoCodeController.clear();
-
-});
+                          setState(() {
+                            promoCodeController.clear();
+                          });
                           Navigator.pop(context);
                         },
                         child: Text(
@@ -662,8 +682,9 @@ setState(() {
           );
         });
   }
+
   selectDaySheet() {
-     return showDialog(
+    return showDialog(
         context: context,
         barrierDismissible: false,
         builder: (
@@ -673,7 +694,7 @@ setState(() {
             builder: (context, State) {
               return Container(
                 height: MediaQuery.of(context).size.height / 3,
-width: MediaQuery.of(context).size.width,
+                width: MediaQuery.of(context).size.width,
                 child: AlertDialog(
                   elevation: 4.0,
                   shape: OutlineInputBorder(
@@ -690,8 +711,8 @@ width: MediaQuery.of(context).size.width,
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        Container(width: MediaQuery.of(context).size.width,
-
+                        Container(
+                          width: MediaQuery.of(context).size.width,
                           height: MediaQuery.of(context).size.height / 4,
                           child: ListView.builder(
                               itemCount: DaysList.length,
@@ -699,7 +720,6 @@ width: MediaQuery.of(context).size.width,
                                 return Container(
                                   height: 60,
                                   width: MediaQuery.of(context).size.width,
-
                                   child: InkWell(
                                     onTap: () {
                                       setState(() {
@@ -800,7 +820,6 @@ width: MediaQuery.of(context).size.width,
                     }),
               ],
             ),
-
             Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -852,12 +871,12 @@ width: MediaQuery.of(context).size.width,
                 ),
                 Row(
                   children: [
-
                     Container(
-
-                        child: Center(child: Text(translator.translate('from')))),
-
-                    SizedBox(width: 5,),
+                        child:
+                            Center(child: Text(translator.translate('from')))),
+                    SizedBox(
+                      width: 5,
+                    ),
                     InkWell(
                       onTap: () async {
                         showTimePicker(
@@ -877,14 +896,17 @@ width: MediaQuery.of(context).size.width,
                         child: Container(
                             decoration: BoxDecoration(
                                 border: Border.all(color: Colors.grey)),
-                            child: Center(child: Text(Timeofreceipt,style: TextStyle(fontSize: 12),))),
+                            child: Center(
+                                child: Text(
+                              Timeofreceipt,
+                              style: TextStyle(fontSize: 12),
+                            ))),
                       ),
                     ),
                     SizedBox(
                       width: 10,
                     ),
                     Container(
-
                         child: Center(child: Text(translator.translate('to')))),
                     SizedBox(
                       width: 5,
@@ -908,7 +930,9 @@ width: MediaQuery.of(context).size.width,
                         child: Container(
                             decoration: BoxDecoration(
                                 border: Border.all(color: Colors.grey)),
-                            child: Center(child: Text(delivaryTime,style: TextStyle(fontSize: 12)))),
+                            child: Center(
+                                child: Text(delivaryTime,
+                                    style: TextStyle(fontSize: 12)))),
                       ),
                     ),
                   ],
@@ -944,7 +968,6 @@ width: MediaQuery.of(context).size.width,
                   },
                   child: Container(
                     width: MediaQuery.of(context).size.width / 1.55,
-
                     decoration:
                         BoxDecoration(border: Border.all(color: Colors.grey)),
                     child: Row(

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gas_express/APiFunctions/Api.dart';
+import 'package:gas_express/provider/cartUI.dart';
 import 'package:gas_express/ui/Wallet/BallanceModel.dart';
 import 'package:gas_express/ui/Wallet/PointsModel.dart';
 import 'package:gas_express/ui/Wallet/PromoCodeModel.dart';
@@ -240,7 +241,8 @@ XsProgressHud.hide();
         title: Text(getTranslated(context, "MyWallet"),
             style: TextStyle(fontWeight: FontWeight.w100)),
         actions: [
-          StaticUI().cartWidget(context)
+          // StaticUI().cartWidget(context)
+          CartUI()
         ],
       ),
       body: Container(

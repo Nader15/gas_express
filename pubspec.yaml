@@ -30,6 +30,7 @@ dependencies:
   google_maps_flutter:
   location:
   shared_preferences:
+  provider: ^5.0.0
 dev_dependencies:
   flutter_test:
     sdk: flutter

@@ -16,32 +16,54 @@ import 'package:gas_express/utils/colors_file.dart' as colorsValues;
 import 'package:gas_express/utils/image_file.dart' as imagesfile;
 
 class StaticUI {
-
-  Widget cartWidget(BuildContext context){
-    return  Stack(
+  Widget cartWidget(BuildContext context) {
+    return Stack(
       children: [
-        IconButton(icon: Icon(
-          Icons.shopping_cart,
-          size: 20.0,
-        ), onPressed: () {
-            if(cartList.length!=0){
-            navigateAndKeepStack(context, Cart());
+        IconButton(
+            icon: Icon(
+              Icons.shopping_cart,
+              size: 20.0,
+            ),
+            onPressed: () {
+              if (cartList.length != 0) {
+                navigateAndKeepStack(context, Cart());
+              }
 
-          }
+              // navigateAndKeepStack(context, TestProducts());
+            }),
+        cartList.length == 0
+            ? Container()
+            : ValueListenableBuilder(
+          builder: (BuildContext context, int value, child) {
+            // This builder will only get called when the _counter
+            // is updated.
+            return
+              Padding(
+                padding: const EdgeInsets.all(2),
+                child: Container(
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      color: Colors.white),
+                  width: 20,
+                  height: 20,
+                  child: Center(
+                      child: Text(
+                        value.toString(),
+                        style: TextStyle(color: Colors.red),
+                      )),
+                ),
+              );
+          },
+          valueListenable:cartListLength,
+          // The child parameter is most helpful if the child is
+          // expensive to build and does not depend on the value from
+          // the notifier.
 
-          // navigateAndKeepStack(context, TestProducts());
-        }),
-
-
-        cartList.length==0?Container():     Padding(
-          padding: const EdgeInsets.all(2),
-          child: Container(
-            decoration: BoxDecoration(    borderRadius: BorderRadius.circular(10),color: Colors.white)
-            ,width: 20,height: 20,child: Center(child: Text(cartList.length.toString(),style: TextStyle(color: Colors.red),)),),
         )
       ],
     );
   }
+
   Decoration containerDecoration({
     Color colorValue,
     double borderRidusValue,
@@ -228,41 +250,42 @@ class StaticUI {
         padding: EdgeInsets.only(top: 20),
         child: Container(
             // height: MediaQuery.of(context).size.height,
-            child: Center(child: Text(  getTranslated(context, "noDataFound")))));
+            child: Center(child: Text(getTranslated(context, "noDataFound")))));
   }
 
-
-bottomNavWiget(BuildContext context){
+  bottomNavWiget(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(20.0),
-      child: InkWell(onTap: (){
-        if(cartList.length==0){
-          navigateAndKeepStack(context, OrdersScreen());
-
-        }
-        else {
-          navigateAndKeepStack(context, Cart());
-
-        }
-
-      },
+      child: InkWell(
+        onTap: () {
+          if (cartList.length == 0) {
+            navigateAndKeepStack(context, OrdersScreen());
+          } else {
+            navigateAndKeepStack(context, Cart());
+          }
+        },
         child: Container(
           height: 40,
           decoration: BoxDecoration(
-              color: cartList.length==0?redColor:greenAppColor, borderRadius: BorderRadius.circular(5)),
+              color: cartList.length == 0 ? redColor : greenAppColor,
+              borderRadius: BorderRadius.circular(5)),
           alignment: Alignment.center,
-          child: cartList.length!=0?Text(getTranslated(context, "continueBuying"),   style: TextStyle(
-              fontWeight: FontWeight.w100,
-              fontSize: 18,
-              color: whiteColor)):Text(getTranslated(context, "OrderStatus"),
-              style: TextStyle(
-                  fontWeight: FontWeight.w100,
-                  fontSize: 18,
-                  color: whiteColor)),
+          child: cartList.length != 0
+              ? Text(getTranslated(context, "continueBuying"),
+                  style: TextStyle(
+                      fontWeight: FontWeight.w100,
+                      fontSize: 18,
+                      color: whiteColor))
+              : Text(getTranslated(context, "OrderStatus"),
+                  style: TextStyle(
+                      fontWeight: FontWeight.w100,
+                      fontSize: 18,
+                      color: whiteColor)),
         ),
       ),
     );
-}
+  }
+
   closeApp(BuildContext context) {
     showDialog(
         context: context,
@@ -380,3 +403,58 @@ bottomNavWiget(BuildContext context){
             ));
   }
 }
+
+
+// ValueListenableBuilder(
+// builder: (BuildContext context, int value, child) {
+// // This builder will only get called when the _counter
+// // is updated.
+// return
+// Padding(
+// padding: const EdgeInsets.all(2),
+// child: Container(
+// decoration: BoxDecoration(
+// borderRadius: BorderRadius.circular(10),
+// color: Colors.white),
+// width: 20,
+// height: 20,
+// child: Center(
+// child: Text(
+// value.toString(),
+// style: TextStyle(color: Colors.red),
+// )),
+// ),
+// );
+// },
+// valueListenable:cartListLength,
+// // The child parameter is most helpful if the child is
+// // expensive to build and does not depend on the value from
+// // the notifier.
+//
+// )ValueListenableBuilder(
+// builder: (BuildContext context, int value, child) {
+// // This builder will only get called when the _counter
+// // is updated.
+// return
+// Padding(
+// padding: const EdgeInsets.all(2),
+// child: Container(
+// decoration: BoxDecoration(
+// borderRadius: BorderRadius.circular(10),
+// color: Colors.white),
+// width: 20,
+// height: 20,
+// child: Center(
+// child: Text(
+// value.toString(),
+// style: TextStyle(color: Colors.red),
+// )),
+// ),
+// );
+// },
+// valueListenable:cartListLength,
+// // The child parameter is most helpful if the child is
+// // expensive to build and does not depend on the value from
+// // the notifier.
+//
+// )

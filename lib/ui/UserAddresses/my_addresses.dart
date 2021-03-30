@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:gas_express/APiFunctions/Api.dart';
 import 'package:gas_express/APiFunctions/sharedPref/SharedPrefClass.dart';
+import 'package:gas_express/provider/cartUI.dart';
 import 'package:gas_express/ui/UserAddresses/UserAddresses_Model.dart';
 import 'package:gas_express/ui/UserAddresses/add_address.dart';
 import 'package:gas_express/utils/colors_file.dart';
@@ -73,7 +74,10 @@ class _MyAddressesState extends State<MyAddresses> {
           getTranslated(context, "MyAddresses"),
           style: TextStyle(fontWeight: FontWeight.w100),
         ),
-        actions: [StaticUI().cartWidget(context)],
+        actions: [
+          // StaticUI().cartWidget(context)
+          CartUI()
+        ],
       ),
       body: Container(
         padding: EdgeInsets.all(20),

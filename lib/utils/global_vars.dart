@@ -7,12 +7,17 @@ import 'package:gas_express/ui/StaticDataModel.dart';
 
 String imageUrl = 'http://18.188.206.243:8001';
 List<CartModel> cartList=List();
+final ValueNotifier<int> cartListLength = ValueNotifier<int>(cartList.length);
 int selectedAddressId;
 String  selectedAddressString="";
 List<OrderItem> BaseOrdersList = List();
 List<ProductItem> baseProductsList = List();
 List<ProductItem> baseNewProductsList = List();
 List<ProductItem> baseReshargeProductsList = List();
+
+// class GlobalVars {
+//   List<CartModel> cartList=List();
+// }
 
 List<StaticDataItem> BaseStaticDataList=List();
 String getTranslated(BuildContext context, String key) {

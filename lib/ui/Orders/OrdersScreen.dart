@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:gas_express/APiFunctions/Api.dart';
 import 'package:gas_express/APiFunctions/sharedPref/SharedPrefClass.dart';
+import 'package:gas_express/provider/cartUI.dart';
 import 'package:gas_express/ui/Cart/cart.dart';
  import 'package:gas_express/ui/Orders/OrdersModel.dart';
  import 'package:gas_express/ui/UserAddresses/my_addresses.dart';
@@ -83,7 +84,10 @@ class _OrdersScreenState extends State<OrdersScreen> {
           getTranslated(context, "orders"),
           style: TextStyle(fontWeight: FontWeight.w100),
         ),
-        actions: [StaticUI().cartWidget(context)],
+        actions: [
+          // StaticUI().cartWidget(context)
+          CartUI()
+        ],
       ),
       body:  Container(
               child: RefreshIndicator(

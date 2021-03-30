@@ -2,11 +2,13 @@ import 'dart:io';
 
 import 'package:flutter/gestures.dart';
 import 'package:flutter_statusbarcolor/flutter_statusbarcolor.dart';
+import 'package:gas_express/provider/cartProvider.dart';
 import 'package:gas_express/ui/Orders/order_Details.dart';
  import 'package:gas_express/ui/splash.dart';
 import 'package:flutter/material.dart';
 import 'package:gas_express/utils/colors_file.dart';
 import 'package:localize_and_translate/localize_and_translate.dart';
+import 'package:provider/provider.dart';
 
 main() async {
   // if your flutter > 1.7.8 :  ensure flutter activated
@@ -38,22 +40,27 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     FlutterStatusbarcolor.setStatusBarColor(primaryAppColor);
 
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: "Gas Express",
-      theme: ThemeData(
-        fontFamily: translator.currentLanguage == "ar" ? 'Almarai' : "SourceSansPro",
+    return MultiProvider(
+      providers:[
+        ChangeNotifierProvider(create: (ctx) => CartProvider()),
+      ],
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        title: "Gas Express",
+        theme: ThemeData(
+          fontFamily: translator.currentLanguage == "ar" ? 'Almarai' : "SourceSansPro",
+        ),
+        // home: HomePage(),
+        // home: OrderStatus(),
+        // home: OrdersList(),
+        // home: HistoryOrdersList(),
+        home: Splash(),
+        localizationsDelegates: translator.delegates,
+        // Android + iOS Delegates
+        locale: translator.locale,
+        // Active locale
+        supportedLocales: translator.locals(), // Locals list
       ),
-      // home: HomePage(),
-      // home: OrderStatus(),
-      // home: OrdersList(),
-      // home: HistoryOrdersList(),
-      home: Splash(),
-      localizationsDelegates: translator.delegates,
-      // Android + iOS Delegates
-      locale: translator.locale,
-      // Active locale
-      supportedLocales: translator.locals(), // Locals list
     );
   }
 }

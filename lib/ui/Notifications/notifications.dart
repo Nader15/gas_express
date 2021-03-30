@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gas_express/APiFunctions/Api.dart';
+import 'package:gas_express/provider/cartUI.dart';
 import 'package:gas_express/ui/Notifications/NotificationModel.dart';
 import 'package:gas_express/utils/colors_file.dart';
 import 'package:gas_express/ui/drawer.dart';
@@ -52,8 +53,8 @@ class _NotificationsState extends State<Notifications> {
           style: TextStyle(fontWeight: FontWeight.w100),
         ),
         actions: [
-          StaticUI().cartWidget(context)
-
+          // StaticUI().cartWidget(context)
+          CartUI()
            // IconButton(icon: Icon(Icons.shopping_cart), onPressed: () {})
         ],
       ),

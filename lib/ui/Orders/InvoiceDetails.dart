@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gas_express/APiFunctions/Api.dart';
 import 'package:gas_express/APiFunctions/sharedPref/SharedPrefClass.dart';
+import 'package:gas_express/provider/cartUI.dart';
 import 'package:gas_express/ui/Cart/CartModel.dart';
 import 'package:gas_express/ui/Orders/OrdersModel.dart';
 import 'package:gas_express/ui/Orders/OrdersScreen.dart';
@@ -52,7 +53,10 @@ class _InvoiceDetailsState extends State<InvoiceDetails> {
           getTranslated(context, "InvoiceDetails"),
           style: TextStyle(fontWeight: FontWeight.w100),
         ),
-        actions: [StaticUI().cartWidget(context)],
+        actions: [
+          // StaticUI().cartWidget(context)
+          CartUI()
+        ],
       ),
       body: Container(
         padding: EdgeInsets.all(10),
