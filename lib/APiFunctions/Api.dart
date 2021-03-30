@@ -38,6 +38,7 @@ class Api {
   String banners = "banners/";
   String notifications = "AdminMessages/?messageto=$BaseUderId";
   String forgetPassword = "ForgetPassword/";
+  String register_devices = "register_devices/";
   String verifyCode = "VerifyCode/";
   String user_coupon_code = "user_coupon_code/";
   String myBalance = "my_balance/";
@@ -161,6 +162,30 @@ class Api {
       }
     } else {
       FN_showToast('Send Code Failed', context, Colors.red, scaffoldKey);
+      return false;
+    }
+  }
+
+  Future registerDevicesApi(Map data) async {
+    XsProgressHud.show(context);
+
+    final String completeUrl = "http://18.188.206.243:8001/register_devices/";
+
+    var response = await http.post(
+      completeUrl,  headers: {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      HttpHeaders.authorizationHeader: BaseToken
+    },
+      body: jsonEncode(data)
+    );
+    print("registerDevicesApi ${response.body}");
+     print("registerDevicesApi ${response.statusCode}");
+    XsProgressHud.hide();
+    if (response.statusCode == 201) {
+     return true;
+    } else {
+      // FN_showToast('Send Code Failed', context, Colors.red, scaffoldKey);
       return false;
     }
   }

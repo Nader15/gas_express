@@ -1,5 +1,7 @@
 import 'dart:async';
+import 'dart:io';
 
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gas_express/APiFunctions/Api.dart';
@@ -16,6 +18,7 @@ import 'package:gas_express/utils/colors_file.dart';
 import 'package:gas_express/ui/drawer.dart';
 import 'package:gas_express/utils/global_vars.dart';
 import 'package:gas_express/utils/navigator.dart';
+import 'package:gas_express/utils/notification_helper.dart';
 import 'package:gas_express/utils/static_ui.dart';
 import 'package:provider/provider.dart';
 
@@ -33,9 +36,10 @@ class _HomePageState extends State<HomePage> {
   final GlobalKey<FormState> _key = GlobalKey<FormState>();
   GlobalKey<ScaffoldState> _drawerKey = GlobalKey();
   OrdersModel OrderModel;
+  final FirebaseMessaging _fcm = FirebaseMessaging();
+
   List<OrderItem> ordersList = List();
-  Timer _timer;
-   List<BannerItem> bannerItemList = List();
+    List<BannerItem> bannerItemList = List();
   BannersModel bannersModel;
   getBanners() {
     Api(context, _drawerKey).getBanners().then((value) {
@@ -72,7 +76,21 @@ class _HomePageState extends State<HomePage> {
     // TODO: implement initState
 
   Future.delayed(Duration(milliseconds: 0), () {
-    getBanners();
+    _fcm.getToken().then((firebaseToken) {
+      print("firebase_token initstate  ${firebaseToken}");
+
+      NotificationCenter(context).initConfigure();
+      Map data ={
+        "registration_id": firebaseToken,
+        "active": true,
+        "type": "${Platform.operatingSystem.toString()}"
+      };
+      Api(context, _drawerKey).registerDevicesApi(data).then((value) {
+        getBanners();
+
+      });
+
+    });
   });
 // updateCart();
     super.initState();

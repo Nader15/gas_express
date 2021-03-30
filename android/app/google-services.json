@@ -1,0 +1,68 @@
+{
+  "project_info": {
+    "project_number": "963309327893",
+    "project_id": "gasexpressflutterdriver",
+    "storage_bucket": "gasexpressflutterdriver.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:963309327893:android:eb4276973bfee0e184a01c",
+        "android_client_info": {
+          "package_name": "com.GasExpressCustomer"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "963309327893-kdb9fia4ap71vanjsfe0lduc65mr8c2l.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC6SEcwozdeo0r4MiUFbWxmPZiZFkcSdrE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "963309327893-kdb9fia4ap71vanjsfe0lduc65mr8c2l.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:963309327893:android:18981410bb357f9e84a01c",
+        "android_client_info": {
+          "package_name": "com.GasExpressDriver"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "963309327893-kdb9fia4ap71vanjsfe0lduc65mr8c2l.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC6SEcwozdeo0r4MiUFbWxmPZiZFkcSdrE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "963309327893-kdb9fia4ap71vanjsfe0lduc65mr8c2l.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

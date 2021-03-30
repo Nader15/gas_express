@@ -1,4 +1,4 @@
-package com.example.gas_express
+package com.GasExpressCustomer
 
 import io.flutter.embedding.android.FlutterActivity
 
