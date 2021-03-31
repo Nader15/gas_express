@@ -1,3 +1,5 @@
+import 'package:gas_express/APiFunctions/Api.dart';
+
 class OrdersModel {
   int count;
   dynamic next;
@@ -117,7 +119,8 @@ class OrderItem {
     rate = json['rate'];
     totalprice = json['totalprice'];
     ordercomments = json['ordercomments'];
-    orderstatus = json['orderstatus'];
+    orderstatus = convertString(json['orderstatus']);
+    // orderstatus = json['orderstatus'];
     laststatusdatetime = json['laststatusdatetime'];
     location = json['location'];
     discountValue = json['discount_value']??0;

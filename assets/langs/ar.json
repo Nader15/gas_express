@@ -115,6 +115,11 @@
   "Canceled": "ملغي",
   "noDataFound": "لا توجد بيانات",
 
-  "Login": "تسجيل الدخول"
-
+  "Login": "تسجيل الدخول",
+  "new": "طلب جديد",
+  "inprogress": " قيد العمل ",
+  "canceled": "طلب ملغي",
+  "done": "تم انتهاء الطلب",
+  "with-delivery-agent": "مع مندوب التوصيل",
+  "driving-to-customer": "السائق في الطريق اليك"
 }

@@ -896,3 +896,24 @@ return true;
 
   }
 }
+String convertString(String status){
+  if(status=='new'){
+    return translator.translate('new');
+  }
+  else if(status=='inprogress'){
+    return translator.translate('inprogress');
+
+  }else if(status=='canceled'){
+    return translator.translate('canceled');
+
+  }else if(status=='done'){
+    return translator.translate('done');
+
+  }else if(status=='with-delivery-agent'){
+    return translator.translate('with-delivery-agent');
+
+  }else if(status=='driving-to-customer'){
+    return translator.translate('driving-to-customer');
+
+  }
+}

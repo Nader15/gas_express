@@ -185,9 +185,9 @@ class _OrderDetailsState extends State<OrderDetails> {
                                     SizedBox(
                                       width: 10,
                                     ),
-                                    widget.orderItem.orderstatus != "done" &&
+                                    widget.orderItem.orderstatus != translator.translate('done') &&
                                             widget.orderItem.orderstatus !=
-                                                "canceled"
+                                                translator.translate('canceled')
                                         ? InkWell(
                                             onTap: () {
 

@@ -111,48 +111,48 @@ class _MyWalletState extends State<MyWallet> {
                     SizedBox(
                       height: 10,
                     ),
-                    InkWell(
-                        onTap: () {
-
-                          if(promoCodeController.text.isEmpty){
-                            Navigator.of(context).pop();
-                          }
-                          else {
-                            Map data ={
-                              "coupon_code":promoCodeController.text
-                            };
-                            Api(context, _scaffoldKey).addPromoCodeApi(data).then((value) {
-                              if(value){
-                                setState(() {
-                                  promoCodeList.clear();
-                                  promoCodeController.clear();
-                                });
-                                Navigator.of(context).pop();
-                                gettingData();
-                              }
-                              else {
-                                Navigator.of(context).pop();
-
-                              }
-                            });
-                          }
-                        },
-                        child: Container(
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(5),
-                              color: promoCodeController.text == null ||
-                                  promoCodeController.text.isEmpty
-                                  ? grey
-                                  : primaryAppColor),
-                          width: MediaQuery.of(context).size.width / 1.2,
-                          height: 40,
-                          child: Center(
-                              child: Text(
-                                translator.translate('addPromoCode'),
-                                textScaleFactor: 1,
-                                style: TextStyle(color: Colors.white),
-                              )),
-                        )),
+                    // InkWell(
+                    //     onTap: () {
+                    //
+                    //       if(promoCodeController.text.isEmpty){
+                    //         Navigator.of(context).pop();
+                    //       }
+                    //       else {
+                    //         Map data ={
+                    //           "coupon_code":promoCodeController.text
+                    //         };
+                    //         Api(context, _scaffoldKey).addPromoCodeApi(data).then((value) {
+                    //           if(value){
+                    //             setState(() {
+                    //               promoCodeList.clear();
+                    //               promoCodeController.clear();
+                    //             });
+                    //             Navigator.of(context).pop();
+                    //             gettingData();
+                    //           }
+                    //           else {
+                    //             Navigator.of(context).pop();
+                    //
+                    //           }
+                    //         });
+                    //       }
+                    //     },
+                    //     child: Container(
+                    //       decoration: BoxDecoration(
+                    //           borderRadius: BorderRadius.circular(5),
+                    //           color: promoCodeController.text == null ||
+                    //               promoCodeController.text.isEmpty
+                    //               ? grey
+                    //               : primaryAppColor),
+                    //       width: MediaQuery.of(context).size.width / 1.2,
+                    //       height: 40,
+                    //       child: Center(
+                    //           child: Text(
+                    //             translator.translate('addPromoCode'),
+                    //             textScaleFactor: 1,
+                    //             style: TextStyle(color: Colors.white),
+                    //           )),
+                    //     )),
                     SizedBox(
                       height: 20,
                     ),

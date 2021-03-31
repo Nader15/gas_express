@@ -175,7 +175,7 @@ SizedBox(height: 30,),
                                   itemBuilder: (BuildContext context, int index) {
                                     return Padding(
                                       padding: const EdgeInsets.only(left: 20,right: 20),
-                                      child: recentOrders(HistoryOrdersList[index].orderstatus=='canceled'?false:true,HistoryOrdersList[index]),
+                                      child: recentOrders(HistoryOrdersList[index].orderstatus==translator.translate('canceled')?false:true,HistoryOrdersList[index]),
                                     );
                                   }),
 
@@ -350,7 +350,7 @@ SizedBox(height: 30,),
                     SizedBox(
                       width: 10,
                     ),
-               orderItem.orderstatus != "done"&&    orderItem.orderstatus != "canceled"?
+               orderItem.orderstatus != translator.translate('done')&&    orderItem.orderstatus != translator.translate('canceled')?
                     InkWell(
                       onTap: () {
 

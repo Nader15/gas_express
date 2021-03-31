@@ -114,5 +114,12 @@
   "apply": "Apply",
   "addPromoCode": "Add promo code",
 
-  "Login": "Login"
+  "Login": "Login",
+
+  "new": "New",
+  "inprogress": "In progress",
+  "canceled": "Canceled",
+  "done": "Done",
+  "with-delivery-agent": "With delivery agent",
+  "driving-to-customer": "Driving to customer"
 }
