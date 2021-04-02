@@ -36,7 +36,7 @@ class _HomePageState extends State<HomePage> {
   final GlobalKey<FormState> _key = GlobalKey<FormState>();
   GlobalKey<ScaffoldState> _drawerKey = GlobalKey();
   OrdersModel OrderModel;
-  final FirebaseMessaging _fcm = FirebaseMessaging();
+  // final FirebaseMessaging _fcm = FirebaseMessaging();
 
   List<OrderItem> ordersList = List();
     List<BannerItem> bannerItemList = List();
@@ -76,21 +76,23 @@ class _HomePageState extends State<HomePage> {
     // TODO: implement initState
 
   Future.delayed(Duration(milliseconds: 0), () {
-    _fcm.getToken().then((firebaseToken) {
-      print("firebase_token initstate  ${firebaseToken}");
+    getBanners();
 
-      NotificationCenter(context).initConfigure();
-      Map data ={
-        "registration_id": firebaseToken,
-        "active": true,
-        "type": "${Platform.operatingSystem.toString()}"
-      };
-      Api(context, _drawerKey).registerDevicesApi(data).then((value) {
-        getBanners();
-
-      });
-
-    });
+    // _fcm.getToken().then((firebaseToken) {
+    //   print("firebase_token initstate  ${firebaseToken}");
+    //
+    //   NotificationCenter(context).initConfigure();
+    //   Map data ={
+    //     "registration_id": firebaseToken,
+    //     "active": true,
+    //     "type": "${Platform.operatingSystem.toString()}"
+    //   };
+    //   Api(context, _drawerKey).registerDevicesApi(data).then((value) {
+    //     getBanners();
+    //
+    //   });
+    //
+    // });
   });
 // updateCart();
     super.initState();

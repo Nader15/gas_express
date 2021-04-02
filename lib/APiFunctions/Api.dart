@@ -61,8 +61,8 @@ class Api {
     XsProgressHud.show(context);
 
     final String completeUrl = baseUrl + ordersHistory;
-    final response = await http.get(
-      completeUrl,
+    final response = await http.get(Uri.parse(completeUrl)
+       ,
       headers: {
         'Content-Type': 'application/json',
         'Accept': 'application/json',
@@ -96,7 +96,7 @@ class Api {
     final String completeUrl = baseUrl + forgetPassword;
 
     var response = await http.post(
-      completeUrl,
+      Uri.parse(completeUrl),
       body: {"telephoneno": "+966" + phone},
     );
     print("PhoneBody ${response.body}");
@@ -131,7 +131,7 @@ class Api {
     final String completeUrl = baseUrl + deleteMessage;
 
     var response = await http.post(
-      completeUrl,  headers: {
+        Uri.parse(completeUrl),  headers: {
       'Content-Type': 'application/json',
       'Accept': 'application/json',
       HttpHeaders.authorizationHeader: BaseToken
@@ -172,7 +172,7 @@ class Api {
     final String completeUrl = "http://18.188.206.243:8001/register_devices/";
 
     var response = await http.post(
-      completeUrl,  headers: {
+        Uri.parse(completeUrl),  headers: {
       'Content-Type': 'application/json',
       'Accept': 'application/json',
       HttpHeaders.authorizationHeader: BaseToken
@@ -199,7 +199,7 @@ class Api {
     final String completeUrl = baseUrl + checkZone;
 
     var response = await http.post(
-      completeUrl,  headers: {
+      Uri.parse(completeUrl),  headers: {
       'Content-Type': 'application/json',
       'Accept': 'application/json',
       HttpHeaders.authorizationHeader: BaseToken
@@ -295,7 +295,7 @@ return true;
     var data = {"validationCode": code, "telephoneno": "+966" + phone};
     var userToJson = json.encode(data);
     final response = await http.post(
-      completeUrl,
+      Uri.parse(completeUrl),
       headers: {
         'Content-Type': 'application/json',
         'Accept': 'application/json',
@@ -311,7 +311,7 @@ return true;
       return UserModel.fromJson(json.decode(response.body));
     } else {
       print("body :" + json.decode(response.body).toString());
-      FN_showToast('كود التفعيل غير صحيح', context, Colors.red, scaffoldKey);
+      FN_showToast('${json.decode(response.body)['detail']}', context, Colors.red, scaffoldKey);
       return false;
     }
   }
@@ -323,7 +323,7 @@ return true;
 
     // TODO: implement getStudents
     final response = await http.get(
-      completeUrl,
+      Uri.parse(completeUrl),
       headers: {
         'Content-Type': 'application/json',
         'Accept': 'application/json',
@@ -353,7 +353,7 @@ return true;
 
     // TODO: implement getStudents
     final response = await http.get(
-      completeUrl,
+      Uri.parse(completeUrl),
       headers: {
         'Content-Type': 'application/json',
         'Accept': 'application/json',
@@ -382,7 +382,7 @@ return true;
 
     // TODO: implement getStudents
     final response = await http.get(
-      completeUrl,
+      Uri.parse(completeUrl),
       headers: {
         'Content-Type': 'application/json',
         'Accept': 'application/json',
@@ -412,7 +412,7 @@ return true;
 
     // TODO: implement getStudents
     final response = await http.get(
-      completeUrl,
+      Uri.parse(completeUrl),
       headers: {
         'Content-Type': 'application/json',
         'Accept': 'application/json',
@@ -441,7 +441,7 @@ return true;
 
     final String completeUrl = baseUrl + orders;
     final response = await http.get(
-      completeUrl,
+      Uri.parse(completeUrl),
       headers: {
         'Content-Type': 'application/json',
         'Accept': 'application/json',
@@ -477,7 +477,7 @@ return true;
     var data = {"orderstatus": "canceled"};
     var userToJson = json.encode(data);
     final response = await http.patch(
-      completeUrl,
+      Uri.parse(completeUrl),
       headers: {
         'Content-Type': 'application/json',
         'Accept': 'application/json',
@@ -509,7 +509,7 @@ return true;
     var data = {"order_id": "12321"};
     var userToJson = json.encode(data);
     final response = await http.post(
-      completeUrl,
+      Uri.parse(completeUrl),
       headers: {
         'Content-Type': 'application/json',
         'Accept': 'application/json',
@@ -540,7 +540,7 @@ return true;
 
      print("userToJson::: ${userToJson}");
     final response = await http.post(
-      completeUrl,
+      Uri.parse(completeUrl),
       headers: {
         'Content-Type': 'application/json',
         'Accept': 'application/json',
@@ -573,7 +573,7 @@ return true;
     final String completeUrl = baseUrl + customersAddresses ;
 
     final response = await http.get(
-      completeUrl,
+      Uri.parse(completeUrl),
       headers: {
         'Content-Type': 'application/json',
         'Accept': 'application/json',
@@ -603,7 +603,7 @@ return true;
     final String completeUrl = baseUrl + user_coupon_code ;
 
     final response = await http.get(
-      completeUrl,
+      Uri.parse(completeUrl),
       headers: {
         'Content-Type': 'application/json',
         'Accept': 'application/json',
@@ -631,7 +631,7 @@ return true;
     final String completeUrl = baseUrl + usageCount ;
 
     final response = await http.get(
-      completeUrl,
+      Uri.parse(completeUrl),
       headers: {
         'Content-Type': 'application/json',
         'Accept': 'application/json',
@@ -660,7 +660,7 @@ return true;
     final String completeUrl = baseUrl + customersAddressesDelete+addressID.toString()+"/" ;
 
     final response = await http.delete(
-      completeUrl,
+      Uri.parse(completeUrl),
       headers: {
         'Content-Type': 'application/json',
         'Accept': 'application/json',
@@ -688,7 +688,7 @@ return true;
     final String completeUrl = baseUrl + customersAddresses ;
 
     final response = await http.post(
-      completeUrl,
+        Uri.parse(completeUrl),
       headers: {
         'Content-Type': 'application/json',
         'Accept': 'application/json',
@@ -719,7 +719,7 @@ return true;
     final String completeUrl = baseUrl + myBalance ;
 
     final response = await http.get(
-        completeUrl,
+      Uri.parse(completeUrl),
         headers: {
           HttpHeaders.authorizationHeader: BaseToken
         },
@@ -749,7 +749,7 @@ return true;
     final String completeUrl = baseUrl + user_coupon_code ;
 
     final response = await http.post(
-        completeUrl,
+        Uri.parse(completeUrl),
         headers: {
             HttpHeaders.authorizationHeader: BaseToken
         },
@@ -780,7 +780,7 @@ return true;
     final String completeUrl = baseUrl + check_coupon ;
 
     final response = await http.post(
-        completeUrl,
+        Uri.parse(completeUrl),
         headers: {
             HttpHeaders.authorizationHeader: BaseToken
         },
@@ -837,7 +837,7 @@ return true;
     final String completeUrl = baseUrl + basket;
      var userToJson = json.encode(data);
     final response = await http.post(
-      completeUrl,
+      Uri.parse(completeUrl),
       headers: {
         'Content-Type': 'application/json',
         'Accept': 'application/json',

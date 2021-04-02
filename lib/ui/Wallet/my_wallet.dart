@@ -394,140 +394,140 @@ else {
                           ),
                         ),
                       ),
-                      Card(
-                        elevation: 10,
-                        child: Padding(
-                          padding: const EdgeInsets.all(10.0),
-                          child: SingleChildScrollView(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text(
-                                      getTranslated(context, "DiscountCodes"),
-                                      style: TextStyle(
-                                          fontSize: 20, fontWeight: FontWeight.w100),
-                                    ),
-                                    Text(
-                                      getTranslated(context, "ExpiryDate"),
-                                      style: TextStyle(
-                                          color: greenAppColor,
-                                          fontSize: 20,
-                                          fontWeight: FontWeight.w100),
-                                    ),
-                                    Text(
-                                      getTranslated(context, "Value"),
-                                      style: TextStyle(
-                                          color: greenAppColor,
-                                          fontSize: 20,
-                                          fontWeight: FontWeight.w100),
-                                    ),
-                                  ],
-                                ),
-                                SizedBox(
-                                  height: 10,
-                                ),
-                              promoCodeList.length==0?Text( getTranslated(context, "noDataFound")):     ListView.builder(physics: NeverScrollableScrollPhysics(),
-                                shrinkWrap: true,itemCount: promoCodeList.length,itemBuilder: (BuildContext context,int index){
-                              return Column(children: [
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text(
-                                      "${promoCodeList[index].couponCode}",
-                                      style: TextStyle(
-                                          color: greenAppColor, fontSize: 20),
-                                    ),
-                                    Text(
-                                    promoCodeList[index].expiryDate==null?"----":  promoCodeList[index].expiryDate.split("T")[0],
-                                      // "${promoCodeList[index].expiryDate.split("T")[0]}",
-                                      style: TextStyle(
-                                          color: greenAppColor, fontSize: 20),
-                                    ),
-                                    Text(
-                                      promoCodeList[index].discountPercentage==null? "${promoCodeList[index].discountValue} ${translator.translate('Currency')}":
-                                      "${promoCodeList[index].discountPercentage}%",
-                                      style: TextStyle(
-                                          color: greenAppColor, fontSize: 20),
-                                    ),
-                                  ],
-                                ),
-                                CustomDivider(),
-                              ],);
-                            }),
-                                // Row(
-                                //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                //   crossAxisAlignment: CrossAxisAlignment.end,
-                                //   children: [
-                                //     Text(
-                                //       "BO2RT1",
-                                //       style: TextStyle(
-                                //           color: greenAppColor, fontSize: 20),
-                                //     ),
-                                //     Text(
-                                //       "1/2/2022",
-                                //       textDirection: TextDirection.rtl,
-                                //       style: TextStyle(
-                                //           color: greenAppColor, fontSize: 20),
-                                //     ),
-                                //     Text(
-                                //       "10ريال",
-                                //       style: TextStyle(
-                                //           color: greenAppColor, fontSize: 20),
-                                //     ),
-                                //   ],
-                                // ),
-                                // CustomDivider(),
-                                TextButton(
-                                    onPressed: () {
-                                      alertDialogPromoCodeWidget();
-                                      // showRoundedModalBottomSheet(
-                                      //     autoResize: true,
-                                      //     dismissOnTap: false,
-                                      //     context: context,
-                                      //     radius: 30.0,
-                                      //     // This is the default
-                                      //     color: Colors.white,
-                                      //     // Also default
-                                      //     builder: (context) => addPromoCode());
-
-                                    },
-                                    child: Row(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      mainAxisAlignment: MainAxisAlignment.start,
-                                      children: [
-                                        Container(
-                                          height: 22,
-                                          width: 22,
-                                          alignment: Alignment.center,
-                                          decoration: BoxDecoration(
-                                              shape: BoxShape.circle,
-                                              border:
-                                                  Border.all(color: greenAppColor)),
-                                          child: Icon(
-                                            Icons.add,
-                                            color: greenAppColor,
-                                            size: 20,
-                                          ),
-                                        ),
-                                        SizedBox(
-                                          width: 10,
-                                        ),
-                                        Text(
-                                          getTranslated(context, "AddCodeOrCoupon"),
-                                          style: TextStyle(
-                                              color: greenAppColor,
-                                              fontWeight: FontWeight.w100),
-                                        ),
-                                      ],
-                                    )),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
+                      // Card(
+                      //   elevation: 10,
+                      //   child: Padding(
+                      //     padding: const EdgeInsets.all(10.0),
+                      //     child: SingleChildScrollView(
+                      //       child: Column(
+                      //         crossAxisAlignment: CrossAxisAlignment.start,
+                      //         children: [
+                      //           Row(
+                      //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      //             children: [
+                      //               Text(
+                      //                 getTranslated(context, "DiscountCodes"),
+                      //                 style: TextStyle(
+                      //                     fontSize: 20, fontWeight: FontWeight.w100),
+                      //               ),
+                      //               Text(
+                      //                 getTranslated(context, "ExpiryDate"),
+                      //                 style: TextStyle(
+                      //                     color: greenAppColor,
+                      //                     fontSize: 20,
+                      //                     fontWeight: FontWeight.w100),
+                      //               ),
+                      //               Text(
+                      //                 getTranslated(context, "Value"),
+                      //                 style: TextStyle(
+                      //                     color: greenAppColor,
+                      //                     fontSize: 20,
+                      //                     fontWeight: FontWeight.w100),
+                      //               ),
+                      //             ],
+                      //           ),
+                      //           SizedBox(
+                      //             height: 10,
+                      //           ),
+                      //         promoCodeList.length==0?Text( getTranslated(context, "noDataFound")):     ListView.builder(physics: NeverScrollableScrollPhysics(),
+                      //           shrinkWrap: true,itemCount: promoCodeList.length,itemBuilder: (BuildContext context,int index){
+                      //         return Column(children: [
+                      //           Row(
+                      //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      //             children: [
+                      //               Text(
+                      //                 "${promoCodeList[index].couponCode}",
+                      //                 style: TextStyle(
+                      //                     color: greenAppColor, fontSize: 20),
+                      //               ),
+                      //               Text(
+                      //               promoCodeList[index].expiryDate==null?"----":  promoCodeList[index].expiryDate.split("T")[0],
+                      //                 // "${promoCodeList[index].expiryDate.split("T")[0]}",
+                      //                 style: TextStyle(
+                      //                     color: greenAppColor, fontSize: 20),
+                      //               ),
+                      //               Text(
+                      //                 promoCodeList[index].discountPercentage==null? "${promoCodeList[index].discountValue} ${translator.translate('Currency')}":
+                      //                 "${promoCodeList[index].discountPercentage}%",
+                      //                 style: TextStyle(
+                      //                     color: greenAppColor, fontSize: 20),
+                      //               ),
+                      //             ],
+                      //           ),
+                      //           CustomDivider(),
+                      //         ],);
+                      //       }),
+                      //           // Row(
+                      //           //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      //           //   crossAxisAlignment: CrossAxisAlignment.end,
+                      //           //   children: [
+                      //           //     Text(
+                      //           //       "BO2RT1",
+                      //           //       style: TextStyle(
+                      //           //           color: greenAppColor, fontSize: 20),
+                      //           //     ),
+                      //           //     Text(
+                      //           //       "1/2/2022",
+                      //           //       textDirection: TextDirection.rtl,
+                      //           //       style: TextStyle(
+                      //           //           color: greenAppColor, fontSize: 20),
+                      //           //     ),
+                      //           //     Text(
+                      //           //       "10ريال",
+                      //           //       style: TextStyle(
+                      //           //           color: greenAppColor, fontSize: 20),
+                      //           //     ),
+                      //           //   ],
+                      //           // ),
+                      //           // CustomDivider(),
+                      //           TextButton(
+                      //               onPressed: () {
+                      //                 alertDialogPromoCodeWidget();
+                      //                 // showRoundedModalBottomSheet(
+                      //                 //     autoResize: true,
+                      //                 //     dismissOnTap: false,
+                      //                 //     context: context,
+                      //                 //     radius: 30.0,
+                      //                 //     // This is the default
+                      //                 //     color: Colors.white,
+                      //                 //     // Also default
+                      //                 //     builder: (context) => addPromoCode());
+                      //
+                      //               },
+                      //               child: Row(
+                      //                 crossAxisAlignment: CrossAxisAlignment.start,
+                      //                 mainAxisAlignment: MainAxisAlignment.start,
+                      //                 children: [
+                      //                   Container(
+                      //                     height: 22,
+                      //                     width: 22,
+                      //                     alignment: Alignment.center,
+                      //                     decoration: BoxDecoration(
+                      //                         shape: BoxShape.circle,
+                      //                         border:
+                      //                             Border.all(color: greenAppColor)),
+                      //                     child: Icon(
+                      //                       Icons.add,
+                      //                       color: greenAppColor,
+                      //                       size: 20,
+                      //                     ),
+                      //                   ),
+                      //                   SizedBox(
+                      //                     width: 10,
+                      //                   ),
+                      //                   Text(
+                      //                     getTranslated(context, "AddCodeOrCoupon"),
+                      //                     style: TextStyle(
+                      //                         color: greenAppColor,
+                      //                         fontWeight: FontWeight.w100),
+                      //                   ),
+                      //                 ],
+                      //               )),
+                      //         ],
+                      //       ),
+                      //     ),
+                      //   ),
+                      // ),
 
                       pointItemList.length==0?Container():     ListView.builder(
                         physics: NeverScrollableScrollPhysics(),

@@ -78,6 +78,8 @@ class _CartState extends State<Cart> {
 
   @override
   Widget build(BuildContext context) {
+    final cartData = Provider.of<CartProvider>(context);
+
     return Scaffold(
       key: _scaffoldKey,
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
@@ -176,6 +178,7 @@ class _CartState extends State<Cart> {
                             .then((value) {
                           if (value) {
                             setState(() {
+                              cartData.counter=0;
                               cartList.clear();
                             });
                             navigateAndKeepStack(context, OrdersScreen());

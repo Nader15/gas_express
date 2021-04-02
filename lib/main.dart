@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:gas_express/utils/colors_file.dart';
 import 'package:localize_and_translate/localize_and_translate.dart';
 import 'package:provider/provider.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 
 main() async {
   // if your flutter > 1.7.8 :  ensure flutter activated

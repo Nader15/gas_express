@@ -62,6 +62,7 @@ sendAddAddressRequest(Map data,BuildContext context){
       lat = widget.userLat;
       long = widget.userLong;
     });
+
     location.onLocationChanged.listen((LocationData currentLocation) {
       lat = currentLocation.latitude;
       long = currentLocation.longitude;
