@@ -28,6 +28,8 @@ dependencies:
   dotted_border: ^1.0.7
   image_picker: ^0.6.0+10
   geocoder:
+  firebase_core: ^1.0.2
+
   google_maps_flutter:
   location: ^4.1.1
   shared_preferences:
