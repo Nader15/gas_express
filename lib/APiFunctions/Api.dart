@@ -31,7 +31,8 @@ class Api {
 
   Api(this.context, this.scaffoldKey);
 
-  String baseUrl = 'http://18.188.206.243:8001/api/';
+  String baseUrl = 'https://gasexpress-sa.com/api/';
+  // String baseUrl = 'http://18.188.206.243:8001/api/';
   String images = "Images/";
   String products = "Products";
   String config = "Config/";
@@ -47,7 +48,8 @@ class Api {
   String deleteMessage = "archive_messages/";
   String checkZone = "zone_check/";
   String customersAddresses = "CustomersAddresses/?customerid=$BaseUderId";
-  String customersAddressesDelete = "http://18.188.206.243:8001/api/CustomersAddresses/";
+  String customersAddressesDelete = "https://gasexpress-sa.com/api/CustomersAddresses/";
+  // String customersAddressesDelete = "http://18.188.206.243:8001/api/CustomersAddresses/";
   String basket = "basket/";
   // String orders = "Orders/?customerid=$BaseUderId&orderstatus=with-delivery-agent";
   // String ordersHistory = "Orders/?customerid=$BaseUderId&orderstatus!=with-delivery-agent";

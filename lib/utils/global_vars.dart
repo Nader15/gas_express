@@ -5,7 +5,8 @@ import 'package:gas_express/ui/Orders/OrdersModel.dart';
 import 'package:gas_express/ui/StaticDataModel.dart';
  import 'package:localize_and_translate/localize_and_translate.dart';
 
-String imageUrl = 'http://18.188.206.243:8001';
+String imageUrl = 'https://gasexpress-sa.com';
+// String imageUrl = 'http://18.188.206.243:8001';
 List<CartModel> cartList=List();
 final ValueNotifier<int> cartListLength = ValueNotifier<int>(cartList.length);
 int selectedAddressId;
